@@ -1,0 +1,12 @@
+# 扫描矩阵：<suite> <arch>，每行一对
+# 目标：Debian 12 (bookworm) 与 13 (trixie)，覆盖 5 种架构
+bookworm amd64
+bookworm arm64
+bookworm armhf
+bookworm riscv64
+bookworm loong64
+trixie amd64
+trixie arm64
+trixie armhf
+trixie riscv64
+trixie loong64

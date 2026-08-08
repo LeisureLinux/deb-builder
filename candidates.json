@@ -1,0 +1,50 @@
+[
+  {
+    "repo": "BurntSushi/ripgrep",
+    "name": "ripgrep",
+    "names": [
+      "ripgrep"
+    ],
+    "homepage": "https://github.com/BurntSushi/ripgrep",
+    "section": "utils",
+    "summary": "Recursive search tool that is optimized for speed",
+    "found_in": [
+      "bookworm/amd64"
+    ],
+    "debian_versions": {
+      "bookworm/amd64": "13.0.0-4+b2"
+    }
+  },
+  {
+    "repo": "sharkdp/fd",
+    "name": "fd-find",
+    "names": [
+      "fd-find"
+    ],
+    "homepage": "https://github.com/sharkdp/fd",
+    "section": "utils",
+    "summary": "Simple, fast and user-friendly alternative to find",
+    "found_in": [
+      "bookworm/amd64"
+    ],
+    "debian_versions": {
+      "bookworm/amd64": "8.7.1-2"
+    }
+  },
+  {
+    "repo": "junegunn/fzf",
+    "name": "fzf",
+    "names": [
+      "fzf"
+    ],
+    "homepage": "https://github.com/junegunn/fzf",
+    "section": "utils",
+    "summary": "general-purpose command-line fuzzy finder",
+    "found_in": [
+      "bookworm/amd64"
+    ],
+    "debian_versions": {
+      "bookworm/amd64": "0.44.1-1"
+    }
+  }
+]

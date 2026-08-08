@@ -1,0 +1,31 @@
+Package: ripgrep
+Version: 13.0.0-4+b2
+Section: utils
+Homepage: https://github.com/BurntSushi/ripgrep
+Description: Recursive search tool that is optimized for speed
+ ripgrep is a line-oriented search tool that recursively searches
+ the current directory for a regex pattern.
+
+Package: fd-find
+Version: 8.7.1-2
+Section: utils
+Homepage: https://github.com/sharkdp/fd
+Description: Simple, fast and user-friendly alternative to find
+
+Package: not-github-tool
+Version: 1.0-1
+Section: utils
+Homepage: https://example.com/foo
+Description: 非 GitHub 项目，应被过滤
+
+Package: only-user-homepage
+Version: 2.0-1
+Section: devel
+Homepage: https://github.com/someuser
+Description: 纯用户主页，应被过滤
+
+Package: fzf
+Version: 0.44.1-1
+Section: utils
+Homepage: https://github.com/junegunn/fzf
+Description: general-purpose command-line fuzzy finder

@@ -1,0 +1,14 @@
+repo: BurntSushi/ripgrep
+owner: BurntSushi
+package: ripgrep
+summary: "Recursive search tool optimized for speed"
+description: |
+  Ripgrep is a line-oriented search tool that recursively searches the current directory for a regex pattern.
+section: utils
+
+version_tag: "ref:v*"
+target_arches:
+  - loong64   # Targeting LoongArch only initially (Debian lacks binary there)
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: [ "libc6" ]                      # standard dependency for most binaries

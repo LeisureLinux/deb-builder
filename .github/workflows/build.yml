@@ -1,0 +1,65 @@
+name: Build Go Deb Packages
+
+on:
+  push:
+    paths: ['recipes/*.yaml']            # recipe 修改时自动构建对应包
+    tags:
+      - 'v*'                            # tag：为所有 recipe 全量重建
+  pull_request:
+    paths: ['recipes/*.yaml', 'scripts/']
+  workflow_dispatch:                    # 手动触发（可指定单个 package）
+    inputs:
+      package:
+        description: '要构建的包名 (如 gdu)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read                       # Cloning repo
+
+jobs:
+  build-all:
+    if: ${{ github.event.inputs.package == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      # 1. 扫描所有 recipes
+      - name: Scan recipes
+        id: recipes
+        run: |
+          mapfile -t PACKAGES < <(bash scripts/list-recipes.sh)
+          echo "packages=${PACKAGES[*]}" >> "$GITHUB_OUTPUT"
+          echo "📦 Found packages: ${PACKAGES[*]}"
+
+      # 2. 为每个 recipe 构建（串行测试正确性）
+      - name: Build each package
+        run: bash scripts/build-all.sh
+
+  build-one:
+    if: ${{ github.event.inputs.package != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build specified package
+        env:
+          PKG_NAME: ${{ github.event.inputs.package }}
+        run: |
+          if ! bash scripts/build-one.sh "$PKG_NAME"; then
+            echo "❌ 构建失败" >&2
+            exit 1
+          fi
+          echo "✅ 构建完成"
+
+      # (可选) dispatch to apt-repo after successful build

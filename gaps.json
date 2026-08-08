@@ -1,0 +1,32 @@
+[
+  {
+    "gaps": [
+      "bookworm/arm64",
+      "bookworm/armhf",
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/BurntSushi/ripgrep",
+    "latest": "15.2.0",
+    "name": "ripgrep",
+    "official_deb_arches": [
+      "amd64"
+    ],
+    "repo": "BurntSushi/ripgrep"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/sharkdp/fd",
+    "latest": "v10.4.2",
+    "name": "fd-find",
+    "official_deb_arches": [
+      "amd64",
+      "arm64",
+      "armhf"
+    ],
+    "repo": "sharkdp/fd"
+  }
+]

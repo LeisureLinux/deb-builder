@@ -1,0 +1,4 @@
+# Debian suite 别名 → codename 映射（随 Debian 发版更新）
+# 2026-08：Debian 13 (trixie) = stable，Debian 12 (bookworm) = oldstable
+stable trixie
+oldstable bookworm

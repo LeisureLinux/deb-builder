@@ -1,0 +1,9 @@
+# Build output
+dist/
+*.deb
+vendor/
+**/*.gz   # compressed sources
+
+# Local state (optional, keep if debugging issues locally)
+.cached-*
+.test-*
