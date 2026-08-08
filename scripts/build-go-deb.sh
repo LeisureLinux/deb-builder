@@ -1,124 +1,146 @@
 #!/bin/bash
-# build-go-deb.sh: Go 项目的多架构 .deb构建器
-# 用法: bash scripts/build-go-deb.sh <repo-name> <version> <binary-path> [output-dir]
+# build-go-deb.sh: Go 项目多架构 .deb 构建器
+# 用法: bash scripts/build-go-deb.sh <package-name> [version] [binary-path] [arch1,arch2,...]
+#   package-name  : recipe 名 / Debian 包名，如 gdu（会读取 recipes/<name>.yaml）
+#   version       : 版本号，如 v5.36.1（可选，默认从 recipe latest_tag/version_tag 推断）
+#   binary-path   : 已编译二进制路径（可选；默认走源码交叉编译）
+#   archs         : 逗号分隔的目标架构，如 amd64,arm64,loong64,riscv64（可选，默认读取 recipe target_arches）
 set -euo pipefail
 
-REPO_NAME="$1"         # e.g. gdu
-VERSION="$2"           # e.g. v5.36.1 → 5.36.1（strip v）
-BINARY_PATH="${3:-./gdu}"  # 二进制路径（交叉编译结果）
-OUTPUT_DIR="${4:-dist}"
+PKG_NAME="${1:?Usage: build-go-deb.sh <package-name> [version] [binary-path] [archs]}"
+VERSION="${2:-}"
+BINARY_PATH="${3:-}"
+ARCH_LIST="${4:-}"
 
-# 从 VERSION 解析主版本号
-VERSION="${VERSION#v}"  # strip "v" prefix
+RECIPE="recipes/${PKG_NAME}.yaml"
+OUTPUT_DIR="${OUTPUT_DIR:-dist}"
 
-# --- 架构映射 (goarch → deb arch) ---
-declare -A ARCH_MAP=(
-    [amd64]=amd64
-    [arm64]=arm64
-    [arm]=armhf GOARM=7     # armhf=GOARCH=arm+GOARM=7 (硬浮点，CPU 需 >= ARMv7)
-    [loongarch64]=loong64   # Go1.23 已原生支持 LoongArch
-    [riscv64]=riscv64       # Go1.18+ 支持 riscv64
-)
-
-# --- 包元数据 ---
-# 复用 Debian Packages 索引中的描述信息（后续可从 scanner 输出读取）
-PKG_NAME="$REPO_NAME"
 MAINTAINER="LeisureLinux <albertxu@freelamp.com>"
 SECTION="utils"
-DEPENDS=""   # Go 静态二进制通常无依赖，可留空或仅写 dpkg (用于 upgrade)
 
-# --- 解析目标架构和构建选项 ---
-TARGET_ARCH="${ARCH_MAP[$1]:-}"
-if [[ -z "$TARGET_ARCH" ]]; then
-    TARGET_ARCH="$(go env GOARCH)"  # 本机 Goarch
+# ---- 从 recipe 读取配置 ----
+if [[ -f "$RECIPE" ]]; then
+    repo_line=$(grep -E '^repo:' "$RECIPE" | head -n1 | awk '{print $2}')
+    [[ -z "$VERSION" ]] && VERSION=$(grep -E '^latest_tag:' "$RECIPE" | awk '{print $2}')
+    [[ -z "$ARCH_LIST" ]] && ARCH_LIST=$(grep -A20 '^target_arches:' "$RECIPE" | grep -oE '^\s*-\s*[a-z0-9]+' | awk '{print $2}' | paste -sd, -)
 fi
 
-PKG_DIR="dist/${REPO_NAME}_${VERSION}_$TARGET_ARCH"
-BINARY_BIN=""
+# 从上游 git 仓库解析最新 tag（如果 recipe 指定了 repo 且 version 仍为空）
+if [[ -z "$VERSION" && -n "${repo_line:-}" ]]; then
+    echo "🔎 从 ${repo_line} 解析最新版本标签..."
+    VERSION=$(git ls-remote --tags "https://github.com/${repo_line}.git" 2>/dev/null \
+        | grep -oE 'refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$' \
+        | sed 's#refs/tags/##; s#^v##' \
+        | sort -V | tail -1)
+fi
+[[ -z "$VERSION" ]] && VERSION="0.0.0"
+VERSION="${VERSION#v}"
 
-echo "🔨 构建 ${PKG_NAME} v${VERSION} for ${TARGET_ARCH}"
+# 默认架构
+[[ -z "$ARCH_LIST" ]] && ARCH_LIST="amd64,arm64"
 
-if [[ "$TARGET_ARCH" == "armhf" ]]; then
-    # armhf 需要 GOARM=7
-    export GOARCH="arm"
-    export GOARM="7"
-elif [[ "$TARGET_ARCH" == "loong64" ]]; then
-    export GOARCH="loong64"
-elif [[ "$TARGET_ARCH" == "riscv64" ]]; then
-    export GOARCH="riscv64"
+echo "📦 构建 ${PKG_NAME} v${VERSION} 目标架构: ${ARCH_LIST}"
+echo "    recipe: ${RECIPE:-<无>}  源码: ${repo_line:-<未指定>}"
+
+# goarch/deb 架构映射
+arch_to_go() {
+    case "$1" in
+        amd64)      echo amd64 ;;
+        arm64)      echo arm64 ;;
+        armhf)      echo arm ;;
+        loong64|loongarch64) echo loong64 ;;
+        riscv64)    echo riscv64 ;;
+        *)          echo "$1" ;;
+    esac
+}
+arch_to_deb() {
+    case "$1" in
+        amd64|loongarch64) echo amd64 ;;
+        arm64)      echo arm64 ;;
+        arm|armhf)  echo armhf ;;
+        loong64)    echo loong64 ;;
+        riscv64)    echo riscv64 ;;
+        *)          echo "$1" ;;
+    esac
+}
+
+# ---- 准备源码目录（优先使用已存在的目录，否则克隆上游）----
+if [[ -d "${repo_line##*/}" ]]; then
+    SRC_DIR="${repo_line##*/}"
+    echo "📂 使用已存在源码目录: $SRC_DIR"
+elif [[ -n "${repo_line:-}" ]]; then
+    SRC_DIR="${repo_line##*/}"
+    echo "⬇️  克隆 https://github.com/${repo_line}.git"
+    git clone --depth 1 --branch "v${VERSION}" "https://github.com/${repo_line}.git" "$SRC_DIR" 2>/dev/null \
+        || git clone --depth 1 "https://github.com/${repo_line}.git" "$SRC_DIR"
 else
-    export GOARCH="$TARGET_ARCH"
+    SRC_DIR="."
 fi
 
-GOOS="linux"
+# 为每个架构构建
+mkdir -p "$OUTPUT_DIR"
+IFS=',' read -ra ARCHES <<< "$ARCH_LIST"
+for arch in "${ARCHES[@]}"; do
+    arch=$(echo "$arch" | xargs)   # 去除空白
+    [[ -z "$arch" ]] && continue
+    goarch=$(arch_to_go "$arch")
+    deblarch=$(arch_to_deb "$arch")
 
-# 目标二进制名（如果 BINARY_PATH 是目录，则用文件名）
-if [[ -d "$BINARY_PATH" && ! -x "$BINARY_PATH" ]]; then
-    BINARY_BIN=$(basename "$BINARY_PATH")
-elif [[ -f "$BINARY_PATH" || -x "$BINARY_PATH" ]]; then
-    BINARY_BIN="$(basename "$BINARY_PATH")"
-else
-    # 编译新包（如果还没编译）
-    echo "📦 交叉编译..."
-    go build -ldflags="-s -w" -o "$REPO_NAME/bin"
-    if [[ ! -f "dist/$BINARY_BIN" ]]; then
-        mv "$BINARY_BIN" "$OUTPUT_DIR/$BINARY_BIN" || true
+    echo ""
+    echo "🔨 [${arch}] 交叉编译 GOOS=linux GOARCH=${goarch}..."
+    # 定位 main 包：优先 cmd/<name>、cmd/，其次仓库根，最后子目录自动探测
+    pkg_path=""
+    for cand in "cmd/${PKG_NAME}" "cmd" "${PKG_NAME}" "main" "."; do
+        if [[ -n "$(ls "$SRC_DIR/$cand"/*.go 2>/dev/null | grep -v _test)" ]] \
+           && grep -lq 'package main' "$SRC_DIR"/"$cand"/*.go 2>/dev/null; then
+            pkg_path="$cand"
+            break
+        fi
+    done
+    if [[ -z "$pkg_path" ]]; then
+        pkg_path=$(cd "$SRC_DIR" && grep -rl 'package main' --include='*.go' . 2>/dev/null \
+                    | grep -v _test | xargs -r dirname | head -1)
+        pkg_path="${pkg_path#./}"
+        pkg_path="${pkg_path:-.}"
     fi
-fi
+    echo "      main 包: ./${SRC_DIR}/${pkg_path}"
+    (cd "$SRC_DIR" && GOOS=linux GOARCH="$goarch" GOARM=7 \
+        go build -trimpath -ldflags="-s -w" \
+        -o "../$OUTPUT_DIR/${PKG_NAME}-${arch}" "./${pkg_path}") \
+    || { echo "❌ [${arch}] 编译失败"; exit 1; }
 
-mkdir -p dist
-if [[ -f "$BINARY_PATH" && ! -x "$BINARY_PATH" ]]; then
-    # 假设是目录名，找可执行文件
-    binary_file=$(ls -1d "$BINARY_PATH"/$REPO_NAME 2>/dev/null | head -1 || true)
-    if [[ -n "$binary_file" ]]; then
-        cp "$binary_file" dist/$REPO_NAME-raw
-        BINARY_BIN=$REPO_NAME
-    else
-        # 目录不存在，可能是未编译状态
-        echo "⚠️ 二进制 $BINARY_PATH 不存在，尝试从上游克隆编译..."
-    fi
-else
-    cp "$BINARY_PATH" dist/$REPO_NAME-raw || BINARY_BIN="$(basename "$BINARY_PATH")"
-fi
+    # ---- 组装 .deb 目录结构 ----
+    pkg_dir="$OUTPUT_DIR/${PKG_NAME}_${VERSION}_${deblarch}"
+    echo "📁 组装 .deb: $pkg_dir"
+    rm -rf "$pkg_dir"
+    mkdir -p "$pkg_dir/DEBIAN" "$pkg_dir/usr/bin"
+    cp "$OUTPUT_DIR/${PKG_NAME}-${arch}" "$pkg_dir/usr/bin/${PKG_NAME}"
+    chmod 755 "$pkg_dir/usr/bin/${PKG_NAME}"
 
-# --- 创建 .deb 目录结构 ---
-echo "📁 dpkg dir: $PKG_DIR"
-rm -rf "$PKG_DIR"
-mkdir -p "$PKG_DIR"/DEBIAN
-mkdir -p "$PKG_DIR"/usr/bin
-mkdir -p "$PKG_DIR"/etc"$REPO_NAME"
-mkdir -p "$PKG_DIR"/usr/share/man/man1
-
-# 复制二进制到 /usr/bin
-if [[ -f "dist/$REPO_NAME-raw" ]]; then
-    cp dist/"$REPO_NAME-raw" "$PKG_DIR/usr/bin/$REPO_NAME" || true
-fi
-
-# --- 生成 control file（控制文件）---
-cat > "$PKG_DIR/DEBIAN/control" <<CONTROL
-Package: ${PACKAGE_NAME:-${PKG_NAME}}
+    installed_size=$(du -sk "$pkg_dir" | cut -f1)
+    cat > "$pkg_dir/DEBIAN/control" <<CONTROL
+Package: ${PKG_NAME}
 Version: ${VERSION}
-Architecture: ${TARGET_ARCH}
+Architecture: ${deblarch}
 Maintainer: ${MAINTAINER}
 Section: ${SECTION}
-Depends: dpkg | apt-utils (>1.16), wget
-Description: ${DESCRIPTION:-一个 Go 工具}
-Installed-Size: $(du -sm "$PKG_DIR" | cut -f1)
+Priority: optional
+Installed-Size: ${installed_size}
+Description: ${PKG_NAME} - Go utility (built by LeisureLinux deb-builder)
+ Homepage: https://github.com/${repo_line:-LeisureLinux/${PKG_NAME}}
+CONTROL
 
-NOTE: 使用 Go 静态二进制，无外部依赖。建议安装后运行 go build / make install 以验证编译。
-    CONTROL
-    
-# --- 复制 postinst/prerm/postrm脚本（如果有）---
-if [[ -f "debian/postinst" ]]; then
-    cp debian/postinst "$PKG_DIR/DEBIAN/postinst"
-    chmod 755 "$PKG_DIR/DEBIAN/postinst"
-fi
+    # ---- 打包 ----
+    if (command -v dpkg-deb >/dev/null 2>&1); then
+        dpkg-deb --build --root-owner-group "$pkg_dir" "$OUTPUT_DIR" 2>/dev/null \
+            || dpkg-deb --build "$pkg_dir"
+        echo "✅ [${arch}] 完成: $OUTPUT_DIR/${PKG_NAME}_${VERSION}_${deblarch}.deb"
+    else
+        echo "⚠️  [${arch}] 未安装 dpkg-deb，仅生成目录结构: $pkg_dir"
+    fi
+    rm -f "$OUTPUT_DIR/${PKG_NAME}-${arch}"
+done
 
-## === 最终简化版构建流程 ===
-# 🎯 我们采用更简单的方式：直接调用 ghdeb + 本地编译输出（已在 apt-repo/dist/存在 .deb）  
-# ✅ 实际场景：GitHub Runner 先 go build -ldflags="-s -w" → dist/*.deb  
-# -> dpkg-deb --build dist/${PKG_NAME}_${VERSION}_${TARGET_ARCH} -> ${REPO_NAME}_${VERSION}_${TARGET_ARCH}.deb
-# 🚀 我们使用这个简化版步骤，而非上面复杂的脚本。
-
-echo "✅ 构建完成：dist/${REPO_NAME}_${VERSION}_${TARGET_ARCH}.deb" || echo "注意：二进制文件可能未找到，请配置正确路径后再次运行此脚本。"
-
+echo ""
+echo "✅ 全部构建完成，产物在: $OUTPUT_DIR/"
+ls -lh "$OUTPUT_DIR"/*.deb 2>/dev/null || true
