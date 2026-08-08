@@ -3,60 +3,57 @@ name: Receive Auto-Build Triggers
 on:
   repository_dispatch:
     types: [auto-build-required]
-    
+
   workflow_dispatch:
     inputs:
       package:
         description: 'Package name to build (e.g., gdu, ripgrep)'
         required: false
-        
+
 jobs:
   receive-trigger:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Get payload info from dispatch event
+
+      - name: Determine package from event
+        id: pkg
         run: |
-          echo "📨 Received repository_dispatch trigger"
-          
-          # 通常 workflow event data 中会包含 source 信息
-          # 在这里我们可以决定是构建 tracked.json 里的所有包，还是特定包
-          echo "Triggered by: ${GITHUB_EVENT_PATH}"
-          
-      - name: Check if package specified
-        id: pkg-check
-        run: |
-          PACKAGE="${{ github.event.inputs.package || 'auto' }}"
-          
-          if [[ "$PACKAGE" == "auto" ]]; then
-            # Auto 模式下，我们扫描 tracked.json 或 recipes/*.yaml
-            echo "pkg_name=auto" >> $GITHUB_OUTPUT
+          # Prefer client_payload.package (sent by debian-auto-builder scanner),
+          # then fall back to the workflow_dispatch input, else auto mode.
+          CLIENT_PKG="${{ github.event.client_payload.package }}"
+          INPUT_PKG="${{ inputs.package }}"
+
+          if [ -n "$CLIENT_PKG" ] && [ "$CLIENT_PKG" != "null" ]; then
+            echo "pkg_name=$CLIENT_PKG" >> "$GITHUB_OUTPUT"
+            echo "📦 Building package: $CLIENT_PKG (from repository_dispatch)"
+          elif [ -n "$INPUT_PKG" ] && [ "$INPUT_PKG" != "null" ]; then
+            echo "pkg_name=$INPUT_PKG" >> "$GITHUB_OUTPUT"
+            echo "📦 Building package: $INPUT_PKG (from workflow_dispatch)"
           else
-            echo "pkg_name=${PACKAGE}" >> $GITHUB_OUTPUT
+            echo "pkg_name=auto" >> "$GITHUB_OUTPUT"
+            echo "🔍 Auto mode: building all recipes"
           fi
-      
-      - name: Build package recipe (from scan results)
-        if: steps.pkg-check.outputs.pkg_name == 'auto'
+
+      - name: Build all recipes (auto mode)
+        if: steps.pkg.outputs.pkg_name == 'auto'
         run: |
-          # 这里需要 debian-auto-builder 的扫描结果数据
-          # 可以作为一个 artifact 从 dispatch event 中获取
-          echo "🔍 Auto mode: Would use scan results from trigger"
-          
+          bash scripts/build-all.sh
+
       - name: Build specific package
-        if: steps.pkg-check.outputs.pkg_name != 'auto'
+        if: steps.pkg.outputs.pkg_name != 'auto'
         run: |
-          PACKAGE="${{github.event.inputs.package}}"
-          bash scripts/build-one.sh "$PACKAGE"
-          
+          bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}"
+
       - name: Dispatch to apt-repo after build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always() && steps.pkg-check.outputs.pkg_name != 'auto'
+        if: always() && steps.pkg.outputs.pkg_name != ''
         run: |
+          PKG="${{ steps.pkg.outputs.pkg_name }}"
           curl -X POST https://api.github.com/repos/LeisureLinux/apt-repo/dispatches \
             -H "Accept: application/vnd.github.v3+json" \
-            "-d '{\"event_type\":\"build-complete\",\"client_payload\":{\"package\": \"${{github.event.inputs.package}}\", \"success\": true}}'"
-            
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -d "{\"event_type\":\"build-complete\",\"client_payload\":{\"package\":\"${PKG}\",\"success\":\"true\"}}"

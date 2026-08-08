@@ -15,5 +15,7 @@ version=$(grep "^version_tag:" "$recipe" | head -n1 | awk '{print $2}' || echo "
 go_version=$(grep "^go_version:" "$recipe" | awk '{print $2}' || echo "latest")
 
 # 调用构建脚本（传递必要的参数）
-bash scripts/build-go-deb.sh "${package_name:-$repo}" "${version:-}" "$BINARY_PATH"
+# build-go-deb.sh 用法: <repo-name> <version> <binary-path> [output-dir]
+# 这里把 PKG_NAME 作为 repo-name 传给构建脚本用于命名 .deb。
+bash scripts/build-go-deb.sh "$PKG_NAME" "${version:-}" "$BINARY_PATH"
 echo "✅ Built ${PKG_NAME}"
