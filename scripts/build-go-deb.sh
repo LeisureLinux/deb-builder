@@ -21,7 +21,8 @@ SECTION="utils"
 # ---- 从 recipe 读取配置 ----
 if [[ -f "$RECIPE" ]]; then
     repo_line=$(grep -E '^repo:' "$RECIPE" | head -n1 | awk '{print $2}')
-    [[ -z "$VERSION" ]] && VERSION=$(grep -E '^latest_tag:' "$RECIPE" | awk '{print $2}')
+    lt=$(grep -E '^latest_tag:' "$RECIPE" | awk '{print $2}')
+    if [[ -n "$lt" && "$lt" != '""' ]]; then VERSION="$lt"; fi
     [[ -z "$ARCH_LIST" ]] && ARCH_LIST=$(grep -A20 '^target_arches:' "$RECIPE" | grep -oE '^\s*-\s*[a-z0-9]+' | awk '{print $2}' | paste -sd, -)
 fi
 
