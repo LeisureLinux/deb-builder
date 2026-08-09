@@ -14,18 +14,24 @@ ARCH_LIST="${4:-}"
 
 RECIPE="recipes/${PKG_NAME}.yaml"
 OUTPUT_DIR="${OUTPUT_DIR:-dist}"
+OUTPUT_DIR="$(cd "$(dirname "$OUTPUT_DIR")" 2>/dev/null && pwd)/$(basename "$OUTPUT_DIR")"  # 转为绝对路径
 
 MAINTAINER="LeisureLinux <albertxu@freelamp.com>"
 SECTION="utils"
 
 # ---- 从 recipe 读取配置 ----
+strip_q() { sed -e 's/^["'"'"']//' -e 's/["'"'"']$//'; }
 if [[ -f "$RECIPE" ]]; then
-    repo_line=$(grep -E '^repo:' "$RECIPE" | head -n1 | awk '{print $2}')
-    lt=$(grep -E '^latest_tag:' "$RECIPE" | awk '{print $2}')
+    repo_line=$(grep -E '^repo:' "$RECIPE" | head -n1 | awk '{print $2}' | strip_q)
+    lt=$(grep -E '^latest_tag:' "$RECIPE" | awk '{print $2}' | strip_q)
     if [[ -n "$lt" && "$lt" != '""' ]]; then VERSION="$lt"; fi
+    commit_hash=$(grep -E '^commit_hash:' "$RECIPE" | awk '{print $2}' | strip_q)
+    upstream_version=$(grep -E '^upstream_version:' "$RECIPE" | awk '{print $2}' | strip_q)
     [[ -z "$ARCH_LIST" ]] && ARCH_LIST=$(grep -A20 '^target_arches:' "$RECIPE" | grep -oE '^\s*-\s*[a-z0-9]+' | awk '{print $2}' | paste -sd, -)
 fi
 
+# 默认 commit hash（从 recipe 或由 clone 时解析；用户也可显式传入）
+COMMIT_HASH="${commit_hash:-}"
 # 从上游 git 仓库解析最新 tag（如果 recipe 指定了 repo 且 version 仍为空）
 if [[ -z "$VERSION" && -n "${repo_line:-}" ]]; then
     echo "🔎 从 ${repo_line} 解析最新版本标签..."
@@ -64,6 +70,20 @@ arch_to_deb() {
         *)          echo "$1" ;;
     esac
 }
+
+# ---- 解析 commit hash（若 recipe 未提供，则从 ls-remote 取最新 tag 的 SHA）----
+if [[ -z "$COMMIT_HASH" && -n "${repo_line:-}" ]]; then
+    echo "🔎 解析 ${repo_line} 的最新 commit hash..."
+    # VERSION 可能形如 v1.3.1；确保以 v 开头用于 ls-remote 查询
+    fulltag="$VERSION"
+    [[ "$fulltag" != v* ]] && fulltag="v$fulltag"
+    COMMIT_HASH=$(git ls-remote "https://github.com/${repo_line}.git" "refs/tags/${fulltag}" 2>/dev/null | awk '{print $1}' | head -1)
+    if [[ -z "$COMMIT_HASH" ]]; then
+        # tag 不存在（可能版本号不含 v），取默认分支 HEAD
+        COMMIT_HASH=$(git ls-remote "https://github.com/${repo_line}.git" HEAD 2>/dev/null | awk '{print $1}' | head -1)
+    fi
+fi
+[[ -z "$COMMIT_HASH" ]] && COMMIT_HASH="unknown"
 
 # ---- 准备源码目录（优先使用已存在的目录，否则克隆上游）----
 if [[ -d "${repo_line##*/}" ]]; then
@@ -107,7 +127,7 @@ for arch in "${ARCHES[@]}"; do
     echo "      main 包: ./${SRC_DIR}/${pkg_path}"
     (cd "$SRC_DIR" && GOOS=linux GOARCH="$goarch" GOARM=7 \
         go build -trimpath -ldflags="-s -w" \
-        -o "../$OUTPUT_DIR/${PKG_NAME}-${arch}" "./${pkg_path}") \
+        -o "$OUTPUT_DIR/${PKG_NAME}-${arch}" "./${pkg_path}") \
     || { echo "❌ [${arch}] 编译失败"; exit 1; }
 
     # ---- 组装 .deb 目录结构 ----
@@ -128,7 +148,8 @@ Section: ${SECTION}
 Priority: optional
 Installed-Size: ${installed_size}
 Description: ${PKG_NAME} - Go utility (built by LeisureLinux deb-builder)
- Homepage: https://github.com/${repo_line:-LeisureLinux/${PKG_NAME}}
+ Upstream: https://github.com/${repo_line:-LeisureLinux/${PKG_NAME}} (tag ${VERSION})
+ Commit: ${COMMIT_HASH}
 CONTROL
 
     # ---- 打包 ----

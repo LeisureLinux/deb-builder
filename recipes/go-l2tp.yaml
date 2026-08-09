@@ -1,0 +1,28 @@
+# go-l2tp 构建配方 (Phase 1 自动生成)
+repo: katalix/go-l2tp
+package: go-l2tp
+summary: "L2TP and PPPoE tools built using the go-l2tp package"
+description: |
+  L2TP and PPPoE tools built using the go-l2tp package
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/katalix/go-l2tp
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.1.8"
+latest_tag: "v0.1.8"
+commit_hash: "0f3bb650da44ce8565d1ff0e62d5cef000d36c65"
+upstream_version: "0.1.8"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

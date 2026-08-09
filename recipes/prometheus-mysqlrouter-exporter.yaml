@@ -1,0 +1,28 @@
+# prometheus-mysqlrouter-exporter 构建配方 (Phase 1 自动生成)
+repo: rluisr/mysqlrouter_exporter
+package: prometheus-mysqlrouter-exporter
+summary: "Prometheus exporter for MySQL Router (program)"
+description: |
+  Prometheus exporter for MySQL Router (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/rluisr/mysqlrouter_exporter
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v6.0.1"
+latest_tag: "v6.0.1"
+commit_hash: "6279006b798ef5886a8bc7e9e64529756fb0f87c"
+upstream_version: "6.0.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

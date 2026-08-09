@@ -1,0 +1,28 @@
+# webhook 构建配方 (Phase 1 自动生成)
+repo: adnanh/webhook
+package: webhook
+summary: "Small server for creating HTTP endpoints (hooks)"
+description: |
+  Small server for creating HTTP endpoints (hooks)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/adnanh/webhook
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "2.8.3"
+latest_tag: "2.8.3"
+commit_hash: "f78eeeca7d2d5f4af2e792d1df5c6e2b0c922dad"
+upstream_version: "2.8.3"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

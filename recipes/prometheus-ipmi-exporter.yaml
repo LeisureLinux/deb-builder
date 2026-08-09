@@ -1,0 +1,28 @@
+# prometheus-ipmi-exporter 构建配方 (Phase 1 自动生成)
+repo: prometheus-community/ipmi_exporter
+package: prometheus-ipmi-exporter
+summary: "Prometheus exporter for IPMI devices"
+description: |
+  Prometheus exporter for IPMI devices
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/prometheus-community/ipmi_exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.10.1"
+latest_tag: "v1.10.1"
+commit_hash: "291d0107bdab44df5a7ff50ce552ee3ccc23b52a"
+upstream_version: "1.10.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

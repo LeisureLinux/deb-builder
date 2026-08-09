@@ -1,0 +1,28 @@
+# prometheus-apache-exporter 构建配方 (Phase 1 自动生成)
+repo: Lusitaniae/apache_exporter
+package: prometheus-apache-exporter
+summary: "Prometheus exporter for Apache server metrics"
+description: |
+  Prometheus exporter for Apache server metrics
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/Lusitaniae/apache_exporter/
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.1.1"
+latest_tag: "v1.1.1"
+commit_hash: "d9b06987e5e047ae6aac8cc5e4eed80596ff5a4d"
+upstream_version: "1.1.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

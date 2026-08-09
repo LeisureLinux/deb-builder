@@ -1,0 +1,28 @@
+# shoelaces 构建配方 (Phase 1 自动生成)
+repo: thousandeyes/shoelaces
+package: shoelaces
+summary: "automated server bootstrapping"
+description: |
+  automated server bootstrapping
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/thousandeyes/shoelaces
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.4.0"
+latest_tag: "v1.4.0"
+commit_hash: "36432549a5bef3af84ef63e0ae4294c3f277d83e"
+upstream_version: "1.4.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

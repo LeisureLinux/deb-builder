@@ -1,0 +1,28 @@
+# textql 构建配方 (Phase 1 自动生成)
+repo: dinedal/textql
+package: textql
+summary: "execute SQL against structured text like CSV or TSV"
+description: |
+  execute SQL against structured text like CSV or TSV
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/dinedal/textql/
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "2.0.3"
+latest_tag: "2.0.3"
+commit_hash: "1785cd353c68aa34f97627143b9c2908dfd4ea04"
+upstream_version: "2.0.3"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

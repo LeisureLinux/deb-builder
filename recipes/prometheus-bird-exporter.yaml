@@ -1,0 +1,28 @@
+# prometheus-bird-exporter 构建配方 (Phase 1 自动生成)
+repo: czerwonk/bird_exporter
+package: prometheus-bird-exporter
+summary: "Prometheus exporter for the BIRD routing daemon"
+description: |
+  Prometheus exporter for the BIRD routing daemon
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/czerwonk/bird_exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.5.0"
+latest_tag: "v1.5.0"
+commit_hash: "34f00580b3fd97ca87ae4c8192ed56c70027d709"
+upstream_version: "1.5.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

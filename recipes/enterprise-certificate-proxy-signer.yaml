@@ -1,0 +1,28 @@
+# enterprise-certificate-proxy-signer 构建配方 (Phase 1 自动生成)
+repo: googleapis/enterprise-certificate-proxy
+package: enterprise-certificate-proxy-signer
+summary: "signer for Google Proxies for Enterprise Certificates (program)"
+description: |
+  signer for Google Proxies for Enterprise Certificates (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/googleapis/enterprise-certificate-proxy
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.3.20"
+latest_tag: "v0.3.20"
+commit_hash: "99b47472c2d4d3e61fdfe2e56f0f5836318f61c1"
+upstream_version: "0.3.20"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

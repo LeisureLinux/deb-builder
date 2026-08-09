@@ -1,0 +1,28 @@
+# git-sizer 构建配方 (Phase 1 自动生成)
+repo: github/git-sizer
+package: git-sizer
+summary: "compute various size metrics for a Git repository"
+description: |
+  compute various size metrics for a Git repository
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/github/git-sizer
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.5.0"
+latest_tag: "v1.5.0"
+commit_hash: "cc6b856f85a99f8ce188275c3554ad27ba7adfde"
+upstream_version: "1.5.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# nwg-bar 构建配方 (Phase 1 自动生成)
+repo: nwg-piotr/nwg-bar
+package: nwg-bar
+summary: "GTK3-based button bar for wlroots-based compositors (program)"
+description: |
+  GTK3-based button bar for wlroots-based compositors (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/nwg-piotr/nwg-bar
+section: x11
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.1.6"
+latest_tag: "v0.1.6"
+commit_hash: "c4da7d817747ad2f8cfda332d95bd4fc55eb6b34"
+upstream_version: "0.1.6"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

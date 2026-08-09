@@ -1,0 +1,28 @@
+# checkpointctl 构建配方 (Phase 1 自动生成)
+repo: checkpoint-restore/checkpointctl
+package: checkpointctl
+summary: "Tool to inspect Kubernetes and Podman checkpoints (program)"
+description: |
+  Tool to inspect Kubernetes and Podman checkpoints (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/checkpoint-restore/checkpointctl
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.5.0"
+latest_tag: "v1.5.0"
+commit_hash: "891978fb0574c92308fd2f94aaa497c705b194bb"
+upstream_version: "1.5.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

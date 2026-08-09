@@ -1,0 +1,28 @@
+# ignition 构建配方 (Phase 1 自动生成)
+repo: coreos/ignition
+package: ignition
+summary: "First boot installer and configuration tool"
+description: |
+  First boot installer and configuration tool
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/coreos/ignition
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.26.0"
+latest_tag: "v2.26.0"
+commit_hash: "7e288edd9a337a45e8670c5da5ffa7e3b4269cbb"
+upstream_version: "2.26.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

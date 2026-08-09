@@ -1,0 +1,28 @@
+# certinfo 构建配方 (Phase 1 自动生成)
+repo: pete911/certinfo
+package: certinfo
+summary: "Print x509 certificate info"
+description: |
+  Print x509 certificate info
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/pete911/certinfo
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.40"
+latest_tag: "v1.0.40"
+commit_hash: "5574ad11b2782421543936fda1a9f3c0d46882f7"
+upstream_version: "1.0.40"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# golang-cfssl 构建配方 (Phase 1 自动生成)
+repo: cloudflare/cfssl
+package: golang-cfssl
+summary: "CloudFlare's PKI and TLS toolkit"
+description: |
+  CloudFlare's PKI and TLS toolkit
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cloudflare/cfssl
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.6.5"
+latest_tag: "v1.6.5"
+commit_hash: "96259aa29c9cc9b2f4e04bad7d4bc152e5405dda"
+upstream_version: "1.6.5"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# tfk8s 构建配方 (Phase 1 自动生成)
+repo: jrhouston/tfk8s
+package: tfk8s
+summary: "Tool for converting Kubernetes YAML manifests to Terraform HCL"
+description: |
+  Tool for converting Kubernetes YAML manifests to Terraform HCL
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/jrhouston/tfk8s
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.1.10"
+latest_tag: "v0.1.10"
+commit_hash: "b51c2d1f1eab5f5e910a09fd959459f6a9f3b185"
+upstream_version: "0.1.10"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

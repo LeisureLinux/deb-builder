@@ -1,0 +1,28 @@
+# containers-storage 构建配方 (Phase 1 自动生成)
+repo: containers/storage
+package: containers-storage
+summary: "CLI tools for handling how containers are stored on disk"
+description: |
+  CLI tools for handling how containers are stored on disk
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/containers/storage
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.59.1"
+latest_tag: "v1.59.1"
+commit_hash: "41839ee723fe3e35ff5a6fd2e19340e041b261f3"
+upstream_version: "1.59.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

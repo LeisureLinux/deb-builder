@@ -1,0 +1,28 @@
+# aws-nuke 构建配方 (Phase 1 自动生成)
+repo: rebuy-de/aws-nuke
+package: aws-nuke
+summary: "Delete a whole AWS account and all resources"
+description: |
+  Delete a whole AWS account and all resources
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/rebuy-de/aws-nuke
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.25.0"
+latest_tag: "v2.25.0"
+commit_hash: "2bd22d5e5c0cf6a4011b3c08a5b1c25e2e6c75bd"
+upstream_version: "2.25.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

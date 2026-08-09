@@ -1,0 +1,28 @@
+# jqp 构建配方 (Phase 1 自动生成)
+repo: noahgorstein/jqp
+package: jqp
+summary: "TUI playground to experiment with jq (program)"
+description: |
+  TUI playground to experiment with jq (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/noahgorstein/jqp
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.8.0"
+latest_tag: "v0.8.0"
+commit_hash: "c0c3a857231679bb6e8fb7dc7d57f8283d93d41a"
+upstream_version: "0.8.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

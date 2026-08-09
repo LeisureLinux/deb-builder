@@ -1,0 +1,28 @@
+# nwg-look 构建配方 (Phase 1 自动生成)
+repo: nwg-piotr/nwg-look
+package: nwg-look
+summary: "GTK3 settings editor for wlroots environments like Sway"
+description: |
+  GTK3 settings editor for wlroots environments like Sway
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/nwg-piotr/nwg-look
+section: x11
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.1.1"
+latest_tag: "v1.1.1"
+commit_hash: "29f119f40b9e4bd4831e0d97dd0f54204ef74824"
+upstream_version: "1.1.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

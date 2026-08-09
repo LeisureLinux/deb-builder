@@ -1,0 +1,28 @@
+# powerline-go 构建配方 (Phase 1 自动生成)
+repo: justjanne/powerline-go
+package: powerline-go
+summary: "Powerline style prompt for your shell: Bash, ZSH and Fish"
+description: |
+  Powerline style prompt for your shell: Bash, ZSH and Fish
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/justjanne/powerline-go
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.22.1"
+latest_tag: "v1.22.1"
+commit_hash: "e952b09f549cd5a2738fde2700748378d78be0a2"
+upstream_version: "1.22.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

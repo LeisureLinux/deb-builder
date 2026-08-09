@@ -1,0 +1,28 @@
+# crowdsec 构建配方 (Phase 1 自动生成)
+repo: crowdsecurity/crowdsec
+package: crowdsec
+summary: "lightweight and collaborative security engine"
+description: |
+  lightweight and collaborative security engine
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/crowdsecurity/crowdsec
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.7.8"
+latest_tag: "v1.7.8"
+commit_hash: "632274597a88a6b01ed41c0e6affca0f87ff26df"
+upstream_version: "1.7.8"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# irtt 构建配方 (Phase 1 自动生成)
+repo: peteheist/irtt
+package: irtt
+summary: "Isochronous Round-Trip Tester"
+description: |
+  Isochronous Round-Trip Tester
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/peteheist/irtt
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.9.2"
+latest_tag: "v0.9.2"
+commit_hash: "0d612bb790034e5257a4979bcf655609f644d08a"
+upstream_version: "0.9.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

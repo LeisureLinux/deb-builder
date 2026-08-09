@@ -1,0 +1,28 @@
+# prometheus-sql-exporter 构建配方 (Phase 1 自动生成)
+repo: justwatchcom/sql_exporter
+package: prometheus-sql-exporter
+summary: "Flexible SQL Exporter for Prometheus"
+description: |
+  Flexible SQL Exporter for Prometheus
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/justwatchcom/sql_exporter
+section: database
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.5.9"
+latest_tag: "v0.5.9"
+commit_hash: "12bc92e399ff2b68c847d999481ef3b955b85314"
+upstream_version: "0.5.9"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

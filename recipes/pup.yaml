@@ -1,0 +1,28 @@
+# pup 构建配方 (Phase 1 自动生成)
+repo: ericchiang/pup
+package: pup
+summary: "command-line HTML processor"
+description: |
+  command-line HTML processor
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/ericchiang/pup
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.4.0"
+latest_tag: "v0.4.0"
+commit_hash: "fb09a23cce6c8ed60ba9b85035e3e27adff96aa3"
+upstream_version: "0.4.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

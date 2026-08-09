@@ -1,0 +1,28 @@
+# gum 构建配方 (Phase 1 自动生成)
+repo: charmbracelet/gum
+package: gum
+summary: "Tool for glamorous shell scripts 🎀"
+description: |
+  Tool for glamorous shell scripts 🎀
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/charmbracelet/gum
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.17.0"
+latest_tag: "v0.17.0"
+commit_hash: "6045525ab92f75c169d3c69596844d8748437e37"
+upstream_version: "0.17.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

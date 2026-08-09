@@ -1,0 +1,28 @@
+# efm-langserver 构建配方 (Phase 1 自动生成)
+repo: mattn/efm-langserver
+package: efm-langserver
+summary: "General purpose Language Server (program)"
+description: |
+  General purpose Language Server (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/mattn/efm-langserver
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.57"
+latest_tag: "v0.0.57"
+commit_hash: "740a66b453977d9fd7c391f57977bdc7d95a6179"
+upstream_version: "0.0.57"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

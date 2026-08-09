@@ -1,0 +1,28 @@
+# burrow 构建配方 (Phase 1 自动生成)
+repo: linkedin/Burrow
+package: burrow
+summary: "Apache Kafka consumer lag checking"
+description: |
+  Apache Kafka consumer lag checking
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/linkedin/Burrow
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.9.6"
+latest_tag: "v1.9.6"
+commit_hash: "93eaa9ab26fe52719ebac97a890f6e8387fc8eda"
+upstream_version: "1.9.6"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

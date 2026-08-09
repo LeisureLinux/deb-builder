@@ -1,0 +1,28 @@
+# emptty 构建配方 (Phase 1 自动生成)
+repo: tvrzna/emptty
+package: emptty
+summary: "text-based display manager for starting graphical sessions"
+description: |
+  text-based display manager for starting graphical sessions
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/tvrzna/emptty
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.16.1"
+latest_tag: "v0.16.1"
+commit_hash: "9beb78194a1c3043223177342cbe74f891c43dd7"
+upstream_version: "0.16.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

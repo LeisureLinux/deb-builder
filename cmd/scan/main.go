@@ -27,6 +27,8 @@ type Candidate struct {
 	Summary    string            `json:"summary"`                   // Description 第一行
 	FoundIn    []string          `json:"found_in"`                  // 出现位置：suite/arch
 	DebianVers map[string]string `json:"debian_versions,omitempty"` // suite/arch -> 版本
+	Golang    bool              `json:"golang,omitempty"`            // Built-Using 含 golang（Go 二进制）
+	BuiltUsing string           `json:"built_using,omitempty"`       // Built-Using 原始值
 }
 
 func main() {
@@ -37,6 +39,7 @@ func main() {
 	suitesFile := flag.String("suites", "conf/suites.txt", "套件×架构矩阵文件")
 	cacheDir := flag.String("cache", "/tmp/deb-index", "Packages 索引缓存目录")
 	local := flag.String("local", "", "直接读取本地 Packages 文件（测试用，跳过下载）")
+	golangOnly := flag.Bool("golang", false, "只保留 Built-Using 含 golang 的包（Go 项目）")
 	flag.Parse()
 
 	if err := os.MkdirAll(*cacheDir, 0o755); err != nil {
@@ -78,6 +81,15 @@ func main() {
 	for _, r := range order {
 		cands = append(cands, byRepo[r])
 	}
+	if *golangOnly {
+		var goCands []*Candidate
+		for _, c := range cands {
+			if c.Golang {
+				goCands = append(goCands, c)
+			}
+		}
+		cands = goCands
+	}
 	sort.Slice(cands, func(i, j int) bool { return len(cands[j].FoundIn) < len(cands[i].FoundIn) })
 	if *limit > 0 && len(cands) > *limit {
 		cands = cands[:*limit]
@@ -87,7 +99,13 @@ func main() {
 	if err := os.WriteFile(*outFile, data, 0o644); err != nil {
 		fatal(err)
 	}
-	fmt.Printf("\n📦 共 %d 个候选，已写入 %s\n", len(cands), *outFile)
+	desc := ""
+	if *golangOnly {
+		goN := 0
+		for _, c := range cands { if c.Golang { goN++ } }
+		desc = fmt.Sprintf("（其中 Go 项目 %d 个）", goN)
+	}
+	fmt.Printf("\n📦 共 %d 个候选%s，已写入 %s\n", len(cands), desc, *outFile)
 }
 
 // ---- 套件×架构矩阵 ----
@@ -234,6 +252,10 @@ func parseStanzas(r io.Reader, suite, arch string, byRepo map[string]*Candidate,
 			c.FoundIn = appendUnique(c.FoundIn, loc)
 			if v := cur["Version"]; v != "" {
 				c.DebianVers[loc] = v
+			}
+			if cur["Built-Using"] != "" && strings.Contains(cur["Built-Using"], "golang") {
+				c.Golang = true
+				c.BuiltUsing = cur["Built-Using"]
 			}
 			if c.Summary == "" {
 				c.Summary = firstLine(cur["Description"])

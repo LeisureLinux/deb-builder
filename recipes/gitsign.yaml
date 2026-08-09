@@ -1,0 +1,28 @@
+# gitsign 构建配方 (Phase 1 自动生成)
+repo: sigstore/gitsign
+package: gitsign
+summary: "Keyless Git signing using Sigstore (program)"
+description: |
+  Keyless Git signing using Sigstore (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/sigstore/gitsign
+section: vcs
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.17.1"
+latest_tag: "v0.17.1"
+commit_hash: "44f5e17fac6944fdde71c94d2e77ab075c9dca9f"
+upstream_version: "0.17.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

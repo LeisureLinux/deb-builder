@@ -1,0 +1,28 @@
+# cloudsql-proxy 构建配方 (Phase 1 自动生成)
+repo: GoogleCloudPlatform/cloudsql-proxy
+package: cloudsql-proxy
+summary: "connect securely to a 2nd generation Cloud SQL DB"
+description: |
+  connect securely to a 2nd generation Cloud SQL DB
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/GoogleCloudPlatform/cloudsql-proxy
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.25.0"
+latest_tag: "v2.25.0"
+commit_hash: "ada934982738b7c3d739a7296f527e72f20acae1"
+upstream_version: "2.25.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

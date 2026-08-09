@@ -1,0 +1,28 @@
+# prometheus-tplink-plug-exporter 构建配方 (Phase 1 自动生成)
+repo: fffonion/tplink-plug-exporter
+package: prometheus-tplink-plug-exporter
+summary: "Prometheus exporter for TP-Link Smart plug metrics"
+description: |
+  Prometheus exporter for TP-Link Smart plug metrics
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/fffonion/tplink-plug-exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.5.0"
+latest_tag: "v0.5.0"
+commit_hash: "eb68b731781ed3e0d17f93ab634f6a284136d3cc"
+upstream_version: "0.5.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

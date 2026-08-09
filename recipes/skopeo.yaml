@@ -1,0 +1,28 @@
+# skopeo 构建配方 (Phase 1 自动生成)
+repo: containers/skopeo
+package: skopeo
+summary: "Tooling to work with remote images registries"
+description: |
+  Tooling to work with remote images registries
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/containers/skopeo
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.24.0"
+latest_tag: "v1.24.0"
+commit_hash: "ea7faa7ba79b2e3308259673fbd3b472198afd1a"
+upstream_version: "1.24.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# goss 构建配方 (Phase 1 自动生成)
+repo: goss-org/goss
+package: goss
+summary: "Quick and Easy server testing/validation (program)"
+description: |
+  Quick and Easy server testing/validation (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/goss-org/goss
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.4.10"
+latest_tag: "v0.4.10"
+commit_hash: "3ff92c1224f06c3ee08a17bd58f03948d798b392"
+upstream_version: "0.4.10"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

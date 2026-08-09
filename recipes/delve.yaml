@@ -1,0 +1,28 @@
+# delve 构建配方 (Phase 1 自动生成)
+repo: go-delve/delve
+package: delve
+summary: "debugger for the Go programming language"
+description: |
+  debugger for the Go programming language
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/go-delve/delve
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.27.1"
+latest_tag: "v1.27.1"
+commit_hash: "f053895a26cbf22694fcd72ea07b3b5210314ada"
+upstream_version: "1.27.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

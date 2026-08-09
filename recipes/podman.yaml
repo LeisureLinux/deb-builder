@@ -1,0 +1,28 @@
+# podman 构建配方 (Phase 1 自动生成)
+repo: containers/podman
+package: podman
+summary: "tool to manage containers and pods"
+description: |
+  tool to manage containers and pods
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/containers/podman
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v6.0.2"
+latest_tag: "v6.0.2"
+commit_hash: "d8fcf998a8e0a8af1d2ac6041543d34f7ca887e2"
+upstream_version: "6.0.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

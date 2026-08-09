@@ -1,0 +1,28 @@
+# distrobuilder 构建配方 (Phase 1 自动生成)
+repo: lxc/distrobuilder
+package: distrobuilder
+summary: "System container image builder for LXC and Incus"
+description: |
+  System container image builder for LXC and Incus
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/lxc/distrobuilder
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.3.1"
+latest_tag: "v3.3.1"
+commit_hash: "7d4d2da99bf0f28ef64229cdb73922142ff87a5d"
+upstream_version: "3.3.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

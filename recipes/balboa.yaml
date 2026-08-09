@@ -1,0 +1,28 @@
+# balboa 构建配方 (Phase 1 自动生成)
+repo: DCSO/balboa
+package: balboa
+summary: "Passive DNS database with GraphQL interface, frontend"
+description: |
+  Passive DNS database with GraphQL interface, frontend
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/DCSO/balboa
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.1.2"
+latest_tag: "v2.1.2"
+commit_hash: "6c0ef4c4084d2169f52af34384c1ae8a0df944f0"
+upstream_version: "2.1.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

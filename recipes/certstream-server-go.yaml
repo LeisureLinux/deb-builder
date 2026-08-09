@@ -1,0 +1,28 @@
+# certstream-server-go 构建配方 (Phase 1 自动生成)
+repo: d-Rickyy-b/certstream-server-go
+package: certstream-server-go
+summary: "aggregates data from certificate transparency logs (server CLI)"
+description: |
+  aggregates data from certificate transparency logs (server CLI)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/d-Rickyy-b/certstream-server-go
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.9.0"
+latest_tag: "v1.9.0"
+commit_hash: "af4105b7a6465efa9626d25e7bf604de8622c6f2"
+upstream_version: "1.9.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

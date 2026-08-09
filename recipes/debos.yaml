@@ -1,0 +1,28 @@
+# debos 构建配方 (Phase 1 自动生成)
+repo: go-debos/debos
+package: debos
+summary: "Debian OS builder"
+description: |
+  Debian OS builder
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/go-debos/debos
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.1.7"
+latest_tag: "v1.1.7"
+commit_hash: "15493799c3ee10c22f40bc09c018b34b67a8b07e"
+upstream_version: "1.1.7"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

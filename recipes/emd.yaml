@@ -1,0 +1,28 @@
+# emd 构建配方 (Phase 1 自动生成)
+repo: mh-cbon/emd
+package: emd
+summary: "Enhanced Markdown template processor (program)"
+description: |
+  Enhanced Markdown template processor (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/mh-cbon/emd
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.1"
+latest_tag: "v1.0.1"
+commit_hash: "5758a27b19771d9c210fb407cd53b8fe6b832a1c"
+upstream_version: "1.0.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

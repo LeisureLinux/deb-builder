@@ -1,0 +1,28 @@
+# vcfanno 构建配方 (Phase 1 自动生成)
+repo: brentp/vcfanno
+package: vcfanno
+summary: "annotate a VCF with other VCFs/BEDs/tabixed files"
+description: |
+  annotate a VCF with other VCFs/BEDs/tabixed files
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/brentp/vcfanno
+section: science
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.3.9"
+latest_tag: "v0.3.9"
+commit_hash: "d409a9b73dc6ef5b3be45cb84604889eac0d52c5"
+upstream_version: "0.3.9"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# mockery 构建配方 (Phase 1 自动生成)
+repo: vektra/mockery
+package: mockery
+summary: "mock code autogenerator for Golang"
+description: |
+  mock code autogenerator for Golang
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/vektra/mockery
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.7.2"
+latest_tag: "v3.7.2"
+commit_hash: "061811d8857c652c7241910d3ba4e8a01dda55ff"
+upstream_version: "3.7.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

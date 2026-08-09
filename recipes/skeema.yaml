@@ -1,0 +1,28 @@
+# skeema 构建配方 (Phase 1 自动生成)
+repo: skeema/skeema
+package: skeema
+summary: "Schema management CLI for MySQL (program)"
+description: |
+  Schema management CLI for MySQL (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/skeema/skeema
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.14.1"
+latest_tag: "v1.14.1"
+commit_hash: "cb375090399a96c549e45c366a5b5f8d110d3bf5"
+upstream_version: "1.14.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

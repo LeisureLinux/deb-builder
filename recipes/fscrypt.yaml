@@ -1,0 +1,28 @@
+# fscrypt 构建配方 (Phase 1 自动生成)
+repo: google/fscrypt
+package: fscrypt
+summary: "Tool for managing Linux filesystem encryption"
+description: |
+  Tool for managing Linux filesystem encryption
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/google/fscrypt
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.3.6"
+latest_tag: "v0.3.6"
+commit_hash: "37b292434bbb79b2b145a6ede9d53dadacb6870e"
+upstream_version: "0.3.6"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

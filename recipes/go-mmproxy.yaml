@@ -1,0 +1,28 @@
+# go-mmproxy 构建配方 (Phase 1 自动生成)
+repo: kzemek/go-mmproxy
+package: go-mmproxy
+summary: "Golang implementation of mmproxy"
+description: |
+  Golang implementation of mmproxy
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/kzemek/go-mmproxy
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.3.1"
+latest_tag: "v2.3.1"
+commit_hash: "e5c3c990eed960dacd34038c088d6ce4c4b35c97"
+upstream_version: "2.3.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

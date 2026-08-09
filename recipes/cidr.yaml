@@ -1,0 +1,28 @@
+# cidr 构建配方 (Phase 1 自动生成)
+repo: bschaatsbergen/cidr
+package: cidr
+summary: "Simplifies IPv4/IPv6 CIDR network prefix management"
+description: |
+  Simplifies IPv4/IPv6 CIDR network prefix management
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/bschaatsbergen/cidr
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.3.0"
+latest_tag: "v2.3.0"
+commit_hash: "03296baad3dddebb37f86c90011cbffaef8675be"
+upstream_version: "2.3.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# mender-cli 构建配方 (Phase 1 自动生成)
+repo: mendersoftware/mender-cli
+package: mender-cli
+summary: "general-purpose CLI for the Mender backend"
+description: |
+  general-purpose CLI for the Mender backend
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/mendersoftware/mender-cli
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.0.0"
+latest_tag: "v2.0.0"
+commit_hash: "9f514858e855aa376a1902bb43e3d894e970adf6"
+upstream_version: "2.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

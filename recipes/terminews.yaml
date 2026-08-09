@@ -1,0 +1,28 @@
+# terminews 构建配方 (Phase 1 自动生成)
+repo: antavelos/terminews
+package: terminews
+summary: "read your RSS feeds from your terminal"
+description: |
+  read your RSS feeds from your terminal
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/antavelos/terminews
+section: news
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.2.2"
+latest_tag: "v1.2.2"
+commit_hash: "569fbd2aaa7c6029677ea3e758e2bfa841b25b97"
+upstream_version: "1.2.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

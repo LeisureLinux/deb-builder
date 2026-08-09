@@ -1,0 +1,28 @@
+# vip-manager 构建配方 (Phase 1 自动生成)
+repo: cybertec-postgresql/vip-manager
+package: vip-manager
+summary: "Patroni virtual IP manager"
+description: |
+  Patroni virtual IP manager
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cybertec-postgresql/vip-manager
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v5.0.0"
+latest_tag: "v5.0.0"
+commit_hash: "5627bc50b01e40a5a8625b58e25c4de5197293dd"
+upstream_version: "5.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

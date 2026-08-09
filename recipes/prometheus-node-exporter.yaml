@@ -1,0 +1,28 @@
+# prometheus-node-exporter 构建配方 (Phase 1 自动生成)
+repo: prometheus/node_exporter
+package: prometheus-node-exporter
+summary: "Prometheus exporter for machine metrics"
+description: |
+  Prometheus exporter for machine metrics
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/prometheus/node_exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.12.1"
+latest_tag: "v1.12.1"
+commit_hash: "6044da783597cc3b57aef7580ddcdcff58a4ee99"
+upstream_version: "1.12.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

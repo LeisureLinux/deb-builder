@@ -1,0 +1,28 @@
+# opensmtpd-filter-senderscore 构建配方 (Phase 1 自动生成)
+repo: poolporg/filter-senderscore
+package: opensmtpd-filter-senderscore
+summary: "OpenSMTPD filter integration for SenderScore reputation"
+description: |
+  OpenSMTPD filter integration for SenderScore reputation
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/poolporg/filter-senderscore
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "0.1.2"
+latest_tag: "0.1.2"
+commit_hash: "e90a24941bf3f1fec2d4ddaca7b341796f8bc00f"
+upstream_version: "0.1.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

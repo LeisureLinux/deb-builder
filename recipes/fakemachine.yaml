@@ -1,0 +1,28 @@
+# fakemachine 构建配方 (Phase 1 自动生成)
+repo: go-debos/fakemachine
+package: fakemachine
+summary: "Create and spawn virtual machines (program)"
+description: |
+  Create and spawn virtual machines (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/go-debos/fakemachine
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.12"
+latest_tag: "v0.0.12"
+commit_hash: "ebafbf75ca97bf2b5dd677728106b25c778ef6e2"
+upstream_version: "0.0.12"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

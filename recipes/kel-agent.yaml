@@ -1,0 +1,28 @@
+# kel-agent 构建配方 (Phase 1 自动生成)
+repo: k0swe/kel-agent
+package: kel-agent
+summary: "Web interface for amateur radio installed programs (program)"
+description: |
+  Web interface for amateur radio installed programs (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/k0swe/kel-agent
+section: hamradio
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.0"
+latest_tag: "v1.0.0"
+commit_hash: "897c45b578d44becae89deae52a18c86d13ea372"
+upstream_version: "1.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

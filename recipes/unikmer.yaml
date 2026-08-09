@@ -1,0 +1,28 @@
+# unikmer 构建配方 (Phase 1 自动生成)
+repo: shenwei356/unikmer
+package: unikmer
+summary: "Toolkit for nucleic acid k-mer analysis"
+description: |
+  Toolkit for nucleic acid k-mer analysis
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/shenwei356/unikmer
+section: science
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.20.0"
+latest_tag: "v0.20.0"
+commit_hash: "524bcc118fd7697f9a11a97c9c85bcdf912a1a47"
+upstream_version: "0.20.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

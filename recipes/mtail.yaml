@@ -1,0 +1,28 @@
+# mtail 构建配方 (Phase 1 自动生成)
+repo: google/mtail
+package: mtail
+summary: "Extract monitoring data from logs for collection in a timeseries database"
+description: |
+  Extract monitoring data from logs for collection in a timeseries database
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/google/mtail/
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.0.9"
+latest_tag: "v3.0.9"
+commit_hash: "2aea25c73b6abbb240bcab2d2f956e3830d6fe9d"
+upstream_version: "3.0.9"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

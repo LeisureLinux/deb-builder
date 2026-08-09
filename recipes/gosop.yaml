@@ -1,0 +1,28 @@
+# gosop 构建配方 (Phase 1 自动生成)
+repo: ProtonMail/gosop
+package: gosop
+summary: "Stateless CLI for GopenPGP"
+description: |
+  Stateless CLI for GopenPGP
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/ProtonMail/gosop
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.1.0"
+latest_tag: "v1.1.0"
+commit_hash: "4a2cda0874f3b3a04b42c87a3548500bbac8c847"
+upstream_version: "1.1.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

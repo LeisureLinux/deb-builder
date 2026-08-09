@@ -1,0 +1,28 @@
+# nextcloud-spreed-signaling 构建配方 (Phase 1 自动生成)
+repo: strukturag/nextcloud-spreed-signaling
+package: nextcloud-spreed-signaling
+summary: "Standalone signaling server for Nextcloud Talk"
+description: |
+  Standalone signaling server for Nextcloud Talk
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/strukturag/nextcloud-spreed-signaling
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.1.1"
+latest_tag: "v2.1.1"
+commit_hash: "e7a8fb7aa9b99ad9f41e0e1793ce147ed36ecc62"
+upstream_version: "2.1.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

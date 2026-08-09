@@ -1,0 +1,28 @@
+# go-cowsql 构建配方 (Phase 1 自动生成)
+repo: cowsql/go-cowsql
+package: go-cowsql
+summary: "Pure-Go cowsql client"
+description: |
+  Pure-Go cowsql client
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cowsql/go-cowsql
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.22.0"
+latest_tag: "v1.22.0"
+commit_hash: "b0e46059265dcc795d35a15e86f44ee848e25252"
+upstream_version: "1.22.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

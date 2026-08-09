@@ -1,0 +1,28 @@
+# exiflooter 构建配方 (Phase 1 自动生成)
+repo: aydinnyunus/exiflooter
+package: exiflooter
+summary: "finds geolocation on all image urls and directories"
+description: |
+  finds geolocation on all image urls and directories
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/aydinnyunus/exiflooter
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.0"
+latest_tag: "v1.0.0"
+commit_hash: "9c89fb679b79d31ebba57c6e6864897df5b71f93"
+upstream_version: "1.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

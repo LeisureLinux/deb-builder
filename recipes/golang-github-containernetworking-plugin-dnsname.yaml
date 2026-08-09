@@ -1,0 +1,28 @@
+# golang-github-containernetworking-plugin-dnsname 构建配方 (Phase 1 自动生成)
+repo: containers/dnsname
+package: golang-github-containernetworking-plugin-dnsname
+summary: "name resolution for containers"
+description: |
+  name resolution for containers
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/containers/dnsname
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.3.1"
+latest_tag: "v1.3.1"
+commit_hash: "18822f9a4fb35d1349eb256f4cd2bfd372474d84"
+upstream_version: "1.3.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

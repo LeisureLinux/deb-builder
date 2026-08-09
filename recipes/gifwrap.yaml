@@ -1,0 +1,28 @@
+# gifwrap 构建配方 (Phase 1 自动生成)
+repo: liamg/gifwrap
+package: gifwrap
+summary: "display GIF file in terminal"
+description: |
+  display GIF file in terminal
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/liamg/gifwrap
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.7"
+latest_tag: "v0.0.7"
+commit_hash: "3e5b815127835dfecd29b31092fba2c39cb52bf7"
+upstream_version: "0.0.7"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

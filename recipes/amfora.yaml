@@ -1,0 +1,28 @@
+# amfora 构建配方 (Phase 1 自动生成)
+repo: makeworld-the-better-one/amfora
+package: amfora
+summary: "Fancy terminal browser for the Gemini protocol"
+description: |
+  Fancy terminal browser for the Gemini protocol
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/makeworld-the-better-one/amfora
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.11.0"
+latest_tag: "v1.11.0"
+commit_hash: "4d9a5c56c88f7bec2938968182c88130b923fbba"
+upstream_version: "1.11.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

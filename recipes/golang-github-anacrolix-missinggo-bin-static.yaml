@@ -1,0 +1,28 @@
+# golang-github-anacrolix-missinggo-bin-static 构建配方 (Phase 1 自动生成)
+repo: anacrolix/missinggo
+package: golang-github-anacrolix-missinggo-bin-static
+summary: "Stuff that's missing in Go stdlib, or hasn't made it into its own repo."
+description: |
+  Stuff that's missing in Go stdlib, or hasn't made it into its own repo.
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/anacrolix/missinggo
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.11.0"
+latest_tag: "v2.11.0"
+commit_hash: "b095386fad0efa1954af6878de7919e57c0a6d74"
+upstream_version: "2.11.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

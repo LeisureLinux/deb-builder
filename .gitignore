@@ -7,3 +7,8 @@ vendor/
 # Local state (optional, keep if debugging issues locally)
 .cached-*
 .test-*
+
+# Cloned upstream sources & local smoke-test artifacts
+age/
+fzf/
+tmp/

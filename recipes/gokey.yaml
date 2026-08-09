@@ -1,0 +1,28 @@
+# gokey 构建配方 (Phase 1 自动生成)
+repo: cloudflare/gokey
+package: gokey
+summary: "simple vaultless password manager in Go"
+description: |
+  simple vaultless password manager in Go
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cloudflare/gokey
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.2.1"
+latest_tag: "v0.2.1"
+commit_hash: "a5b5ea4b9bf968c7c5ece859287a31bdd1063a8d"
+upstream_version: "0.2.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

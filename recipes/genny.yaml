@@ -1,0 +1,28 @@
+# genny 构建配方 (Phase 1 自动生成)
+repo: cheekybits/genny
+package: genny
+summary: "Elegant generics for Go - program"
+description: |
+  Elegant generics for Go - program
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cheekybits/genny
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.0"
+latest_tag: "v1.0.0"
+commit_hash: "d2cf3cdd35ce0d789056c4bc02a4d6349c947caf"
+upstream_version: "1.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# hub 构建配方 (Phase 1 自动生成)
+repo: github/hub
+package: hub
+summary: "make git easier with GitHub"
+description: |
+  make git easier with GitHub
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/github/hub
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.14.2"
+latest_tag: "v2.14.2"
+commit_hash: "a1b6bb179a1311738c48a364cde44253c7459a86"
+upstream_version: "2.14.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

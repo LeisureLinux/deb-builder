@@ -1,0 +1,28 @@
+# caddy 构建配方 (Phase 1 自动生成)
+repo: caddyserver/caddy
+package: caddy
+summary: "Fast, lightweight web server with automatic HTTPS"
+description: |
+  Fast, lightweight web server with automatic HTTPS
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/caddyserver/caddy
+section: httpd
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.11.4"
+latest_tag: "v2.11.4"
+commit_hash: "e2eee6a7fce366321294c9c2a79f3146891dcbdf"
+upstream_version: "2.11.4"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# golang-github-ugorji-go-codec 构建配方 (Phase 1 自动生成)
+repo: ugorji/go
+package: golang-github-ugorji-go-codec
+summary: "idiomatic codec and rpc lib for msgpack, cbor, json (codecgen)"
+description: |
+  idiomatic codec and rpc lib for msgpack, cbor, json (codecgen)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/ugorji/go
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.3.2"
+latest_tag: "v1.3.2"
+commit_hash: "119a7d2d0d40275bddc4cc207b0f3a2e63641207"
+upstream_version: "1.3.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

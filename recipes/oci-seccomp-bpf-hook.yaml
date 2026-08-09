@@ -1,0 +1,28 @@
+# oci-seccomp-bpf-hook 构建配方 (Phase 1 自动生成)
+repo: containers/oci-seccomp-bpf-hook
+package: oci-seccomp-bpf-hook
+summary: "OCI hook to trace syscalls and generate a seccomp profile"
+description: |
+  OCI hook to trace syscalls and generate a seccomp profile
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/containers/oci-seccomp-bpf-hook
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.3.0"
+latest_tag: "v1.3.0"
+commit_hash: "1841d2fc7f54e9ba9d217f3746331db6d1fc08ff"
+upstream_version: "1.3.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

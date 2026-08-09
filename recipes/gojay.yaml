@@ -1,0 +1,28 @@
+# gojay 构建配方 (Phase 1 自动生成)
+repo: francoispqt/gojay
+package: gojay
+summary: "Fast JSON code generator in golang"
+description: |
+  Fast JSON code generator in golang
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/francoispqt/gojay
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.2.13"
+latest_tag: "v1.2.13"
+commit_hash: "1398296d938f9fae26750ddc2fe356b6d897f799"
+upstream_version: "1.2.13"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

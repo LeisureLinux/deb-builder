@@ -1,0 +1,28 @@
+# c2go 构建配方 (Phase 1 自动生成)
+repo: elliotchance/c2go
+package: c2go
+summary: "tool for transpiling C to Go"
+description: |
+  tool for transpiling C to Go
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/elliotchance/c2go
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.26.11"
+latest_tag: "v0.26.11"
+commit_hash: "f296f6eac725d09f4ef9a5ebf62c825bcbdf3097"
+upstream_version: "0.26.11"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

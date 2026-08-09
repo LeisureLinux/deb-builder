@@ -1,0 +1,28 @@
+# sshesame 构建配方 (Phase 1 自动生成)
+repo: jaksi/sshesame
+package: sshesame
+summary: "fake SSH server"
+description: |
+  fake SSH server
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/jaksi/sshesame
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.39"
+latest_tag: "v0.0.39"
+commit_hash: "062795684a859d36a06979e39498c476dcd66970"
+upstream_version: "0.0.39"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

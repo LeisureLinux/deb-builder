@@ -1,0 +1,28 @@
+# docker-registry 构建配方 (Phase 1 自动生成)
+repo: docker/distribution
+package: docker-registry
+summary: "Docker toolset to pack, ship, store, and deliver content"
+description: |
+  Docker toolset to pack, ship, store, and deliver content
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/docker/distribution
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.1.1"
+latest_tag: "v3.1.1"
+commit_hash: "9a8d98b679740cd514aa7e7d84d23d442a5ef54c"
+upstream_version: "3.1.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

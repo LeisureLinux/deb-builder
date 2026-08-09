@@ -1,0 +1,28 @@
+# madonctl 构建配方 (Phase 1 自动生成)
+repo: McKael/madonctl
+package: madonctl
+summary: "CLI client for the Mastodon social network API"
+description: |
+  CLI client for the Mastodon social network API
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/McKael/madonctl
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.0.3"
+latest_tag: "v3.0.3"
+commit_hash: "d4f66239952009e7b0f294b595a87ea11af65118"
+upstream_version: "3.0.3"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

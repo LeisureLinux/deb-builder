@@ -1,0 +1,28 @@
+# png2svg 构建配方 (Phase 1 自动生成)
+repo: xyproto/png2svg
+package: png2svg
+summary: "CLI utility for converting small PNG images to SVG Tiny 1.2"
+description: |
+  CLI utility for converting small PNG images to SVG Tiny 1.2
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/xyproto/png2svg
+section: graphics
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.7.1"
+latest_tag: "v1.7.1"
+commit_hash: "4a0f4ca6d8f6adde56bf8c26c01cb7c4b92bc616"
+upstream_version: "1.7.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

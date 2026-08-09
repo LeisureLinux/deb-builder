@@ -1,0 +1,28 @@
+# hey 构建配方 (Phase 1 自动生成)
+repo: rakyll/hey
+package: hey
+summary: "Sends some load to a web application"
+description: |
+  Sends some load to a web application
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/rakyll/hey
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.1.5"
+latest_tag: "v0.1.5"
+commit_hash: "e64ec7a3ad1ef8bc828fe61e1fb324cc2e74c604"
+upstream_version: "0.1.5"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

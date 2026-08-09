@@ -1,0 +1,28 @@
+# pebble 构建配方 (Phase 1 自动生成)
+repo: letsencrypt/pebble
+package: pebble
+summary: "ACME (RFC 8555) test-only server"
+description: |
+  ACME (RFC 8555) test-only server
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/letsencrypt/pebble
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.10.1"
+latest_tag: "v2.10.1"
+commit_hash: "b1e1ca4f3c30abb64111adaca4544bc5374cc306"
+upstream_version: "2.10.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

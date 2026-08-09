@@ -1,0 +1,28 @@
+# bypass4netns 构建配方 (Phase 1 自动生成)
+repo: rootless-containers/bypass4netns
+package: bypass4netns
+summary: "Accelerates slirp4netns using SECCOMP_IOCTL_NOTIF_ADDFD (program)"
+description: |
+  Accelerates slirp4netns using SECCOMP_IOCTL_NOTIF_ADDFD (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/rootless-containers/bypass4netns
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.4.2"
+latest_tag: "v0.4.2"
+commit_hash: "aa04bd3dcc48c6dae6d7327ba219bda8fe2a4634"
+upstream_version: "0.4.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

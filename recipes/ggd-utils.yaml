@@ -1,0 +1,28 @@
+# ggd-utils 构建配方 (Phase 1 自动生成)
+repo: gogetdata/ggd-utils
+package: ggd-utils
+summary: "programs for use in ggd"
+description: |
+  programs for use in ggd
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/gogetdata/ggd-utils
+section: science
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.0"
+latest_tag: "v1.0.0"
+commit_hash: "27c154a2f04259c2e5d96974a631af7dc7f5ed49"
+upstream_version: "1.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# go-junit-report 构建配方 (Phase 1 自动生成)
+repo: jstemmer/go-junit-report
+package: go-junit-report
+summary: "convert Go test output to JUnit XML (program)"
+description: |
+  convert Go test output to JUnit XML (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/jstemmer/go-junit-report
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.1.0"
+latest_tag: "v2.1.0"
+commit_hash: "14d61e6e75e3f3c74551d757ad936e8e88014464"
+upstream_version: "2.1.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

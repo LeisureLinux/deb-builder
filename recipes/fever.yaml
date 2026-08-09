@@ -1,0 +1,28 @@
+# fever 构建配方 (Phase 1 自动生成)
+repo: DCSO/fever
+package: fever
+summary: "fast, extensible, versatile event router for Suricata's EVE-JSON format"
+description: |
+  fast, extensible, versatile event router for Suricata's EVE-JSON format
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/DCSO/fever
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.4.0"
+latest_tag: "v1.4.0"
+commit_hash: "5963c65b9dad783d50d37702fc22d8b52c6a21e9"
+upstream_version: "1.4.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

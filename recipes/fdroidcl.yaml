@@ -1,0 +1,28 @@
+# fdroidcl 构建配方 (Phase 1 自动生成)
+repo: mvdan/fdroidcl
+package: fdroidcl
+summary: "F-Droid desktop client"
+description: |
+  F-Droid desktop client
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/mvdan/fdroidcl
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.8.1"
+latest_tag: "v0.8.1"
+commit_hash: "be136038d00cf4fc322b5b19c588b1329d997703"
+upstream_version: "0.8.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

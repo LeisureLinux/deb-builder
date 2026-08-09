@@ -1,0 +1,28 @@
+# prometheus-postgres-exporter 构建配方 (Phase 1 自动生成)
+repo: prometheus-community/postgres_exporter
+package: prometheus-postgres-exporter
+summary: "Prometheus exporter for PostgreSQL server metrics"
+description: |
+  Prometheus exporter for PostgreSQL server metrics
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/prometheus-community/postgres_exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.20.1"
+latest_tag: "v0.20.1"
+commit_hash: "867fbcac31cd18c143e244190ea9168cca069827"
+upstream_version: "0.20.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

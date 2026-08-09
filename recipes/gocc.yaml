@@ -1,0 +1,28 @@
+# gocc 构建配方 (Phase 1 自动生成)
+repo: goccmack/gocc
+package: gocc
+summary: "Go lexer and parser generator"
+description: |
+  Go lexer and parser generator
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/goccmack/gocc
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.0.0"
+latest_tag: "v3.0.0"
+commit_hash: "2292f9e40198d1d43db1e951089d4edd34079619"
+upstream_version: "3.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

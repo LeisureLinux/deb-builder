@@ -1,0 +1,28 @@
+# goiardi 构建配方 (Phase 1 自动生成)
+repo: ctdk/goiardi
+package: goiardi
+summary: "Chef server written in Go"
+description: |
+  Chef server written in Go
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/ctdk/goiardi
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.11.10"
+latest_tag: "v0.11.10"
+commit_hash: "7301ae3f6b56ed9c58bed605d7d0c6ab31dc2685"
+upstream_version: "0.11.10"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

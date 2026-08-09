@@ -1,0 +1,28 @@
+# exip 构建配方 (Phase 1 自动生成)
+repo: glendc/go-external-ip
+package: exip
+summary: "get your external ip from multiple services (program)"
+description: |
+  get your external ip from multiple services (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/glendc/go-external-ip
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.1.0"
+latest_tag: "v0.1.0"
+commit_hash: "2f10cb29b5c037919a65563c184fb64fcd13f8bb"
+upstream_version: "0.1.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# go-bluetooth 构建配方 (Phase 1 自动生成)
+repo: muka/go-bluetooth
+package: go-bluetooth
+summary: "Golang bluetooth client based on bluez DBus interfaces (program)"
+description: |
+  Golang bluetooth client based on bluez DBus interfaces (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/muka/go-bluetooth
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "1.0.0"
+latest_tag: "1.0.0"
+commit_hash: "c37f45f4ed51656e61dda499c33f7e2f98fa4e12"
+upstream_version: "1.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

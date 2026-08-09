@@ -1,0 +1,28 @@
+# ace 构建配方 (Phase 1 自动生成)
+repo: yosssi/ace
+package: ace
+summary: "HTML template engine for Go (command-line tool)"
+description: |
+  HTML template engine for Go (command-line tool)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/yosssi/ace
+section: text
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.5"
+latest_tag: "v0.0.5"
+commit_hash: "ea038f4770b6746c3f8f84f14fa60d9fe1205b56"
+upstream_version: "0.0.5"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# kubecolor 构建配方 (Phase 1 自动生成)
+repo: dty1er/kubecolor
+package: kubecolor
+summary: "colorizes kubectl output"
+description: |
+  colorizes kubectl output
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/dty1er/kubecolor
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.25"
+latest_tag: "v0.0.25"
+commit_hash: "2ce3b8b099a44b6f0d0d0b62ae228a65c437e6a5"
+upstream_version: "0.0.25"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

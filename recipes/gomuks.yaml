@@ -1,0 +1,28 @@
+# gomuks 构建配方 (Phase 1 自动生成)
+repo: tulir/gomuks
+package: gomuks
+summary: "Terminal based Matrix client written in Go"
+description: |
+  Terminal based Matrix client written in Go
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/tulir/gomuks
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.2607.0"
+latest_tag: "v0.2607.0"
+commit_hash: "721f2a4745f062d3e59e000dc42013cb3260001d"
+upstream_version: "0.2607.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

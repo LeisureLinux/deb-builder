@@ -1,0 +1,28 @@
+# lltsv 构建配方 (Phase 1 自动生成)
+repo: sonots/lltsv
+package: lltsv
+summary: "List specified keys of LTSV (Labeled Tab Separated Values)"
+description: |
+  List specified keys of LTSV (Labeled Tab Separated Values)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/sonots/lltsv
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.7.0"
+latest_tag: "v0.7.0"
+commit_hash: "da120017cd0ce855998eb6fbe78706b904243ae1"
+upstream_version: "0.7.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

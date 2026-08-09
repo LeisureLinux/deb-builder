@@ -1,34 +1,28 @@
-# gdu 构建配方 (Phase 0 POC #1)
-repo: dundee/gdu                            # GitHub 仓库地址（不含 owner/repo）
-owner: dundee                               # 显式所有者
-package: gdu                                # Debian 包名
-summary: "CLI disk usage analyzer"          # Description第一行
+# gdu 构建配方 (Phase 1 自动生成)
+repo: dundee/gdu
+package: gdu
+summary: "Pretty fast disk usage analyzer"
 description: |
-  Fast, terminal-friendly disk usage analyzer written in Go.
-    Takes into account available free space on the device.
-section: utils
+  Pretty fast disk usage analyzer
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/dundee/gdu
+section: admin
 
-# 版本策略：总是使用上游最新标签，或手动指定（优先用最新版 tag）
-version_tag: "ref:v*"                       # regex to match latest tag automatically
-latest_tag: ""                              # override with specific version (e.g., v5.36.1)
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v5.36.1"
+latest_tag: "v5.36.1"
+commit_hash: "8d64b4f1ef50bf6694cd17e060f9fd80aed3e297"
+upstream_version: "5.36.1"
 
 # Go 构建配置
-go_version: "1.27"                          # optional, fallback to system one
-ldflags: "-s -w -X main.Version={{VERSION}}" # inject version into binary
-build_args:                                 # extra build flags if needed
-  CGO_ENABLED: "0"                          # cross-compile friendly
+ldflags: "-s -w"
 
-# 构建架构 (Debian 官方缺少的目标)
+# 全架构打包
 target_arches:
-  - amd64                                   # native runner, fastest
-  - arm64                                   # native runner
-  - loong64                                 # Go1.23+ supported architecture
-  - riscv64                                 # newer architecture support
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
 
-# .deb 附加元数据 (可自定义，默认使用上面的 summary/description)
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
-depends: []                               # no runtime C/libc dependencies for Go static binary
-
-# 测试配置 (可选)
-run_tests: true                             # run go test / integration tests before packaging
-test_timeout: "10m"                         # overall timeout for all tests
+depends: []

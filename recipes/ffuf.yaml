@@ -1,0 +1,28 @@
+# ffuf 构建配方 (Phase 1 自动生成)
+repo: ffuf/ffuf
+package: ffuf
+summary: "Fast web fuzzer written in Go (program)"
+description: |
+  Fast web fuzzer written in Go (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/ffuf/ffuf
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.2.1"
+latest_tag: "v2.2.1"
+commit_hash: "1571aa17535d8bfcf42258659a141df0b12efa51"
+upstream_version: "2.2.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# prometheus-mqtt-exporter 构建配方 (Phase 1 自动生成)
+repo: hikhvar/mqtt2prometheus
+package: prometheus-mqtt-exporter
+summary: "Prometheus exporter for metrics sent via MQTT topics"
+description: |
+  Prometheus exporter for metrics sent via MQTT topics
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/hikhvar/mqtt2prometheus
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.1.7"
+latest_tag: "v0.1.7"
+commit_hash: "ed0c8bd46f4b709703e0a67cc13b8e9104b10168"
+upstream_version: "0.1.7"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

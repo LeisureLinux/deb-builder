@@ -1,0 +1,28 @@
+# deck 构建配方 (Phase 1 自动生成)
+repo: kong/deck
+package: deck
+summary: "Configuration management for Kong and Kong Enterprise (program)"
+description: |
+  Configuration management for Kong and Kong Enterprise (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/kong/deck
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.65.1"
+latest_tag: "v1.65.1"
+commit_hash: "7fcd8886396ec8b1b84a59c1741fcbf5b5fa6b68"
+upstream_version: "1.65.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

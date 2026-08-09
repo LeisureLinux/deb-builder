@@ -1,0 +1,28 @@
+# go-bindata 构建配方 (Phase 1 自动生成)
+repo: jteeuwen/go-bindata
+package: go-bindata
+summary: "embed data in a Go program"
+description: |
+  embed data in a Go program
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/jteeuwen/go-bindata
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.0.7"
+latest_tag: "v3.0.7"
+commit_hash: "bbd0c6e271208dce66d8fda4bc536453cd27fc4a"
+upstream_version: "3.0.7"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

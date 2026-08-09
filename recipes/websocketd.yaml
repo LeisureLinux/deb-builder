@@ -1,0 +1,28 @@
+# websocketd 构建配方 (Phase 1 自动生成)
+repo: joewalnes/websocketd
+package: websocketd
+summary: "Turn any program that uses STDIN/STDOUT into a WebSocket server"
+description: |
+  Turn any program that uses STDIN/STDOUT into a WebSocket server
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/joewalnes/websocketd
+section: web
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.4.1"
+latest_tag: "v0.4.1"
+commit_hash: "035c18cc3e6962dabd5ea2ad8845260726a4a99e"
+upstream_version: "0.4.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# gox 构建配方 (Phase 1 自动生成)
+repo: mitchellh/gox
+package: gox
+summary: "simple cross compilation tool for Go"
+description: |
+  simple cross compilation tool for Go
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/mitchellh/gox
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.1"
+latest_tag: "v1.0.1"
+commit_hash: "d8caaff5a9dc98f4cfa1fcce6e7265a04689f641"
+upstream_version: "1.0.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

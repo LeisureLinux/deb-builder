@@ -1,0 +1,28 @@
+# reflex 构建配方 (Phase 1 自动生成)
+repo: cespare/reflex
+package: reflex
+summary: "Run a command when files change"
+description: |
+  Run a command when files change
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cespare/reflex
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.3.2"
+latest_tag: "v0.3.2"
+commit_hash: "f08e68ffc2c87dd13913947c29608f109d282514"
+upstream_version: "0.3.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

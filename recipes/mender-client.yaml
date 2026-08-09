@@ -1,0 +1,28 @@
+# mender-client 构建配方 (Phase 1 自动生成)
+repo: mendersoftware/mender
+package: mender-client
+summary: "Mender over-the-air software updater client."
+description: |
+  Mender over-the-air software updater client.
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/mendersoftware/mender
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "5.1.0"
+latest_tag: "5.1.0"
+commit_hash: "54d57fc32abd0bb1a8f0336d6d5ab624d3c5ac49"
+upstream_version: "5.1.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

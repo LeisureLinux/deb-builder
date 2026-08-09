@@ -1,0 +1,28 @@
+# codesearch 构建配方 (Phase 1 自动生成)
+repo: google/codesearch
+package: codesearch
+summary: "regular expression search over large bodies of source code"
+description: |
+  regular expression search over large bodies of source code
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/google/codesearch
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.2.0"
+latest_tag: "v1.2.0"
+commit_hash: "8ba29bd255b740aee4eb4e4ddb5d7ec0b4d9f23e"
+upstream_version: "1.2.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

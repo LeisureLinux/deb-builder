@@ -1,0 +1,28 @@
+# mirrorbits 构建配方 (Phase 1 自动生成)
+repo: etix/mirrorbits
+package: mirrorbits
+summary: "geographical download redirector"
+description: |
+  geographical download redirector
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/etix/mirrorbits
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.6.2"
+latest_tag: "v0.6.2"
+commit_hash: "9061cc3e06a00c04cd92965dae46850f2785a91b"
+upstream_version: "0.6.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

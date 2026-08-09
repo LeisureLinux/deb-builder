@@ -1,0 +1,28 @@
+# prometheus-pushgateway 构建配方 (Phase 1 自动生成)
+repo: prometheus/pushgateway
+package: prometheus-pushgateway
+summary: "Prometheus exporter for ephemereal jobs"
+description: |
+  Prometheus exporter for ephemereal jobs
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/prometheus/pushgateway
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.11.3"
+latest_tag: "v1.11.3"
+commit_hash: "e803ebd81be5867ff17a21205030611fa033af13"
+upstream_version: "1.11.3"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

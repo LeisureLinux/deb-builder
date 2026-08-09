@@ -1,0 +1,28 @@
+# crowdsec-firewall-bouncer 构建配方 (Phase 1 自动生成)
+repo: crowdsecurity/cs-firewall-bouncer
+package: crowdsec-firewall-bouncer
+summary: "CrowdSec bouncer for firewalls"
+description: |
+  CrowdSec bouncer for firewalls
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/crowdsecurity/cs-firewall-bouncer
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.0.36"
+latest_tag: "v0.0.36"
+commit_hash: "4c315193cd4f19e3937cdee2f15183ec4d602f56"
+upstream_version: "0.0.36"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

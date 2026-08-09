@@ -1,0 +1,28 @@
+# jp 构建配方 (Phase 1 自动生成)
+repo: jmespath/jp
+package: jp
+summary: "command-line interface to JMESPath"
+description: |
+  command-line interface to JMESPath
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/jmespath/jp
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "0.2.1"
+latest_tag: "0.2.1"
+commit_hash: "1331b6f3cbdbea8820b89eea5b8d1a92148f6b32"
+upstream_version: "0.2.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

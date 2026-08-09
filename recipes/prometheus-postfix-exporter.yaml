@@ -1,0 +1,28 @@
+# prometheus-postfix-exporter 构建配方 (Phase 1 自动生成)
+repo: kumina/postfix_exporter
+package: prometheus-postfix-exporter
+summary: "Prometheus exporter for Postfix mail servers"
+description: |
+  Prometheus exporter for Postfix mail servers
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/kumina/postfix_exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "0.3.0"
+latest_tag: "0.3.0"
+commit_hash: "580003c91bbfdca0ffab80fb07639d77a28a7f22"
+upstream_version: "0.3.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

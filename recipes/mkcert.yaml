@@ -1,0 +1,28 @@
+# mkcert 构建配方 (Phase 1 自动生成)
+repo: FiloSottile/mkcert
+package: mkcert
+summary: "Simple zero-config tool to make locally trusted certificates"
+description: |
+  Simple zero-config tool to make locally trusted certificates
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/FiloSottile/mkcert
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.4.4"
+latest_tag: "v1.4.4"
+commit_hash: "2a46726cebac0ff4e1f133d90b4e4c42f1edf44a"
+upstream_version: "1.4.4"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

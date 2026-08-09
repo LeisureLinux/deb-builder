@@ -1,0 +1,28 @@
+# anacrolix-dms 构建配方 (Phase 1 自动生成)
+repo: anacrolix/dms
+package: anacrolix-dms
+summary: "Go UPnP DLNA Digital Media Server with basic video transcoding"
+description: |
+  Go UPnP DLNA Digital Media Server with basic video transcoding
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/anacrolix/dms
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.8.0"
+latest_tag: "v1.8.0"
+commit_hash: "a259fcd5b174dc920a5fb841c0814cfa300ade5f"
+upstream_version: "1.8.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

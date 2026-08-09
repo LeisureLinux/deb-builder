@@ -1,0 +1,28 @@
+# prometheus-squid-exporter 构建配方 (Phase 1 自动生成)
+repo: boynux/squid-exporter
+package: prometheus-squid-exporter
+summary: "Prometheus exporter for Squid proxy servers"
+description: |
+  Prometheus exporter for Squid proxy servers
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/boynux/squid-exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.13.0"
+latest_tag: "v1.13.0"
+commit_hash: "988864ca5f486edd04841a672cc231b1613cc55c"
+upstream_version: "1.13.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

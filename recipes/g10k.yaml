@@ -1,0 +1,28 @@
+# g10k 构建配方 (Phase 1 自动生成)
+repo: xorpaul/g10k
+package: g10k
+summary: "Puppet environment and module deployment"
+description: |
+  Puppet environment and module deployment
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/xorpaul/g10k
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.9.10"
+latest_tag: "v0.9.10"
+commit_hash: "95b754c813f6eae88d3536c973d525f5571d1985"
+upstream_version: "0.9.10"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

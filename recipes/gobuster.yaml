@@ -1,0 +1,28 @@
+# gobuster 构建配方 (Phase 1 自动生成)
+repo: OJ/gobuster
+package: gobuster
+summary: "Directory/file & DNS busting tool written in Go"
+description: |
+  Directory/file & DNS busting tool written in Go
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/OJ/gobuster
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.8.2"
+latest_tag: "v3.8.2"
+commit_hash: "e8410cad6cacf08b82e2f610055f636f0be61c40"
+upstream_version: "3.8.2"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

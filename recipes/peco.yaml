@@ -1,0 +1,28 @@
+# peco 构建配方 (Phase 1 自动生成)
+repo: peco/peco
+package: peco
+summary: "Simplistic interactive filtering tool"
+description: |
+  Simplistic interactive filtering tool
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/peco/peco
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.6.0"
+latest_tag: "v0.6.0"
+commit_hash: "6ab3ff6d5d3e8b50e7b7439142ae7b90a9d0786e"
+upstream_version: "0.6.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

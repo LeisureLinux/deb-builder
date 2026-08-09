@@ -1,0 +1,28 @@
+# containernetworking-plugins 构建配方 (Phase 1 自动生成)
+repo: containernetworking/plugins
+package: containernetworking-plugins
+summary: "standard networking plugins - binaries"
+description: |
+  standard networking plugins - binaries
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/containernetworking/plugins
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.9.1"
+latest_tag: "v1.9.1"
+commit_hash: "adc3e6b5b581638afbd194cf2e9319ecbb0151a1"
+upstream_version: "1.9.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

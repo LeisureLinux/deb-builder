@@ -1,0 +1,28 @@
+# obs-cli 构建配方 (Phase 1 自动生成)
+repo: muesli/obs-cli
+package: obs-cli
+summary: "command-line remote control for OBS Studio"
+description: |
+  command-line remote control for OBS Studio
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/muesli/obs-cli
+section: golang
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.5.0"
+latest_tag: "v0.5.0"
+commit_hash: "6bb6b06c959514f71344bd096e5d279f5463eb14"
+upstream_version: "0.5.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,28 @@
+# yubikey-touch-detector 构建配方 (Phase 1 自动生成)
+repo: maximbaz/yubikey-touch-detector
+package: yubikey-touch-detector
+summary: "tool to notify you when your YubiKey is waiting for a touch"
+description: |
+  tool to notify you when your YubiKey is waiting for a touch
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/maximbaz/yubikey-touch-detector
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "1.13.0"
+latest_tag: "1.13.0"
+commit_hash: "83d8df88807ecdad4ec6c695901275ffdb4474c6"
+upstream_version: "1.13.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

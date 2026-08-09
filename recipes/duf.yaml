@@ -1,0 +1,28 @@
+# duf 构建配方 (Phase 1 自动生成)
+repo: muesli/duf
+package: duf
+summary: "Disk Usage/Free Utility"
+description: |
+  Disk Usage/Free Utility
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/muesli/duf
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.9.1"
+latest_tag: "v0.9.1"
+commit_hash: "b2f01a1ecbfd1af63015b83296c50a95260f97b1"
+upstream_version: "0.9.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

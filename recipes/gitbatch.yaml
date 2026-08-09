@@ -1,0 +1,28 @@
+# gitbatch 构建配方 (Phase 1 自动生成)
+repo: isacikgoz/gitbatch
+package: gitbatch
+summary: "Manage git repositories in one place"
+description: |
+  Manage git repositories in one place
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/isacikgoz/gitbatch
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.6.1"
+latest_tag: "v0.6.1"
+commit_hash: "489df9f1b64ac27566b5a4f9c276ecc8c990f23d"
+upstream_version: "0.6.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

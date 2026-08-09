@@ -1,0 +1,28 @@
+# prometheus-mongodb-exporter 构建配方 (Phase 1 自动生成)
+repo: dcu/mongodb_exporter
+package: prometheus-mongodb-exporter
+summary: "Prometheus exporter for MongoDB"
+description: |
+  Prometheus exporter for MongoDB
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/dcu/mongodb_exporter
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.0"
+latest_tag: "v1.0.0"
+commit_hash: "dc3ffef6aac84e440519a3ad2e0425ede08ac8e6"
+upstream_version: "1.0.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

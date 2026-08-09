@@ -1,0 +1,28 @@
+# pwru 构建配方 (Phase 1 自动生成)
+repo: cilium/pwru
+package: pwru
+summary: "eBPF-based Linux kernel networking debugger (program)"
+description: |
+  eBPF-based Linux kernel networking debugger (program)
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/cilium/pwru
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.0.12"
+latest_tag: "v1.0.12"
+commit_hash: "f1d6cf8898953ac1560401e181f3ac5f0e33b486"
+upstream_version: "1.0.12"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

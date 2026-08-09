@@ -1,0 +1,28 @@
+# prometheus-smokeping-prober 构建配方 (Phase 1 自动生成)
+repo: SuperQ/smokeping_prober
+package: prometheus-smokeping-prober
+summary: "Prometheus style "smokeping" prober"
+description: |
+  Prometheus style "smokeping" prober
+  (Phase 1 auto-built for all architectures.)
+homepage: https://github.com/SuperQ/smokeping_prober
+section: net
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.12.0"
+latest_tag: "v0.12.0"
+commit_hash: "d560be20354e982bb44a8f6de6ae158b58c56cb6"
+upstream_version: "0.12.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 全架构打包
+target_arches:
+  - amd64
+  - arm64
+  - loong64
+  - riscv64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []
