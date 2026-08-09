@@ -187,9 +187,7 @@ for arch in "${ARCHES[@]}"; do
       "Description: ${desc_first}" > "$pkg_dir/DEBIAN/control"
     [[ -n "$desc_rest" ]] && printf '%s\n' "$desc_rest" >> "$pkg_dir/DEBIAN/control"
     printf '%s\n' \
-      " (built by LeisureLinux deb-builder)" \
-      " Upstream: ${HOMEPAGE} (tag v${VERSION})" \
-      " Commit: ${COMMIT_HASH}" >> "$pkg_dir/DEBIAN/control"
+      " (built by LeisureLinux deb-builder)" >> "$pkg_dir/DEBIAN/control"
 
 
     # ---- 打包 ----
