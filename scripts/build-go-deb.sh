@@ -119,12 +119,52 @@ fi
 SHORT_SHA="${COMMIT_HASH:0:7}"
 [[ "$COMMIT_HASH" == "unknown" ]] && SHORT_SHA="unknown"
 
-# ---- 构建号 NN（本地为 1，可被 BUILD_NUMBER 环境变量覆盖）----
-BUILD_NUMBER="${BUILD_NUMBER:-1}"
-
-# ---- Source 字段：pkg (上游版本+gitYYYYMMDD.sha7-NN) ----
 UPVER="${upstream_version:-$VERSION}"
-SOURCE_STR="${PKG_NAME} (${UPVER}+git${GITDATE}.${SHORT_SHA}-${BUILD_NUMBER})"
+
+# ---- 构建号 NN（可被 BUILD_NUMBER 环境变量覆盖）----
+# 未设置时，从已发布的 APT 仓库（repo.freelamp.com）探测该上游版本当前的最高构建号：
+#   存在 v+LL        → 首个构建，下一构建为 2
+#   存在 v+LL-N      → 下一个为 N+1
+#   取不到（未发布过） → 默认 1（即首个构建，版本号不带 -1）
+BUILD_NUMBER="${BUILD_NUMBER:-}"
+if [[ -z "$BUILD_NUMBER" ]]; then
+    _max=0
+    for _dist in trixie bookworm bullseye buster jammy noble resolute; do
+        _v=$(curl -fsSL --connect-timeout 5 --max-time 20 \
+            "https://repo.freelamp.com/dists/$_dist/main/binary-amd64/Packages" 2>/dev/null \
+            | awk -v p="$PKG_NAME" -v u="$UPVER" '
+                $0=="Package: "p{hit=1;next}
+                /^$/{hit=0}
+                hit && /^Version: /{v=substr($0,10); if(v==u"+LL"){print "1"} else if(v ~ "^"u"+LL-[0-9]+$"){sub("^.*+LL-","",v); print v} }
+              ')
+        for _n in $_v; do
+            if [[ "$_n" =~ ^[0-9]+$ ]] && (( _n > _max )); then _max=$_n; fi
+        done
+    done
+    if (( _max >= 1 )); then
+        BUILD_NUMBER=$((_max + 1))
+    else
+        BUILD_NUMBER=1
+    fi
+fi
+
+# ---- LeisureLinux 统一版本号：<UPVER>+LL  /  <UPVER>+LL-NN ----
+# 例：gdu 5.36.1+LL（首个构建）或 5.36.1+LL-2（后续同上游版本的构建）
+# LL = LeisureLinux 标识，后续每个新 build 递增 NN。
+if [[ "$BUILD_NUMBER" == "1" ]]; then
+    LLVER="${UPVER}+LL"
+else
+    LLVER="${UPVER}+LL-${BUILD_NUMBER}"
+fi
+VERSION="$LLVER"
+
+# ---- Source 字段：维持原有格式 pkg (上游版本+gitYYYYMMDD.sha7-NN) ----
+# 注意：Source 里用的是上游 UPVER（不含 +LL 标识），NN 为构建号。
+if [[ "$BUILD_NUMBER" == "1" ]]; then
+    SOURCE_STR="${PKG_NAME} (${UPVER}+git${GITDATE}.${SHORT_SHA})"
+else
+    SOURCE_STR="${PKG_NAME} (${UPVER}+git${GITDATE}.${SHORT_SHA}-${BUILD_NUMBER})"
+fi
 
 # 为每个架构构建
 mkdir -p "$OUTPUT_DIR"
