@@ -25,6 +25,7 @@ type Candidate struct {
 	Homepage   string            `json:"homepage"`
 	Section    string            `json:"section"`
 	Summary    string            `json:"summary"`                   // Description 第一行
+	Description string           `json:"description,omitempty"`      // 完整 Description（Debian 原生）
 	FoundIn    []string          `json:"found_in"`                  // 出现位置：suite/arch
 	DebianVers map[string]string `json:"debian_versions,omitempty"` // suite/arch -> 版本
 	Golang    bool              `json:"golang,omitempty"`            // Built-Using 含 golang（Go 二进制）
@@ -259,6 +260,9 @@ func parseStanzas(r io.Reader, suite, arch string, byRepo map[string]*Candidate,
 			}
 			if c.Summary == "" {
 				c.Summary = firstLine(cur["Description"])
+			}
+			if c.Description == "" {
+				c.Description = cur["Description"]
 			}
 		}
 		cur = nil

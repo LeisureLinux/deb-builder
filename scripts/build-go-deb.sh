@@ -11,6 +11,8 @@ PKG_NAME="${1:?Usage: build-go-deb.sh <package-name> [version] [binary-path] [ar
 VERSION="${2:-}"
 BINARY_PATH="${3:-}"
 ARCH_LIST="${4:-}"
+# 若设置了 TARGET_ARCHS 环境变量，则用它覆盖所有来源（用于全局只构建某架构）
+if [[ -n "${TARGET_ARCHS:-}" ]]; then ARCH_LIST="$TARGET_ARCHS"; fi
 
 RECIPE="recipes/${PKG_NAME}.yaml"
 OUTPUT_DIR="${OUTPUT_DIR:-dist}"
@@ -28,6 +30,17 @@ if [[ -f "$RECIPE" ]]; then
     commit_hash=$(grep -E '^commit_hash:' "$RECIPE" | awk '{print $2}' | strip_q)
     upstream_version=$(grep -E '^upstream_version:' "$RECIPE" | awk '{print $2}' | strip_q)
     [[ -z "$ARCH_LIST" ]] && ARCH_LIST=$(grep -A20 '^target_arches:' "$RECIPE" | grep -oE '^\s*-\s*[a-z0-9]+' | awk '{print $2}' | paste -sd, -)
+    # Section / Homepage / Description（遵循 Debian 原生包元数据）
+    sec=$(grep -E '^section:' "$RECIPE" | head -n1 | awk '{print $2}' | strip_q)
+    [[ -n "$sec" ]] && SECTION="$sec"
+    hp=$(grep -E '^homepage:' "$RECIPE" | head -n1 | awk '{print $2}' | strip_q)
+    [[ -n "$hp" ]] && HOMEPAGE="$hp"
+    # 读取 description 多行块（去 2 空格缩进）
+    DESC=$(awk '/^description:/{f=1;next} /^[a-z_][a-z0-9_]*:/{if(f) exit} f{sub(/^  /,""); print}' "$RECIPE")
+fi
+HOMEPAGE="${HOMEPAGE:-https://github.com/${repo_line:-LeisureLinux/${PKG_NAME}}}"
+if [[ -z "$DESC" ]]; then
+    DESC="${PKG_NAME} - Go utility"
 fi
 
 # 默认 commit hash（从 recipe 或由 clone 时解析；用户也可显式传入）
@@ -98,6 +111,21 @@ else
     SRC_DIR="."
 fi
 
+# ---- 解析 commit 日期（YYYYMMDD）用于 Source 版本串 ----
+if [[ "$COMMIT_HASH" != "unknown" && -d "$SRC_DIR" ]]; then
+    GITDATE=$(cd "$SRC_DIR" && git log -1 --format=%cs "$COMMIT_HASH" 2>/dev/null | tr -d '-')
+fi
+[[ -z "$GITDATE" ]] && GITDATE=$(date +%Y%m%d)
+SHORT_SHA="${COMMIT_HASH:0:7}"
+[[ "$COMMIT_HASH" == "unknown" ]] && SHORT_SHA="unknown"
+
+# ---- 构建号 NN（本地为 1，可被 BUILD_NUMBER 环境变量覆盖）----
+BUILD_NUMBER="${BUILD_NUMBER:-1}"
+
+# ---- Source 字段：pkg (上游版本+gitYYYYMMDD.sha7-NN) ----
+UPVER="${upstream_version:-$VERSION}"
+SOURCE_STR="${PKG_NAME} (${UPVER}+git${GITDATE}.${SHORT_SHA}-${BUILD_NUMBER})"
+
 # 为每个架构构建
 mkdir -p "$OUTPUT_DIR"
 IFS=',' read -ra ARCHES <<< "$ARCH_LIST"
@@ -139,18 +167,30 @@ for arch in "${ARCHES[@]}"; do
     chmod 755 "$pkg_dir/usr/bin/${PKG_NAME}"
 
     installed_size=$(du -sk "$pkg_dir" | cut -f1)
-    cat > "$pkg_dir/DEBIAN/control" <<CONTROL
-Package: ${PKG_NAME}
-Version: ${VERSION}
-Architecture: ${deblarch}
-Maintainer: ${MAINTAINER}
-Section: ${SECTION}
-Priority: optional
-Installed-Size: ${installed_size}
-Description: ${PKG_NAME} - Go utility (built by LeisureLinux deb-builder)
- Upstream: https://github.com/${repo_line:-LeisureLinux/${PKG_NAME}} (tag ${VERSION})
- Commit: ${COMMIT_HASH}
-CONTROL
+
+    # Description：原生描述 + 署名；首行不带缩进，续行每行前导一个空格
+    # 若 recipe 描述以 "X - " 开头则保留；末尾追加 (built by LeisureLinux deb-builder)
+    desc_lines="$(printf '%s\n' "$DESC" | grep -v 'Phase 1 auto-built')"
+    desc_first=$(printf '%s\n' "$desc_lines" | head -n1)
+    desc_rest=$(printf '%s\n' "$desc_lines" | tail -n +2 | sed 's/^/ /')
+    # 用 printf 组装 Description 多行（避免 heredoc 的 \n 不转义）
+    printf '%s\n' \
+      "Package: ${PKG_NAME}" \
+      "Version: ${VERSION}" \
+      "Architecture: ${deblarch}" \
+      "Maintainer: ${MAINTAINER}" \
+      "Section: ${SECTION}" \
+      "Priority: optional" \
+      "Installed-Size: ${installed_size}" \
+      "Homepage: ${HOMEPAGE}" \
+      "Source: ${SOURCE_STR}" \
+      "Description: ${desc_first}" > "$pkg_dir/DEBIAN/control"
+    [[ -n "$desc_rest" ]] && printf '%s\n' "$desc_rest" >> "$pkg_dir/DEBIAN/control"
+    printf '%s\n' \
+      " (built by LeisureLinux deb-builder)" \
+      " Upstream: ${HOMEPAGE} (tag v${VERSION})" \
+      " Commit: ${COMMIT_HASH}" >> "$pkg_dir/DEBIAN/control"
+
 
     # ---- 打包 ----
     if (command -v dpkg-deb >/dev/null 2>&1); then

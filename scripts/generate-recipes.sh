@@ -26,6 +26,7 @@ jq -c '.[]' "$CAND" | while IFS= read -r line; do
     name=$(jq -r '.name' <<<"$line")
     homepage=$(jq -r '.homepage' <<<"$line")
     summary=$(jq -r '.summary' <<<"$line")
+    description=$(jq -r '.description // .summary' <<<"$line")
     section=$(jq -r '.section' <<<"$line")
 
     # 只处理合法 github.com 仓库（owner/repo）
@@ -76,8 +77,7 @@ repo: ${repo}
 package: ${pkg}
 summary: "${summary}"
 description: |
-  ${summary}
-  (Phase 1 auto-built for all architectures.)
+  $(printf '%s\n' "$description" | sed 's/^/  /')
 homepage: ${homepage}
 section: ${section:-utils}
 
