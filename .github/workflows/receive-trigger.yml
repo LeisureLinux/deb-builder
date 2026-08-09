@@ -47,13 +47,42 @@ jobs:
         run: |
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}"
 
-      - name: Dispatch to apt-repo after build
+      # Option 2: push the built .deb files directly into apt-repo's incoming/,
+      # then dispatch its publish workflow to sign + publish to GitHub Pages.
+      - name: Push .deb to apt-repo and trigger publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always() && steps.pkg.outputs.pkg_name != ''
+          BUILDER_PAT: ${{ secrets.BUILDER_PAT }}
         run: |
+          set -euo pipefail
           PKG="${{ steps.pkg.outputs.pkg_name }}"
+          WS="$GITHUB_WORKSPACE"
+
+          ls -lh "$WS"/dist/*.deb 2>/dev/null || { echo "❌ no .deb artifacts found in dist/"; exit 1; }
+
+          # 1. Clone apt-repo
+          rm -rf /tmp/apt-repo
+          git clone --depth 1 \
+            "https://x-access-token:${BUILDER_PAT}@github.com/LeisureLinux/apt-repo.git" \
+            /tmp/apt-repo
+
+          # 2. Copy built .deb files into incoming/
+          cd /tmp/apt-repo
+          git config user.name "Deb Builder Bot"
+          git config user.email "deb-builder@leisurelinux.org"
+          mkdir -p incoming
+          cp "$WS"/dist/*.deb incoming/
+          git add -f incoming/*.deb   # incoming/*.deb is gitignored; force-add
+
+          # 3. Commit & push
+          if git diff --cached --quiet; then
+            echo "ℹ️ no new .deb artifacts to commit (already in incoming/)"
+          else
+            git commit -m "auto: add built .deb for ${PKG}"
+            git push origin main
+          fi
+
+          # 4. Dispatch publish workflow on apt-repo
           curl -X POST https://api.github.com/repos/LeisureLinux/apt-repo/dispatches \
             -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -d "{\"event_type\":\"build-complete\",\"client_payload\":{\"package\":\"${PKG}\",\"success\":\"true\"}}"
+            -H "Authorization: Bearer $BUILDER_PAT" \
+            -d "{\"event_type\":\"publish\",\"client_payload\":{\"package\":\"${PKG}\",\"success\":\"true\"}}"
