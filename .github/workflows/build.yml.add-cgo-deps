@@ -1,0 +1,16 @@
+# Add this job BEFORE build-changed in your current workflow file
+
+- name: Install CGO dependencies
+  run: |
+    sudo apt-get update || true;
+    sudo DEBIAN_FRONTEND=noninteractive \
+      apt-get install -y --no-install-recommends \
+      libbtrfs-dev              # podman, buildah, skopeo (builds with btrfs)
+      libpam0g-dev             # emptty, fscrypt (PAM auth module)
+      libpcsclite-dev          # yubikey-agent (PCSC smartcard reader)
+      gpgme-dev                # dmarc-cat (GPG message processing)
+      libseccomp-dev           # bypass4netns (seccomp filtering)
+      libssl-dev               # common crypto dependency across many packages
+      libsystemd-dev           # prometheus-postfix-exporter journal support
+      avahi-utils              # ipp-usb (service discovery) && echo "🔧CGO deps ready"
+
