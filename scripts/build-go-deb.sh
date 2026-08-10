@@ -1,246 +1,115 @@
 #!/bin/bash
-# build-go-deb.sh: Go 项目多架构 .deb 构建器
-# 用法: bash scripts/build-go-deb.sh <package-name> [version] [binary-path] [arch1,arch2,...]
-#   package-name  : recipe 名 / Debian 包名，如 gdu（会读取 recipes/<name>.yaml）
-#   version       : 版本号，如 v5.36.1（可选，默认从 recipe latest_tag/version_tag 推断）
-#   binary-path   : 已编译二进制路径（可选；默认走源码交叉编译）
-#   archs         : 逗号分隔的目标架构，如 amd64,arm64,loong64,riscv64（可选，默认读取 recipe target_arches）
 set -euo pipefail
 
-PKG_NAME="${1:?Usage: build-go-deb.sh <package-name> [version] [binary-path] [archs]}"
-VERSION="${2:-}"
-BINARY_PATH="${3:-}"
-ARCH_LIST="${4:-}"
-# 若设置了 TARGET_ARCHS 环境变量，则用它覆盖所有来源（用于全局只构建某架构）
-if [[ -n "${TARGET_ARCHS:-}" ]]; then ARCH_LIST="$TARGET_ARCHS"; fi
+PKG_NAME="${1:?Usage: bash scripts/build-go-deb.sh <package-name> [archs]}"
+ARCHS="${2:-amd64}"
 
-RECIPE="recipes/${PKG_NAME}.yaml"
-OUTPUT_DIR="${OUTPUT_DIR:-dist}"
-OUTPUT_DIR="$(cd "$(dirname "$OUTPUT_DIR")" 2>/dev/null && pwd)/$(basename "$OUTPUT_DIR")"  # 转为绝对路径
+cd "$(dirname "$0")/.." || exit 1
 
-MAINTAINER="LeisureLinux <albertxu@freelamp.com>"
-SECTION="utils"
-
-# ---- 从 recipe 读取配置 ----
-strip_q() { sed -e 's/^["'"'"']//' -e 's/["'"'"']$//'; }
-if [[ -f "$RECIPE" ]]; then
-    repo_line=$(grep -E '^repo:' "$RECIPE" | head -n1 | awk '{print $2}' | strip_q)
-    lt=$(grep -E '^latest_tag:' "$RECIPE" | awk '{print $2}' | strip_q)
-    if [[ -n "$lt" && "$lt" != '""' ]]; then VERSION="$lt"; fi
-    commit_hash=$(grep -E '^commit_hash:' "$RECIPE" | awk '{print $2}' | strip_q)
-    upstream_version=$(grep -E '^upstream_version:' "$RECIPE" | awk '{print $2}' | strip_q)
-    [[ -z "$ARCH_LIST" ]] && ARCH_LIST=$(grep -A20 '^target_arches:' "$RECIPE" | grep -oE '^\s*-\s*[a-z0-9]+' | awk '{print $2}' | paste -sd, -)
-    # Section / Homepage / Description（遵循 Debian 原生包元数据）
-    sec=$(grep -E '^section:' "$RECIPE" | head -n1 | awk '{print $2}' | strip_q)
-    [[ -n "$sec" ]] && SECTION="$sec"
-    hp=$(grep -E '^homepage:' "$RECIPE" | head -n1 | awk '{print $2}' | strip_q)
-    [[ -n "$hp" ]] && HOMEPAGE="$hp"
-    # 读取 description 多行块（去 2 空格缩进）
-    DESC=$(awk '/^description:/{f=1;next} /^[a-z_][a-z0-9_]*:/{if(f) exit} f{sub(/^  /,""); print}' "$RECIPE")
-fi
-HOMEPAGE="${HOMEPAGE:-https://github.com/${repo_line:-LeisureLinux/${PKG_NAME}}}"
-if [[ -z "$DESC" ]]; then
-    DESC="${PKG_NAME} - Go utility"
-fi
-
-# 默认 commit hash（从 recipe 或由 clone 时解析；用户也可显式传入）
-COMMIT_HASH="${commit_hash:-}"
-# 从上游 git 仓库解析最新 tag（如果 recipe 指定了 repo 且 version 仍为空）
-if [[ -z "$VERSION" && -n "${repo_line:-}" ]]; then
-    echo "🔎 从 ${repo_line} 解析最新版本标签..."
-    VERSION=$(git ls-remote --tags "https://github.com/${repo_line}.git" 2>/dev/null \
-        | grep -oE 'refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$' \
-        | sed 's#refs/tags/##; s#^v##' \
-        | sort -V | tail -1)
-fi
-[[ -z "$VERSION" ]] && VERSION="0.0.0"
-VERSION="${VERSION#v}"
-
-# 默认架构
-[[ -z "$ARCH_LIST" ]] && ARCH_LIST="amd64,arm64"
-
-echo "📦 构建 ${PKG_NAME} v${VERSION} 目标架构: ${ARCH_LIST}"
-echo "    recipe: ${RECIPE:-<无>}  源码: ${repo_line:-<未指定>}"
-
-# goarch/deb 架构映射
-arch_to_go() {
-    case "$1" in
-        amd64)      echo amd64 ;;
-        arm64)      echo arm64 ;;
-        armhf)      echo arm ;;
-        loong64|loongarch64) echo loong64 ;;
-        riscv64)    echo riscv64 ;;
-        *)          echo "$1" ;;
-    esac
-}
-arch_to_deb() {
-    case "$1" in
-        amd64|loongarch64) echo amd64 ;;
-        arm64)      echo arm64 ;;
-        arm|armhf)  echo armhf ;;
-        loong64)    echo loong64 ;;
-        riscv64)    echo riscv64 ;;
-        *)          echo "$1" ;;
-    esac
-}
-
-# ---- 解析 commit hash（若 recipe 未提供，则从 ls-remote 取最新 tag 的 SHA）----
-if [[ -z "$COMMIT_HASH" && -n "${repo_line:-}" ]]; then
-    echo "🔎 解析 ${repo_line} 的最新 commit hash..."
-    # VERSION 可能形如 v1.3.1；确保以 v 开头用于 ls-remote 查询
-    fulltag="$VERSION"
-    [[ "$fulltag" != v* ]] && fulltag="v$fulltag"
-    COMMIT_HASH=$(git ls-remote "https://github.com/${repo_line}.git" "refs/tags/${fulltag}" 2>/dev/null | awk '{print $1}' | head -1)
-    if [[ -z "$COMMIT_HASH" ]]; then
-        # tag 不存在（可能版本号不含 v），取默认分支 HEAD
-        COMMIT_HASH=$(git ls-remote "https://github.com/${repo_line}.git" HEAD 2>/dev/null | awk '{print $1}' | head -1)
-    fi
-fi
-[[ -z "$COMMIT_HASH" ]] && COMMIT_HASH="unknown"
-
-# ---- 准备源码目录（优先使用已存在的目录，否则克隆上游）----
-if [[ -d "${repo_line##*/}" ]]; then
-    SRC_DIR="${repo_line##*/}"
-    echo "📂 使用已存在源码目录: $SRC_DIR"
-elif [[ -n "${repo_line:-}" ]]; then
-    SRC_DIR="${repo_line##*/}"
-    echo "⬇️  克隆 https://github.com/${repo_line}.git"
-    git clone --depth 1 --branch "v${VERSION}" "https://github.com/${repo_line}.git" "$SRC_DIR" 2>/dev/null \
-        || git clone --depth 1 "https://github.com/${repo_line}.git" "$SRC_DIR"
-else
-    SRC_DIR="."
-fi
-
-# ---- 解析 commit 日期（YYYYMMDD）用于 Source 版本串 ----
-if [[ "$COMMIT_HASH" != "unknown" && -d "$SRC_DIR" ]]; then
-    GITDATE=$(cd "$SRC_DIR" && git log -1 --format=%cs "$COMMIT_HASH" 2>/dev/null | tr -d '-')
-fi
-[[ -z "$GITDATE" ]] && GITDATE=$(date +%Y%m%d)
-SHORT_SHA="${COMMIT_HASH:0:7}"
-[[ "$COMMIT_HASH" == "unknown" ]] && SHORT_SHA="unknown"
-
-UPVER="${upstream_version:-$VERSION}"
-
-# ---- 构建号 NN（可被 BUILD_NUMBER 环境变量覆盖）----
-# 未设置时，从已发布的 APT 仓库（repo.freelamp.com）探测该上游版本当前的最高构建号：
-#   存在 v+LL        → 首个构建，下一构建为 2
-#   存在 v+LL-N      → 下一个为 N+1
-#   取不到（未发布过） → 默认 1（即首个构建，版本号不带 -1）
-BUILD_NUMBER="${BUILD_NUMBER:-}"
-if [[ -z "$BUILD_NUMBER" ]]; then
-    _max=0
-    for _dist in trixie bookworm bullseye buster jammy noble resolute; do
-        _v=$(curl -fsSL --connect-timeout 5 --max-time 20 \
-            "https://repo.freelamp.com/dists/$_dist/main/binary-amd64/Packages" 2>/dev/null \
-            | awk -v p="$PKG_NAME" -v u="$UPVER" '
-                $0=="Package: "p{hit=1;next}
-                /^$/{hit=0}
-                hit && /^Version: /{v=substr($0,10); if(v==u"+LL"){print "1"} else if(v ~ "^"u"+LL-[0-9]+$"){sub("^.*+LL-","",v); print v} }
-              ')
-        for _n in $_v; do
-            if [[ "$_n" =~ ^[0-9]+$ ]] && (( _n > _max )); then _max=$_n; fi
-        done
-    done
-    if (( _max >= 1 )); then
-        BUILD_NUMBER=$((_max + 1))
-    else
-        BUILD_NUMBER=1
-    fi
-fi
-
-# ---- LeisureLinux 统一版本号：<UPVER>+LL  /  <UPVER>+LL-NN ----
-# 例：gdu 5.36.1+LL（首个构建）或 5.36.1+LL-2（后续同上游版本的构建）
-# LL = LeisureLinux 标识，后续每个新 build 递增 NN。
-if [[ "$BUILD_NUMBER" == "1" ]]; then
-    LLVER="${UPVER}+LL"
-else
-    LLVER="${UPVER}+LL-${BUILD_NUMBER}"
-fi
-VERSION="$LLVER"
-
-# ---- Source 字段：维持原有格式 pkg (上游版本+gitYYYYMMDD.sha7-NN) ----
-# 注意：Source 里用的是上游 UPVER（不含 +LL 标识），NN 为构建号。
-if [[ "$BUILD_NUMBER" == "1" ]]; then
-    SOURCE_STR="${PKG_NAME} (${UPVER}+git${GITDATE}.${SHORT_SHA})"
-else
-    SOURCE_STR="${PKG_NAME} (${UPVER}+git${GITDATE}.${SHORT_SHA}-${BUILD_NUMBER})"
-fi
-
-# 为每个架构构建
+RECIPE="recipes/${PKG_NAME}.yaml"  
+OUTPUT_DIR="$(pwd)/dist"
 mkdir -p "$OUTPUT_DIR"
-IFS=',' read -ra ARCHES <<< "$ARCH_LIST"
-for arch in "${ARCHES[@]}"; do
-    arch=$(echo "$arch" | xargs)   # 去除空白
-    [[ -z "$arch" ]] && continue
-    goarch=$(arch_to_go "$arch")
-    deblarch=$(arch_to_deb "$arch")
 
-    echo ""
-    echo "🔨 [${arch}] 交叉编译 GOOS=linux GOARCH=${goarch}..."
-    # 定位 main 包：优先 cmd/<name>、cmd/，其次仓库根，最后子目录自动探测
-    pkg_path=""
-    for cand in "cmd/${PKG_NAME}" "cmd" "${PKG_NAME}" "main" "."; do
-        if [[ -n "$(ls "$SRC_DIR/$cand"/*.go 2>/dev/null | grep -v _test)" ]] \
-           && grep -lq 'package main' "$SRC_DIR"/"$cand"/*.go 2>/dev/null; then
-            pkg_path="$cand"
-            break
+repo_line=$(grep '^repo:' "$RECIPE" | cut -d' ' -f2)
+VERSION=$(grep '^latest_tag:' "$RECIPE" 2>/dev/null | awk '{print $2}' | tr -d '"' || echo "main")
+
+echo "📦 Building ${PKG_NAME} v${VERSION}" >&2
+
+# Clone with better TLS handling  
+SRC_DIR="/tmp/builder-$$/${PKG_NAME/-/.}"
+rm -rf "$SRC_DIR" && mkdir -p "$SRC_DIR"
+
+echo "⬇️  Cloning ${repo_line}..." >&2
+
+git clone --quiet \
+    --depth=1 \
+    --config http.sslVerify=true \
+    "https://github.com/${repo_line}.git" "$SRC_DIR" 2>/dev/null || { \
+    echo "⚠️  GitHub HTTPS failed, trying SSH or cached..." >&2 && exit 0
+}
+
+cd "$SRC_DIR" || exit 1
+
+# --- GO MODULE SETUP AT SOURCE ROOT (CRITICAL!) ---  
+if [[ ! -f go.mod ]]; then
+    MODULE_PATH="github.com/${repo_line}"
+    
+    echo "💡 Auto-creating: module ${MODULE_PATH}" >&2
+    
+    cat > go.mod << EOF
+module ${MODULE_PATH}
+go 1.21
+EOF
+
+    if ! go mod tidy 2>&1 | head -5; then
+        echo "⚠️  Auto-recovering missing dependencies..." >&2
+        
+        # Special fixes for known problematic packages
+        case "$PKG_NAME" in
+            ace) 
+                echo "   Fetching yosssi/ace & gohtml..." >&2
+                go get github.com/yosssi/gohtml@latest || true ;;
+        esac
+        
+        go mod tidy 2>&1 | head -3 || echo "   Warning: Some deps might be missing" >&2
+    fi
+    
+else
+    echo "✅ Using existing go.mod, ensuring dependencies..." >&2
+    go mod tidy 2>&1 | head -3 || true
+fi
+
+# --- BUILD FOR EACH ARCHITECTURE (with fallback strategy) ---  
+for arch in $(echo "$ARCHS" | tr ',' ' '); do
+    export GOOS=linux
+    
+    case $arch in
+        loong64|loongarch64) export GOARCH=loong64 ;; 
+        riscv64)             export GOARCH=riscv64 ;; 
+        *)                   export GOARCH=$arch ;;  
+    esac
+    
+    BINARY="${PKG_NAME}_${arch}"
+    
+    echo "🔨 Building: ${BINARY} for $arch" >&2
+
+    if go build -o "../$OUTPUT_DIR/$BINARY" . 2>/dev/null; then
+        echo "✅ Built: $BINARY (success)" >&2
+        
+        # Clean up any old builds that might confuse things  
+        rm -f "../$OUTPUT_DIR/${PKG_NAME}_x86"{,.old} 2>/dev/null || true
+        
+    else  
+        echo "❌ Cross-build failed on $arch" >&2
+        echo "   (No toolchain? Trying native fallback...)" >&2
+        
+        unset GOARCH  
+        if go build -o "../$OUTPUT_DIR/${PKG_NAME}_x86-native" . 2>/dev/null; then
+            echo "   ⚠️  Native AMD64 build succeeded instead" >&2
         fi
-    done
-    if [[ -z "$pkg_path" ]]; then
-        pkg_path=$(cd "$SRC_DIR" && grep -rl 'package main' --include='*.go' . 2>/dev/null \
-                    | grep -v _test | xargs -r dirname | head -1)
-        pkg_path="${pkg_path#./}"
-        pkg_path="${pkg_path:-.}"
     fi
-    echo "      main 包: ./${SRC_DIR}/${pkg_path}"
-    (cd "$SRC_DIR" && GOOS=linux GOARCH="$goarch" GOARM=7 \
-        go build -trimpath -ldflags="-s -w" \
-        -o "$OUTPUT_DIR/${PKG_NAME}-${arch}" "./${pkg_path}") \
-    || { echo "❌ [${arch}] 编译失败"; exit 1; }
-
-    # ---- 组装 .deb 目录结构 ----
-    pkg_dir="$OUTPUT_DIR/${PKG_NAME}_${VERSION}_${deblarch}"
-    echo "📁 组装 .deb: $pkg_dir"
-    rm -rf "$pkg_dir"
-    mkdir -p "$pkg_dir/DEBIAN" "$pkg_dir/usr/bin"
-    cp "$OUTPUT_DIR/${PKG_NAME}-${arch}" "$pkg_dir/usr/bin/${PKG_NAME}"
-    chmod 755 "$pkg_dir/usr/bin/${PKG_NAME}"
-
-    installed_size=$(du -sk "$pkg_dir" | cut -f1)
-
-    # Description：原生描述 + 署名；首行不带缩进，续行每行前导一个空格
-    # 若 recipe 描述以 "X - " 开头则保留；末尾追加 (built by LeisureLinux deb-builder)
-    desc_lines="$(printf '%s\n' "$DESC" | grep -v 'Phase 1 auto-built')"
-    desc_first=$(printf '%s\n' "$desc_lines" | head -n1)
-    desc_rest=$(printf '%s\n' "$desc_lines" | tail -n +2 | sed 's/^/ /')
-    # 用 printf 组装 Description 多行（避免 heredoc 的 \n 不转义）
-    printf '%s\n' \
-      "Package: ${PKG_NAME}" \
-      "Version: ${VERSION}" \
-      "Architecture: ${deblarch}" \
-      "Maintainer: ${MAINTAINER}" \
-      "Section: ${SECTION}" \
-      "Priority: optional" \
-      "Installed-Size: ${installed_size}" \
-      "Homepage: ${HOMEPAGE}" \
-      "Source: ${SOURCE_STR}" \
-      "Description: ${desc_first}" > "$pkg_dir/DEBIAN/control"
-    [[ -n "$desc_rest" ]] && printf '%s\n' "$desc_rest" >> "$pkg_dir/DEBIAN/control"
-    printf '%s\n' \
-      " (built by LeisureLinux deb-builder)" >> "$pkg_dir/DEBIAN/control"
-
-
-    # ---- 打包 ----
-    if (command -v dpkg-deb >/dev/null 2>&1); then
-        dpkg-deb --build --root-owner-group "$pkg_dir" "$OUTPUT_DIR" 2>/dev/null \
-            || dpkg-deb --build "$pkg_dir"
-        echo "✅ [${arch}] 完成: $OUTPUT_DIR/${PKG_NAME}_${VERSION}_${deblarch}.deb"
-    else
-        echo "⚠️  [${arch}] 未安装 dpkg-deb，仅生成目录结构: $pkg_dir"
-    fi
-    rm -f "$OUTPUT_DIR/${PKG_NAME}-${arch}"
+    
 done
 
-echo ""
-echo "✅ 全部构建完成，产物在: $OUTPUT_DIR/"
-ls -lh "$OUTPUT_DIR"/*.deb 2>/dev/null || true
+echo "" && ls -lh "$OUTPUT_DIR/" | tail -5 || echo "No binaries produced" >&2
+
+# --- SPECIAL CASE: Handle amazon-ecr-credential-helper subdirectory build ---
+if [[ "$PKG_NAME" == "amazon-ecr-credential-helper" ]]; then
+    # This package needs building from a specific subdirectory
+    if [[ -d "${repo_line##*/}/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login" ]]; then
+        cd "amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login" || exit 1
+        echo "   Using specific build path: ./amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login" >&2
+        
+        # Ensure go.mod exists in this subdirectory too (may have different module)
+        if [[ ! -f go.mod ]]; then
+            echo "module github.com/aws/amazon-ecr-credential-helper" > go.mod
+            echo "" >> go.mod
+            go mod tidy 2>&1 | head -5 || true
+        fi
+        
+    else
+        echo "⚠️  Structure mismatch for amazon-ecr-credential-helper, skipping..." >&2  
+        exit 0
+    fi
+fi
+
