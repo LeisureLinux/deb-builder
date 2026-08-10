@@ -1,0 +1,102 @@
+#!/bin/bash
+# build-go-deb.sh v6 - Global Architecture Restriction (amd64/arm64 only)
+set -euo pipefail
+
+PKG_NAME="${1:?Usage: $0 <package-name>}"
+VERSION="${2:-}"
+OUTPUT_DIR="${3:-dist}"
+
+RECIPE="recipes/${PKG_NAME}.yaml"
+[ ! -f "$RECIPE" ] && echo "Error: Recipe not found ($RECIPE)"; exit 1
+
+repo_line=$(grep '^repo:' "$RECIPE" | awk '{print $2}')
+VERSION_RAW=$(grep -E 'latest_tag|version_tag' "$RECIPE" 2>/dev/null | head -1 | cut -d: -f2 | tr -d ' ')
+[ -n "$VERSION_RAW" ] && VERSION="${VERSION_RAW}" || VERSION="0.0.0"
+
+SRC_DIR="$(basename "$repo_line")"
+mkdir -p dist
+
+log_info() { echo "[INFO] $*" >&2; }
+log_error() { echo "ERROR: $*" >&2; exit 1; }
+
+# ===== GLOBAL ARCHITECTURE OVERRIDE (STEP 3 FINAL FIX) ======
+echo "[CONFIG] Using global architecture restriction: amd64,arm64 only" >&2
+ARCH_LIST="amd64,arm64"
+MAX_RETRIES=3
+
+# Two-phase dependency resolution  
+resolve_deps() {
+    cd "$SRC_DIR"
+    
+    [ ! -f go.sum ] && {
+        log_info "[Phase 1] Init & tidy with network fallback..."
+        timeout 60s GOOS=linux GOPROXY=https://goproxy.io,direct GOSUMDB=off \
+            go mod init github.com/"$repo_line" || true;
+        timeout 60s GOPROXY=https://goproxy.io,direct go get -d ./... || true
+        
+        [ ! -f go.sum ] && {
+            log_info "[Phase 2] Manual dep fetch for common patterns..."
+            for pkg in $(go list -m all 2>/dev/null | grep -v 'github.com/$repo_line/'); do 
+                timeout 10s GOPROXY=https://goproxy.io,direct go get "$pkg@latest" || true;
+            done
+        }
+    }
+    
+    timeout 60s GOSUMDB=off GOPROXY=https://goproxy.io,direct go mod tidy && \
+        log_info "Dependencies resolved successfully!" || { 
+        log_error "Failed to fetch dependencies after retries"
+    }
+}
+
+detect_main() {
+    for cand in "cmd/$PKG_NAME" "cmd" "."; do 
+        if [ -d "$SRC_DIR/$cand" ]; then
+            test_files=$(find "$SRC_DIR/$cand" -maxdepth 1 -name '*.go' ! -name '*_test.go') || continue
+            echo "$test_files" | xargs grep -l 'package main' >/dev/null 2>&1 && { 
+                echo "$cand"; return
+            }
+        fi
+    done
+    log_error "Cannot find main package for $PKG_NAME"
+}
+
+build_arch() {
+    local arch=$1
+    
+    cd "$SRC_DIR"
+    GOOS=linux GOARCH=$arch GOPROXY=https://goproxy.io,direct GOSUMDB=off \
+        go build -trimpath -ldflags="-s -w -buildid=" -o "../dist/${PKG_NAME}-${arch}" ./cmd/ace 2>&1 | tee /dev/stderr && {
+        
+        pkg_dir="dist/${PKG_NAME}_${VERSION}_${arch}"
+        mkdir -p "$pkg_dir/DEBIAN" "$pkg_dir/usr/bin" || true
+        cp "../dist/${PKG_NAME}-${arch}" "$pkg_dir/usr/bin/" 2>/dev/null || return 1
+        
+        cat > "${pkg_dir}/DEBIAN/control" <<EOFCONTROL
+Package: ${PKG_NAME}
+Version: ${VERSION}
+Architecture: ${arch}
+Maintainer: LeisureLinux <albertxu@freelamp.com>
+Description: Go CLI tool from $repo_line (Built with global arch restriction)
+EOFCONTROL
+        
+        cd dist && timeout 60s dpkg-deb --build "$pkg_name" >/dev/null 2>&1 || return 1
+        log_info "✅ [${arch}] Built successfully!" >&2
+    } || { 
+        log_error "[ERROR] Build failure for ${arch}" >&2; 
+        return 1
+    }
+}
+
+# ===== MAIN EXECUTION =====
+log_info "Building $PKG_NAME v$VERSION (Global: amd64/arm64 only - Step 3)"
+
+resolve_deps || exit 1
+pkg_path=$(detect_main)
+log_info "Main path detected: $pkg_path"
+
+for arch in $(echo "$ARCH_LIST" | tr ',' ' '); do
+    build_arch "$arch" || continue
+done
+
+log_info "=== Build Complete for Global Arch (amd64/arm64 only) ==="
+ls -lh dist/*.deb 2>/dev/null || log_warn "(No .deb files)" >&2

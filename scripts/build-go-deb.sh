@@ -118,3 +118,12 @@ done
 echo "" >&2
 log_info "Build complete. Output: dist/" >&2
 ls -lh dist/*.deb 2>/dev/null || log_warn "No .deb files generated" >&2
+
+# ===== ARCHITECTURE OVERRIDE LOGIC (NEW FOR STEP 3) ======
+if [ "$1" = "--global-arch-restrict" ]; then
+    echo "[CONFIG] Global mode: restricting all packages to amd64/arm64 only!" >&2
+    # Override any recipe-specified architectures for this package
+    ARCH_LIST="amd64,arm64"
+fi
+# END OF ARCH OVERRIDE LOGIC
+
