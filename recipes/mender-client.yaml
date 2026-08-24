@@ -18,12 +18,10 @@ upstream_version: "3.5.2"
 # Go 构建配置
 ldflags: "-s -w"
 
-# 全架构打包
+# vendored C 依赖（liblzma、openssl）需要系统头文件；
+# arm64 交叉编译需完整 multiarch sysroot，CI 暂只支持 amd64
 target_arches:
   - amd64
-  - arm64
-  - loong64
-  - riscv64
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
