@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：插件集合无单一主包，需多产物构建方案
+disabled: true # 插件集合无单一主包，需多产物构建方案

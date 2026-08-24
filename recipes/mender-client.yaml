@@ -9,10 +9,11 @@ homepage: https://github.com/mendersoftware/mender
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "5.1.0"
-latest_tag: "5.1.0"
-commit_hash: "54d57fc32abd0bb1a8f0336d6d5ab624d3c5ac49"
-upstream_version: "5.1.0"
+version_tag: "3.5.2"
+latest_tag: "3.5.2"
+# mender 4.x 起改为 C++ 实现；Go 版客户端止于 3.5.2
+commit_hash: "9cac733f6913e1107905213fe274445f3951e5c4"
+upstream_version: "3.5.2"
 
 # Go 构建配置
 ldflags: "-s -w"
@@ -26,3 +27,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# 需要 cgo（vendored lmdb C 代码）
+cgo: true

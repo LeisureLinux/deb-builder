@@ -17,7 +17,7 @@ OUTPUT_DIR="$(pwd)/dist"
 mkdir -p "$OUTPUT_DIR"
 
 # --- Parse recipe fields ---
-repo_line=$(grep '^repo:' "$RECIPE" | awk '{print $2}' | tr -d '"' | tr -d "'")
+repo_line=$(grep '^repo:' "$RECIPE" | awk '{print $2}' | tr -d '"' | tr -d "'" || true)
 if [[ -z "$repo_line" ]]; then
   echo "❌ Missing 'repo:' in $RECIPE" >&2
   exit 1
@@ -40,7 +40,7 @@ else
 fi
 
 # build_path (optional, default ".")
-BUILD_PATH=$(grep '^build_path:' "$RECIPE" 2>/dev/null | sed 's/^build_path:[ ]*//' | tr -d '"' || true)
+BUILD_PATH=$(grep '^build_path:' "$RECIPE" 2>/dev/null | head -n1 | sed 's/^build_path:[ ]*//' | tr -d '"' || true)
 BUILD_PATH="${BUILD_PATH:-.}"
 
 COMMIT_HASH=$(grep '^commit_hash:' "$RECIPE" 2>/dev/null | awk '{print $2}' | tr -d '"' || true)
@@ -98,13 +98,40 @@ SOURCE_DIR="/tmp/${PKG_NAME}-src-${TIMESTAMP}"
 rm -rf "$SOURCE_DIR"
 mkdir -p "$SOURCE_DIR"
 echo "🔄 Cloning https://github.com/${repo_line}.git ..." >&2
-git clone --depth 1 "https://github.com/${repo_line}.git" "$SOURCE_DIR"
+# 克隆重试 3 次（网络抖动容错）
+clone_ok=0
+for attempt in 1 2 3; do
+  if git clone --depth 1 "https://github.com/${repo_line}.git" "$SOURCE_DIR" 2>/dev/null; then
+    clone_ok=1
+    break
+  fi
+  echo "⚠️  Clone attempt $attempt failed; retrying..." >&2
+  rm -rf "$SOURCE_DIR"; mkdir -p "$SOURCE_DIR"
+  sleep 5
+done
+if (( clone_ok == 0 )); then
+  echo "❌ Failed to clone https://github.com/${repo_line}.git after 3 attempts" >&2
+  exit 1
+fi
 
 cd "$SOURCE_DIR"
 if [[ -n "$COMMIT_HASH" ]]; then
   echo "🔖 Fetching & checking out ${COMMIT_HASH}" >&2
   git fetch --depth 1 origin "$COMMIT_HASH"
   git checkout "$COMMIT_HASH"
+fi
+
+# 可选的构建前钩子（如生成 embed 资源）；命令在源码根目录执行，无论是否有 go.mod 都运行
+# 确保 go install 安装的工具（protoc-gen-go 等）对钩子可见
+export PATH="$PATH:$(go env GOPATH 2>/dev/null)/bin"
+PRE_BUILD=$(grep '^pre_build:' "$RECIPE" 2>/dev/null | head -n1 | sed 's/^pre_build:[[:space:]]*//' || true)
+# 去除 YAML 包裹引号（成对时才去除）
+if [[ "${PRE_BUILD:0:1}" == "${PRE_BUILD: -1:1}" && ( "${PRE_BUILD:0:1}" == '"' || "${PRE_BUILD:0:1}" == "'" ) ]]; then
+  PRE_BUILD="${PRE_BUILD:1:${#PRE_BUILD}-2}"
+fi
+if [[ -n "$PRE_BUILD" ]]; then
+  echo "🔧 Running pre_build: $PRE_BUILD" >&2
+  bash -c "$PRE_BUILD" || { echo "❌ pre_build hook failed" >&2; exit 1; }
 fi
 
 # Repo root often isn't the buildable package (e.g. cmd/<pkg>), so auto-detect the main-package dir.
@@ -117,6 +144,9 @@ if [[ "$BUILD_PATH" == "." ]]; then
     fi
   fi
 fi
+
+# cgo 构建支持：recipe 声明 cgo: true 时启用 CGO 并配置对应架构的交叉编译器
+CGO_BUILD=$(grep '^cgo:' "$RECIPE" 2>/dev/null | head -n1 | awk '{print $2}' | tr -d '"' || true)
 
 # 嵌套模块支持：若 build_path 所在的模块根（向上最近的有 go.mod 的目录）不是仓库根，
 # 则进入该模块根构建（如 amazon-ecr-credential-helper 的 ecr-login/）。
@@ -135,12 +165,24 @@ if [[ "$BUILD_PATH" != "." ]]; then
   fi
 fi
 
+
 # go module setup (only if upstream has no go.mod)
 if [[ ! -f go.mod ]]; then
+  # 已知历史模块改名（大小写问题）：自动修正源码 import，避免 go mod tidy 解析失败
+  grep -rl 'github.com/Sirupsen/logrus' --include='*.go' . 2>/dev/null \
+    | xargs -r sed -i 's#github\.com/Sirupsen/logrus#github.com/sirupsen/logrus#g' || true
+
   echo "💡 No go.mod found; running 'go mod init' + 'go mod tidy'" >&2
-  go mod init "github.com/${repo_line}"
-  go mod tidy
+  go mod init "github.com/${repo_line}" || true
+  go mod tidy || true
 fi
+
+# 依赖版本微调：recipe 中每条 go_get: <module>@<version> 在模块就绪后执行
+while IFS= read -r g; do
+  [[ -z "$g" ]] && continue
+  echo "📌 go get $g" >&2
+  go get "$g" || echo "⚠️  go get $g failed (continuing)" >&2
+done < <(grep '^go_get:' "$RECIPE" 2>/dev/null | sed 's/^go_get:[[:space:]]*//' | tr -d '"')
 
 # 按架构容错：单个架构失败不中断，继续建其余架构；
 # 只要有一个架构成功就算成功（exit 0），全部失败才 exit 1。
@@ -152,8 +194,29 @@ for ARCH in "${ARCH_LIST[@]}"; do
   GOARCH="$ARCH"
   GOARM=""
   if [[ "$ARCH" == "armhf" ]]; then GOARCH=arm; GOARM=7; fi
-  # CGO_ENABLED=0 yields static binaries that build on clean CI runners; cgo-only packages fail honestly here.
-  export GOOS=linux GOARCH="$GOARCH" GOARM="${GOARM:-}" CGO_ENABLED=0
+
+  # cgo 构建：recipe 声明 cgo: true 时启用 CGO 并配置对应架构的编译器
+  if [[ "$CGO_BUILD" == "true" ]]; then
+    case "$ARCH" in
+      amd64)
+        export CGO_ENABLED=1 CC=gcc ;;
+      arm64)
+        if ! command -v aarch64-linux-gnu-gcc >/dev/null; then
+          echo "❌ cgo build for arm64 requires aarch64-linux-gnu-gcc (apt install gcc-aarch64-linux-gnu)" >&2
+          FAILED_ARCHES+=("$ARCH")
+          continue
+        fi
+        export CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc ;;
+      *)
+        echo "⚠️  cgo build not supported for ${ARCH}; skipping" >&2
+        FAILED_ARCHES+=("$ARCH")
+        continue ;;
+    esac
+  else
+    # CGO_ENABLED=0 yields static binaries that build on clean CI runners; cgo-only packages fail honestly here.
+    export CGO_ENABLED=0
+  fi
+  export GOOS=linux GOARCH="$GOARCH" GOARM="${GOARM:-}"
 
   BUILD_PREFIX="/tmp/build-${PKG_NAME}-${ARCH}-${TIMESTAMP}"
   mkdir -p "$BUILD_PREFIX"
@@ -190,9 +253,9 @@ for ARCH in "${ARCH_LIST[@]}"; do
 
   # Description field (support multi-line "description: |")
   if grep -q '^description: |' "$RECIPE"; then
-    DESCRIPTION=$(awk '/^description: \|/{flag=1; next} flag && /^[[:space:]]/{print; next} flag{exit}' "$RECIPE" | sed 's/^[[:space:]]*//; s/^/ /')
+    DESCRIPTION=$(awk '/^description: \|/{flag=1; next} flag && /^[[:space:]]/{print; next} flag{exit}' "$RECIPE" | sed 's/^[[:space:]]*//; s/^/ /' || true)
   else
-    DESCRIPTION=$(grep '^description:' "$RECIPE" | sed 's/^description:[ ]*//' | tr -d '"')
+    DESCRIPTION=$(grep '^description:' "$RECIPE" 2>/dev/null | sed 's/^description:[ ]*//' | tr -d '"' || true)
   fi
 
   mkdir -p "$DEB_ROOT/DEBIAN"

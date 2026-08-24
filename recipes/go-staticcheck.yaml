@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：build constraints 排除且 -mod=mod 无效，Go 版本要求不满足
+disabled: true # build constraints 排除且 -mod=mod 无效，Go 版本要求不满足

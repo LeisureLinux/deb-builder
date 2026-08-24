@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：上游锁定版本的代码已损坏
+disabled: true # 上游锁定版本的代码已损坏

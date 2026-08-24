@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：依赖过旧（socketPPPoE undefined），待升级依赖
+disabled: true # 依赖过旧（socketPPPoE undefined），待升级依赖

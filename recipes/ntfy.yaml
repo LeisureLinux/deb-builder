@@ -26,3 +26,7 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# server 包 go:embed site/docs 目录由 make 生成；CI 用占位符保证二进制可构建（web 界面不含在内）
+pre_build: "mkdir -p server/site server/docs && printf '<html><body>ntfy (docs/web assets not included in this build)</body></html>' > server/docs/index.html && cp server/docs/index.html server/site/index.html"
+# web/docs 资源未嵌入，运行时相关页面为占位页

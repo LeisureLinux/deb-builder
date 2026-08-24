@@ -26,3 +26,9 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# 库仓库无单一主程序；发布 btmgmt 蓝牙管理工具作为二进制
+build_path: "./examples/btmgmt"
+# 依赖修复：Sirupsen 大小写改名；go-systemd 升到 v22；godbus 同步升 v5（API 兼容）
+pre_build: 'grep -rl "github.com/Sirupsen/logrus" --include="*.go" . | xargs -r sed -i "s#github\.com/Sirupsen/logrus#github.com/sirupsen/logrus#g"; grep -rl "github.com/coreos/go-systemd" --include="*.go" . | xargs -r sed -i "s#github\.com/coreos/go-systemd/dbus#github.com/coreos/go-systemd/v22/dbus#g"; grep -rl "github.com/godbus/dbus" --include="*.go" . | xargs -r sed -i "s#github\.com/godbus/dbus/v5#XXX_KEEP_V5_XXX#g; s#github\.com/godbus/dbus#github.com/godbus/dbus/v5#g; s#XXX_KEEP_V5_XXX#github.com/godbus/dbus/v5#g"'
+go_get: github.com/coreos/go-systemd/v22@v22.5.0

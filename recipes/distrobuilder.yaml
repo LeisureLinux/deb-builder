@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：目录结构特殊，需按上游 Makefile 定制构建
+disabled: true # 目录结构特殊，需按上游 Makefile 定制构建

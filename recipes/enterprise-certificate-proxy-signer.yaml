@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：Go 版本要求超出 CI 环境
+disabled: true # Go 版本要求超出 CI 环境

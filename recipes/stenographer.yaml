@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# blockfile 包使用 import "C"（linux 头文件）
+cgo: true
