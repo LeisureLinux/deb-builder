@@ -13,8 +13,13 @@ if [[ ! -f "$recipe" ]]; then
 fi
 
 # 从 recipe 的 target_arches 解析真实架构列表（不再传空 "" 导致不构建）
+# 允许用环境变量 ARCHS 覆盖（用于测试指定架构）
 ARCHS=$(awk '/^target_arches:/{flag=1; next} /^[^[:space:]]/ && flag{exit} flag && /^[[:space:]]*- /{sub(/^[[:space:]]*- /,""); print $1}' "$recipe" | paste -sd, -)
 ARCHS="${ARCHS:-amd64}"
+if [[ -n "${ARCHS_OVERRIDE:-}" ]]; then
+    echo "⚙️  Arch override from env: ${ARCHS_OVERRIDE}" >&2
+    ARCHS="$ARCHS_OVERRIDE"
+fi
 
 echo "🏗️  Building ${PKG_NAME} for arches: ${ARCHS} ..." >&2
 bash scripts/build-go-deb.sh "$PKG_NAME" "$ARCHS" "${BINARY_PATH:-}"

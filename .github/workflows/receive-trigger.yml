@@ -9,6 +9,10 @@ on:
       package:
         description: 'Package name to build (e.g., gdu, ripgrep)'
         required: false
+      arches:
+        description: 'Optional comma-separated arch override (e.g., amd64,arm64); empty = use recipe target_arches'
+        required: false
+        default: ''
 
 jobs:
   receive-trigger:
@@ -25,6 +29,7 @@ jobs:
           # then fall back to the workflow_dispatch input, else auto mode.
           CLIENT_PKG="${{ github.event.client_payload.package }}"
           INPUT_PKG="${{ inputs.package }}"
+          echo "arches=${{ inputs.arches }}" >> "$GITHUB_OUTPUT"
 
           if [ -n "$CLIENT_PKG" ] && [ "$CLIENT_PKG" != "null" ]; then
             echo "pkg_name=$CLIENT_PKG" >> "$GITHUB_OUTPUT"
@@ -44,6 +49,8 @@ jobs:
 
       - name: Build specific package
         if: steps.pkg.outputs.pkg_name != 'auto'
+        env:
+          ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches }}
         run: |
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}"
 
