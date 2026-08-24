@@ -79,6 +79,26 @@ if [[ -z "$ARCHS_CSV" ]]; then
   ARCHS_CSV="amd64"
 fi
 
+# 架构声明取交集：recipe 的 target_arches 表达包本身支持的范围，
+# 外部传入的列表（CI 发布范围）与其求交，避免对不支持的架构白费构建。
+RECIPE_ARCHES=$(awk '/^target_arches:/{flag=1; next} /^[^[:space:]]/ && flag{exit} flag && /^[[:space:]]*- /{sub(/^[[:space:]]*- /,""); print $1}' "$RECIPE" | paste -sd, -)
+if [[ -n "$RECIPE_ARCHES" ]]; then
+  FILTERED=""
+  IFS=',' read -ra WANT <<< "$ARCHS_CSV"
+  IFS=',' read -ra ALLOWED <<< "$RECIPE_ARCHES"
+  for w in "${WANT[@]}"; do
+    w="$(echo "$w" | tr -d ' ')"
+    [[ -z "$w" ]] && continue
+    for a in "${ALLOWED[@]}"; do
+      if [[ "$w" == "$a" ]]; then FILTERED="${FILTERED:+$FILTERED,}$w"; break; fi
+    done
+  done
+  if [[ -n "$FILTERED" && "$FILTERED" != "$ARCHS_CSV" ]]; then
+    echo "ℹ️  Intersected with recipe target_arches ($RECIPE_ARCHES): $FILTERED" >&2
+    ARCHS_CSV="$FILTERED"
+  fi
+fi
+
 declare -a ARCH_LIST=()
 while IFS= read -r a; do
   [[ -z "$a" ]] && continue

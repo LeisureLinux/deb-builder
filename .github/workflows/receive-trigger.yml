@@ -57,8 +57,8 @@ jobs:
           # CI 只构建发布 amd64 + arm64；loong64/riscv64 由本地构建或后续单独支持
           ARCHS_OVERRIDE: amd64,arm64
         run: |
-          # cgo recipe 需要：交叉编译器、protoc（opensnitch 生成 pb 代码）、lzma/openssl 头文件
-          sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev pkg-config >/dev/null
+          # cgo recipe 需要：交叉编译器、protoc、以及 mender/opensnitch 的 C 依赖头文件
+          sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
           bash scripts/build-all.sh
 
       - name: Build specific package
@@ -67,7 +67,7 @@ jobs:
           # 默认只建 amd64+arm64；可用 workflow_dispatch 的 arches 输入覆盖
           ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches || 'amd64,arm64' }}
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev pkg-config >/dev/null
+          sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}"
 
       # Option 2: push the built .deb files directly into apt-repo's incoming/,
