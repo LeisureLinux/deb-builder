@@ -26,3 +26,7 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：上游已归档，自动生成的模块无法解析依赖
+# 待逐包修复后移除 disabled 行重新启用
+disabled: true # 上游已归档，自动生成的模块无法解析依赖
