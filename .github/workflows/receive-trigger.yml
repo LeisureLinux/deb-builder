@@ -14,6 +14,15 @@ on:
         required: false
         default: ''
 
+# 并发控制：
+# - 全量构建（auto 模式）共用 deb-builder-auto 组，新运行会取消旧的进行中/排队的全量运行，
+#   避免 scanner 一次派发多个重复全量任务。
+# - 单包构建按包名分组（deb-builder-<pkg>），不同包可并行；同一包重复触发时排队执行、不取消，
+#   避免漏建包。
+concurrency:
+  group: deb-builder-${{ github.event.client_payload.package || 'auto' }}
+  cancel-in-progress: ${{ github.event.client_payload.package == null || github.event.client_payload.package == '' }}
+
 jobs:
   receive-trigger:
     runs-on: ubuntu-latest
