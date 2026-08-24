@@ -53,13 +53,17 @@ jobs:
 
       - name: Build all recipes (auto mode)
         if: steps.pkg.outputs.pkg_name == 'auto'
+        env:
+          # CI 只构建发布 amd64 + arm64；loong64/riscv64 由本地构建或后续单独支持
+          ARCHS_OVERRIDE: amd64,arm64
         run: |
           bash scripts/build-all.sh
 
       - name: Build specific package
         if: steps.pkg.outputs.pkg_name != 'auto'
         env:
-          ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches }}
+          # 默认只建 amd64+arm64；可用 workflow_dispatch 的 arches 输入覆盖
+          ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches || 'amd64,arm64' }}
         run: |
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}"
 

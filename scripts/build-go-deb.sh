@@ -25,14 +25,14 @@ fi
 
 HOMEPAGE=$(grep '^homepage:' "$RECIPE" | sed 's/^homepage:[ ]*//' | tr -d '"' || true)
 
-UPGRADE_VERSION_RAW=$(grep '^upstream_version:' "$RECIPE" 2>/dev/null | head -n1)
+UPGRADE_VERSION_RAW=$(grep '^upstream_version:' "$RECIPE" 2>/dev/null | head -n1 || true)
 if [[ -z "$UPGRADE_VERSION_RAW" ]]; then
   UPGRADE_VERSION="0.0.1"
 else
   UPGRADE_VERSION=$(echo "$UPGRADE_VERSION_RAW" | sed 's/^upstream_version:[ ]*//' | tr -d '"' | sed 's/^v//')
 fi
 
-VERSION_RAW=$(grep '^latest_tag:' "$RECIPE" 2>/dev/null | head -n1)
+VERSION_RAW=$(grep '^latest_tag:' "$RECIPE" 2>/dev/null | head -n1 || true)
 if [[ -n "$VERSION_RAW" ]]; then
   VERSION=$(echo "$VERSION_RAW" | sed 's/^latest_tag:[ ]*//' | tr -d '"' | sed 's/^v//')
 else
@@ -125,6 +125,11 @@ if [[ ! -f go.mod ]]; then
   go mod tidy
 fi
 
+# 按架构容错：单个架构失败不中断，继续建其余架构；
+# 只要有一个架构成功就算成功（exit 0），全部失败才 exit 1。
+FAILED_ARCHES=()
+OK_COUNT=0
+
 for ARCH in "${ARCH_LIST[@]}"; do
   echo "🚀 Building for ${ARCH}..." >&2
   GOARCH="$ARCH"
@@ -139,7 +144,8 @@ for ARCH in "${ARCH_LIST[@]}"; do
 
   if ! go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" ; then
     echo "❌ go build failed for ${ARCH}" >&2
-    exit 1
+    FAILED_ARCHES+=("$ARCH")
+    continue
   fi
   if [[ ! -f "$BIN" ]]; then
     echo "❌ Binary not created: $BIN" >&2
@@ -175,9 +181,19 @@ EOF
   DEB_FILE="${OUTPUT_DIR}/${PKG_NAME}_${FINAL_VERSION}_${ARCH}.deb"
   if ! dpkg-deb --build --root-owner-group "$DEB_ROOT" "$DEB_FILE" >/dev/null; then
     echo "❌ dpkg-deb failed for ${ARCH}" >&2
-    exit 1
+    FAILED_ARCHES+=("$ARCH")
+    continue
   fi
   echo "✅ Created: $DEB_FILE" >&2
+  OK_COUNT=$((OK_COUNT+1))
 done
+
+if (( OK_COUNT == 0 )); then
+  echo "💥 All architectures failed for ${PKG_NAME}: ${FAILED_ARCHES[*]}" >&2
+  exit 1
+fi
+if (( ${#FAILED_ARCHES[@]} > 0 )); then
+  echo "⚠️  Partial build for ${PKG_NAME}: ${OK_COUNT} arch(s) OK, failed: ${FAILED_ARCHES[*]}" >&2
+fi
 
 echo "🎉 Done: $(ls -1 "$OUTPUT_DIR"/${PKG_NAME}_${FINAL_VERSION}_*.deb 2>/dev/null | wc -l) .deb file(s) in dist/" >&2
