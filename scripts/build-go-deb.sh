@@ -118,6 +118,23 @@ if [[ "$BUILD_PATH" == "." ]]; then
   fi
 fi
 
+# 嵌套模块支持：若 build_path 所在的模块根（向上最近的有 go.mod 的目录）不是仓库根，
+# 则进入该模块根构建（如 amazon-ecr-credential-helper 的 ecr-login/）。
+if [[ "$BUILD_PATH" != "." ]]; then
+  MOD_DIR="$BUILD_PATH"
+  while [[ "$MOD_DIR" != "." && ! -f "$MOD_DIR/go.mod" ]]; do
+    MOD_DIR="$(dirname "$MOD_DIR")"
+  done
+  if [[ "$MOD_DIR" != "." && -f "$MOD_DIR/go.mod" ]]; then
+    REL="${BUILD_PATH#"$MOD_DIR"/}"
+    [[ "$REL" == "$BUILD_PATH" ]] && REL="."
+    echo "🔍 Nested Go module at ${MOD_DIR}; building ./${REL} from there" >&2
+    cd "$MOD_DIR"
+    BUILD_PATH="./${REL#.}"
+    BUILD_PATH="${BUILD_PATH%/}"
+  fi
+fi
+
 # go module setup (only if upstream has no go.mod)
 if [[ ! -f go.mod ]]; then
   echo "💡 No go.mod found; running 'go mod init' + 'go mod tidy'" >&2
@@ -142,10 +159,24 @@ for ARCH in "${ARCH_LIST[@]}"; do
   mkdir -p "$BUILD_PREFIX"
   BIN="${BUILD_PREFIX}/${PKG_NAME}"
 
-  if ! go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" ; then
-    echo "❌ go build failed for ${ARCH}" >&2
-    FAILED_ARCHES+=("$ARCH")
-    continue
+  BUILD_RC=0
+  BUILD_LOG=$(go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1) || BUILD_RC=$?
+  if (( BUILD_RC != 0 )); then
+    # vendor/modules.txt 与 go.mod 不同步的老项目：改用 -mod=mod 忽略 vendor 重试一次
+    if echo "$BUILD_LOG" | grep -q 'modules.txt'; then
+      echo "⚠️  vendor/ inconsistent with go.mod; retrying with -mod=mod ..." >&2
+      if ! BUILD_LOG=$(go build -mod=mod -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1); then
+        echo "$BUILD_LOG" >&2
+        echo "❌ go build failed for ${ARCH}" >&2
+        FAILED_ARCHES+=("$ARCH")
+        continue
+      fi
+    else
+      echo "$BUILD_LOG" >&2
+      echo "❌ go build failed for ${ARCH}" >&2
+      FAILED_ARCHES+=("$ARCH")
+      continue
+    fi
   fi
   if [[ ! -f "$BIN" ]]; then
     echo "❌ Binary not created: $BIN" >&2

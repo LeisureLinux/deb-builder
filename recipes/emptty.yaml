@@ -26,3 +26,7 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# ⛔ 暂时禁用：依赖 pam C 库，CGO_ENABLED=0 无法编译
+# 待逐包修复（或改用原生工具链构建）后移除 disabled 行重新启用
+disabled: true # 依赖 pam C 库，CGO_ENABLED=0 无法编译

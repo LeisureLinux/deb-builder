@@ -16,9 +16,14 @@ for recipe in recipes/*.yaml; do
     pkg="$(basename "$recipe" .yaml)"
     echo "========================================"
     echo "📦 Building: $pkg"
-    if bash scripts/build-one.sh "$pkg"; then
+    rc=0
+    bash scripts/build-one.sh "$pkg" || rc=$?
+    if (( rc == 0 )); then
         built=$((built+1))
         echo "✅ $pkg OK"
+    elif (( rc == 2 )); then
+        skipped=$((skipped+1))
+        echo "⏭️  $pkg SKIPPED (disabled)"
     else
         failed=$((failed+1))
         echo "❌ $pkg FAILED"

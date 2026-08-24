@@ -12,6 +12,13 @@ if [[ ! -f "$recipe" ]]; then
     exit 1
 fi
 
+# 已声明禁用的 recipe：跳过（exit 2 = skipped），不视为失败
+if grep -qE '^disabled:[[:space:]]*true' "$recipe"; then
+    reason=$(grep '^disabled:' "$recipe" | head -1 | sed 's/^disabled:[[:space:]]*true[[:space:]]*//')
+    echo "⏭️  Skipping ${PKG_NAME} (disabled)${reason:+: $reason}" >&2
+    exit 2
+fi
+
 # 从 recipe 的 target_arches 解析真实架构列表（不再传空 "" 导致不构建）
 # 允许用环境变量 ARCHS 覆盖（用于测试指定架构）
 ARCHS=$(awk '/^target_arches:/{flag=1; next} /^[^[:space:]]/ && flag{exit} flag && /^[[:space:]]*- /{sub(/^[[:space:]]*- /,""); print $1}' "$recipe" | paste -sd, -)

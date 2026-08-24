@@ -26,3 +26,6 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []
+
+# 主包在 cmd/dlv，避免误编译 _fixtures 测试目录
+build_path: "./cmd/dlv"

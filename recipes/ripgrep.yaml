@@ -12,3 +12,7 @@ target_arches:
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: [ "libc6" ]                      # standard dependency for most binaries
+
+# ⛔ 暂时禁用：Rust 项目，不适用 Go 构建器
+# 待逐包修复（或改用原生工具链构建）后移除 disabled 行重新启用
+disabled: true # Rust 项目，不适用 Go 构建器
