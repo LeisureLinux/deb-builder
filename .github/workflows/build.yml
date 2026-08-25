@@ -1,10 +1,10 @@
 name: Build Go Deb Packages
 
+# 注意：不要在 on.push 里同时写 paths 和 tags —— GitHub 对这些过滤条件取交集(AND)，
+# 普通 branch push 没有 tag，永远满足不了 tags:['v*']，导致整个 push 触发器失效。
+# 因此这里用裸 push（branch/tag 都触发），由各 job 按 ref 条件自行分流。
 on:
   push:
-    paths: ['recipes/*.yaml']            # branch push 时只构建被改动的包
-    tags:
-      - 'v*'                            # tag：为所有 recipe 全量重建
   pull_request:
     paths: ['recipes/*.yaml', 'scripts/']
   workflow_dispatch:                    # 手动触发（可指定单个 package，空=全量）
@@ -19,8 +19,8 @@ permissions:
 
 jobs:
   build-changed:
-    # 仅 branch push 或 pull_request 时构建本次被改动的 recipe；tag push 走 build-all
-    if: ${{ (github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')) || github.event_name == 'pull_request' }}
+    # 仅 main 的 branch push 或 pull_request 时构建本次被改动的 recipe；tag push 走 build-all
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
