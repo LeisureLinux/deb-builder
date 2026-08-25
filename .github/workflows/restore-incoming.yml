@@ -51,6 +51,7 @@ jobs:
       - name: Commit and trigger publish
         env:
           BUILDER_PAT: ${{ secrets.BUILDER_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd /tmp/apt-repo
           # 注意：.gitignore 忽略 incoming/*.deb，必须 -f 强制添加；
@@ -74,5 +75,3 @@ jobs:
             -f event_type=publish \
             -f 'client_payload[package]=__all__' \
             -f 'client_payload[success]=true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
