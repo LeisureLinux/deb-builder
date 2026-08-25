@@ -305,6 +305,15 @@ for ARCH in "${ARCH_LIST[@]}"; do
   else
   # ---- Go 分支 ----
   BUILD_LOG=$(go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1) || true
+  # 静默失败（无任何输出却失败）：打印诊断信息并前台重试一次以暴露真实原因
+  if [[ -z "$(echo "$BUILD_LOG" | tail -5 | grep -v downloading)" ]] && [[ ! -f "$BIN" ]]; then
+    echo "🔬 静默失败诊断:" >&2
+    echo "  BUILD_LOG 行数: $(echo "$BUILD_LOG" | wc -l)" >&2
+    echo "  BUILD_LOG 尾部: $(echo "$BUILD_LOG" | tail -2)" >&2
+    echo "  go version: $(go version)" >&2
+    echo "  内核 OOM 记录: $(sudo dmesg 2>/dev/null | grep -i 'killed process' | tail -2 || echo '无法读取')" >&2
+    echo "  磁盘空间: $(df -h /tmp | tail -1)" >&2
+  fi
   # 静默失败（无任何输出却失败，典型于 OOM kill）：前台重试一次以暴露真实原因
   if [[ -z "$(echo "$BUILD_LOG" | head -1)" ]] && [[ ! -f "$BIN" ]]; then
     echo "⚠️  go build died silently (possible OOM); retrying in foreground..." >&2
