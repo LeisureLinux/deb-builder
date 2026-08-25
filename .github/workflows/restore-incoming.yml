@@ -20,11 +20,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Full clone of apt-repo (history contains all debs)
+        env:
+          BUILDER_PAT: ${{ secrets.BUILDER_PAT }}
         run: |
           git config --global user.name "Deb Builder Bot"
           git config --global user.email "deb-builder@leisurelinux.org"
-          # 完整历史克隆（.deb 都在 git 对象里，体积大但必要）
-          git clone "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LeisureLinux/apt-repo.git" /tmp/apt-repo
+          # 完整历史克隆（.deb 都在 git 对象里，体积大但必要）；跨仓库写入需 BUILDER_PAT
+          git clone "https://x-access-token:${BUILDER_PAT}@github.com/LeisureLinux/apt-repo.git" /tmp/apt-repo
           cd /tmp/apt-repo
           echo "== apt-repo 提交总数: $(git rev-list --count HEAD) =="
 
@@ -47,6 +49,8 @@ jobs:
           du -sh incoming/
 
       - name: Commit and trigger publish
+        env:
+          BUILDER_PAT: ${{ secrets.BUILDER_PAT }}
         run: |
           cd /tmp/apt-repo
           # 注意：.gitignore 忽略 incoming/*.deb，必须 -f 强制添加；
@@ -66,6 +70,7 @@ jobs:
           done
           gh api repos/LeisureLinux/apt-repo/dispatches -X POST \
             -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer $BUILDER_PAT" \
             -f event_type=publish \
             -f 'client_payload[package]=__all__' \
             -f 'client_payload[success]=true'
