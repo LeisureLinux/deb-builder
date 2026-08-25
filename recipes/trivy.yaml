@@ -15,6 +15,8 @@ upstream_version: "0.74.0"
 
 # Go 构建配置
 ldflags: "-s -w"
+# trivy 使用 Go 1.25+ 实验性 encoding/json/v2，需要 GOEXPERIMENT
+build_env: "GOEXPERIMENT=jsonv2"
 
 # 构建入口（自动检测不可靠的显式指定）
 build_path: "./cmd/trivy"

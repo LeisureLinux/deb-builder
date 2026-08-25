@@ -166,7 +166,7 @@ fi
 # Repo root often isn't the buildable package (e.g. cmd/<pkg>), so auto-detect the main-package dir.
 if [[ "$BUILD_PATH" == "." ]]; then
   if ! grep -q "^package main" "$SOURCE_DIR"/*.go 2>/dev/null; then
-    detected=$(cd "$SOURCE_DIR" && grep -rl "^package main" --include="*.go" . 2>/dev/null | sed 's#/[^/]*$##' | sort -u | head -1)
+    detected=$(cd "$SOURCE_DIR" && grep -rl "^package main" --include="*.go" . 2>/dev/null | sed 's#/[^/]*$##' | sort -u | head -1 || true)
     if [[ -n "$detected" ]]; then
       BUILD_PATH="$detected"
       echo "🔍 Auto-detected build_path: $BUILD_PATH" >&2
@@ -218,6 +218,13 @@ while IFS= read -r g; do
   echo "📌 go get $g" >&2
   go get "$g" || echo "⚠️  go get $g failed (continuing)" >&2
 done < <(grep '^go_get:' "$RECIPE" 2>/dev/null | sed 's/^go_get:[[:space:]]*//' | tr -d '"')
+
+# 构建环境变量：recipe 中每条 build_env: "KEY=VALUE" 导出后供构建使用（如 GOEXPERIMENT=jsonv2）
+while IFS= read -r kv; do
+  [[ -z "$kv" ]] && continue
+  echo "🌍 export $kv" >&2
+  export "$kv"
+done < <(grep '^build_env:' "$RECIPE" 2>/dev/null | sed 's/^build_env:[[:space:]]*//' | tr -d '"')
 
 # 按架构容错：单个架构失败不中断，继续建其余架构；
 # 只要有一个架构成功就算成功（exit 0），全部失败才 exit 1。
