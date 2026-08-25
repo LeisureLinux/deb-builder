@@ -80,6 +80,8 @@ else
   FINAL_VERSION="${UPGRADE_VERSION}+LL-${BUILD_NUMBER}"
 fi
 
+# 注意：CI 当前仅构建 amd64+arm64（见 receive-trigger.yml / build.yml 的 ARCHS_OVERRIDE）。
+# loong64/riscv64 临时禁用，但 recipe 的 target_arches 仍保留其声明（已注释），后续可启用。
 # --- Determine target arches (from $2, else recipe target_arches, else amd64) ---
 if [[ -z "$ARCHS_CSV" ]]; then
   ARCHS_CSV=$(awk '/^target_arches:/{flag=1; next} /^[^[:space:]]/ && flag{exit} flag && /^[[:space:]]*- /{sub(/^[[:space:]]*- /,""); print $1}' "$RECIPE" | paste -sd, -)
@@ -126,6 +128,13 @@ TIMESTAMP="$(date +%Y%m%d%H%M%S)"
 SOURCE_DIR="/tmp/${PKG_NAME}-src-${TIMESTAMP}"
 rm -rf "$SOURCE_DIR"
 mkdir -p "$SOURCE_DIR"
+
+# 构建结束（成功或失败）清理 /tmp 临时目录：源码克隆 + 各架构构建前缀。
+# 否则全量构建时 166+ 个包的克隆目录会累积撑爆 tmpfs（/tmp 多为 tmpfs）。
+cleanup_tmp() {
+  rm -rf "${SOURCE_DIR:-}" /tmp/build-"${PKG_NAME:-}"-*-"${TIMESTAMP:-}" 2>/dev/null || true
+}
+trap cleanup_tmp EXIT
 echo "🔄 Cloning https://github.com/${repo_line}.git ..." >&2
 # 克隆重试 3 次（网络抖动容错）
 clone_ok=0
@@ -304,40 +313,36 @@ for ARCH in "${ARCH_LIST[@]}"; do
     done
   else
   # ---- Go 分支 ----
-  BUILD_LOG=$(go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1) || true
-  # 静默失败（无任何输出却失败）：打印诊断信息并前台重试一次以暴露真实原因
-  if [[ -z "$(echo "$BUILD_LOG" | tail -5 | grep -v downloading)" ]] && [[ ! -f "$BIN" ]]; then
-    echo "🔬 静默失败诊断:" >&2
-    echo "  BUILD_LOG 行数: $(echo "$BUILD_LOG" | wc -l)" >&2
-    echo "  BUILD_LOG 尾部: $(echo "$BUILD_LOG" | tail -2)" >&2
-    echo "  go version: $(go version)" >&2
-    echo "  内核 OOM 记录: $(sudo dmesg 2>/dev/null | grep -i 'killed process' | tail -2 || echo '无法读取')" >&2
-    echo "  磁盘空间: $(df -h /tmp | tail -1)" >&2
-  fi
-  # 静默失败（无任何输出却失败，典型于 OOM kill）：前台重试一次以暴露真实原因
-  if [[ -z "$(echo "$BUILD_LOG" | head -1)" ]] && [[ ! -f "$BIN" ]]; then
-    echo "⚠️  go build died silently (possible OOM); retrying in foreground..." >&2
-    if ! go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" >&2; then
-      echo "❌ go build retry failed for ${ARCH} (see output above)" >&2
-      FAILED_ARCHES+=("$ARCH"); continue
+  # 带重试的构建（最多 2 次）：首架构构建常因瞬时网络/磁盘抖动（如 ENOSPC）失败，
+  # 重试即可恢复；同时失败时才如实打印完整日志，避免真实错误被 "go: downloading" 行掩盖。
+  GO_RC=1
+  MODFLAG=""
+  for (( attempt=1; attempt<=2; attempt++ )); do
+    if (( attempt > 1 )); then
+      echo "🔁 go build 重试 (${attempt}/2) for ${ARCH} ${MODFLAG:+(mod=mod)}" >&2
     fi
-  fi
-  if [[ -n "$(echo "$BUILD_LOG" | head -1)" ]] && ! grep -q 'modules.txt' <<<"$BUILD_LOG"; then
+    if BUILD_LOG=$(go build ${MODFLAG} -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1); then
+      GO_RC=0
+    else
+      GO_RC=$?
+    fi
+    if (( GO_RC == 0 )) && [[ -f "$BIN" ]]; then
+      break
+    fi
+    # 报错涉及 vendor/modules.txt 不一致时，下一轮改用 -mod=mod 重试
+    if echo "$BUILD_LOG" | grep -q 'modules.txt'; then
+      MODFLAG="-mod=mod"
+    fi
+  done
+  if (( GO_RC != 0 )) || [[ ! -f "$BIN" ]]; then
+    echo "❌ go build failed for ${ARCH} (rc=${GO_RC})" >&2
+    echo "----- go build 输出 -----" >&2
     echo "$BUILD_LOG" >&2
-    echo "❌ go build failed for ${ARCH}" >&2
-    FAILED_ARCHES+=("$ARCH"); continue
-  fi
-  if grep -q 'modules.txt' <<<"$BUILD_LOG"; then
-    echo "⚠️  vendor/ inconsistent with go.mod; retrying with -mod=mod ..." >&2
-    if ! BUILD_LOG=$(go build -mod=mod -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1); then
-      echo "$BUILD_LOG" >&2
-      echo "❌ go build failed for ${ARCH}" >&2
-      FAILED_ARCHES+=("$ARCH"); continue
-    fi
-  fi
-  if [[ ! -f "$BIN" ]]; then
-    echo "❌ Binary not created: $BIN" >&2
-    exit 1
+    echo "------------------------" >&2
+    echo "  磁盘空间(/): $(df -h / | tail -1)" >&2
+    echo "  内核 OOM: $(sudo dmesg 2>/dev/null | grep -i 'killed process\|out of memory' | tail -2 || echo 无法读取)" >&2
+    FAILED_ARCHES+=("$ARCH")
+    continue
   fi
   fi
 
