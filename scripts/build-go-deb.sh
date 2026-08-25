@@ -200,7 +200,7 @@ fi
 
 
 # go module setup (Go 项目专用；Rust 项目跳过)
-if [[ "$RUST_BUILD" != "true" ]]; then
+if [[ "$RUST_BUILD" != "rust" ]]; then
   if [[ ! -f go.mod ]]; then
   # 已知历史模块改名（大小写问题）：自动修正源码 import，避免 go mod tidy 解析失败
   grep -rl 'github.com/Sirupsen/logrus' --include='*.go' . 2>/dev/null \
@@ -267,7 +267,7 @@ for ARCH in "${ARCH_LIST[@]}"; do
   BUILD_RC=0
 
   # ---- Rust 分支：cargo 构建，产出多二进制到 target/<triple>/release/ ----
-  if [[ "$RUST_BUILD" == "true" ]]; then
+  if [[ "$RUST_BUILD" == "rust" ]]; then
     TRIPLE=""
     case "$ARCH" in
       amd64)
@@ -327,7 +327,7 @@ for ARCH in "${ARCH_LIST[@]}"; do
   DEB_ROOT="${BUILD_PREFIX}/deb-root"
   rm -rf "$DEB_ROOT"
   mkdir -p "$DEB_ROOT/usr/bin"
-  if [[ "$RUST_BUILD" == "true" ]]; then
+  if [[ "$RUST_BUILD" == "rust" ]]; then
     for b in $RUST_BINS; do
       cp "target/${TRIPLE}/release/${b}" "$DEB_ROOT/usr/bin/"
     done
