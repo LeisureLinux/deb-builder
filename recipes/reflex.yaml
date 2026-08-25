@@ -21,8 +21,8 @@ ldflags: "-s -w"
 target_arches:
   - amd64
   - arm64
-  - loong64
-  - riscv64
+#   - loong64  # 临时禁用: loong64/riscv64 暂不构建，声明保留待用
+#   - riscv64  # 临时禁用: loong64/riscv64 暂不构建，声明保留待用
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
 depends: []

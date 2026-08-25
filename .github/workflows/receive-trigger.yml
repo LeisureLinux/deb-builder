@@ -54,7 +54,8 @@ jobs:
       - name: Build all recipes (auto mode)
         if: steps.pkg.outputs.pkg_name == 'auto'
         env:
-          # CI 只构建发布 amd64 + arm64；loong64/riscv64 由本地构建或后续单独支持
+          # 临时仅构建发布 amd64+arm64；loong64/riscv64 暂不构建
+          # （声明仍保留在 recipe 的 target_arches 注释中，后续可启用）
           ARCHS_OVERRIDE: amd64,arm64
         run: |
           # cgo/rust recipe 需要：交叉编译器、protoc、C 头文件；cargo 由 runner 预装（缺失则装 rustup）
