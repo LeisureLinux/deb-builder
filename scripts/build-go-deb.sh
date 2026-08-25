@@ -305,6 +305,14 @@ for ARCH in "${ARCH_LIST[@]}"; do
   else
   # ---- Go 分支 ----
   BUILD_LOG=$(go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1) || true
+  # 静默失败（无任何输出却失败，典型于 OOM kill）：前台重试一次以暴露真实原因
+  if [[ -z "$(echo "$BUILD_LOG" | head -1)" ]] && [[ ! -f "$BIN" ]]; then
+    echo "⚠️  go build died silently (possible OOM); retrying in foreground..." >&2
+    if ! go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" >&2; then
+      echo "❌ go build retry failed for ${ARCH} (see output above)" >&2
+      FAILED_ARCHES+=("$ARCH"); continue
+    fi
+  fi
   if [[ -n "$(echo "$BUILD_LOG" | head -1)" ]] && ! grep -q 'modules.txt' <<<"$BUILD_LOG"; then
     echo "$BUILD_LOG" >&2
     echo "❌ go build failed for ${ARCH}" >&2
