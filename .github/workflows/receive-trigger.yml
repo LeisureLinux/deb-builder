@@ -86,29 +86,34 @@ jobs:
 
           ls -lh "$WS"/dist/*.deb 2>/dev/null || { echo "❌ no .deb artifacts found in dist/"; exit 1; }
 
-          # 1. Clone apt-repo
-          rm -rf /tmp/apt-repo
-          git clone --depth 1 \
-            "https://x-access-token:${BUILDER_PAT}@github.com/LeisureLinux/apt-repo.git" \
-            /tmp/apt-repo
-
-          # 2. Copy built .deb files into incoming/
-          cd /tmp/apt-repo
-          git config user.name "Deb Builder Bot"
-          git config user.email "deb-builder@leisurelinux.org"
-          mkdir -p incoming
-          cp "$WS"/dist/*.deb incoming/
-          git add -f incoming/*.deb   # incoming/*.deb is gitignored; force-add
-
-          # 3. Commit & push
-          if git diff --cached --quiet; then
-            echo "ℹ️ no new .deb artifacts to commit (already in incoming/)"
-          else
+          # 1~4. 推送到 apt-repo（带重试：并行构建同时 push 会产生非快进冲突）
+          PUSH_OK=0
+          for attempt in 1 2 3 4 5; do
+            rm -rf /tmp/apt-repo
+            git clone --depth 1 \
+              "https://x-access-token:${BUILDER_PAT}@github.com/LeisureLinux/apt-repo.git" \
+              /tmp/apt-repo
+            cd /tmp/apt-repo
+            git config user.name "Deb Builder Bot"
+            git config user.email "deb-builder@leisurelinux.org"
+            mkdir -p incoming
+            cp "$WS"/dist/*.deb incoming/
+            git add -f incoming/*.deb   # incoming/*.deb is gitignored; force-add
+            if git diff --cached --quiet; then
+              echo "ℹ️ no new .deb artifacts to commit (already in incoming/)"
+              PUSH_OK=1; break
+            fi
             git commit -m "auto: add built .deb for ${PKG}"
-            git push origin main
-          fi
+            if git push origin main; then
+              echo "✅ pushed (attempt $attempt)"
+              PUSH_OK=1; break
+            fi
+            echo "⚠️ push rejected (attempt $attempt), will re-clone and retry..."
+            sleep $((RANDOM % 8 + 3))   # 随机退避，错开并发窗口
+          done
+          (( PUSH_OK == 1 )) || { echo "❌ failed to push to apt-repo after retries"; exit 1; }
 
-          # 4. Dispatch publish workflow on apt-repo
+          # 5. Dispatch publish workflow on apt-repo
           curl -X POST https://api.github.com/repos/LeisureLinux/apt-repo/dispatches \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: Bearer $BUILDER_PAT" \
