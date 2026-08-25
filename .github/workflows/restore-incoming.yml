@@ -1,48 +1,45 @@
 name: Restore incoming database
 
 # 一次性修复：2026-08-25 的 incoming 清理误删了作为仓库数据库的全部历史 .deb。
-# 本任务从 git 历史按时间顺序恢复所有出现过的 incoming/*.deb，
-# 然后触发 publish 重建完整 APT 仓库。
+# 从 git 历史按时间顺序恢复所有出现过的 incoming/*.deb，
+# 然后提交并触发 publish 重建完整 APT 仓库。
 on:
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: restore-incoming
+  cancel-in-progress: false
+
 jobs:
   restore:
     runs-on: ubuntu-latest
     steps:
+      # depth=80 覆盖 incoming 清理前的完整今日历史（含 d417eaf9 全量构建快照）
       - uses: actions/checkout@v4
-
-      # 拉取包含历史 deb 的关键 commit（shallow 单点拉取，避免全量历史）
-      - name: Fetch historical snapshots
-        run: |
-          # d417eaf9: Depends 修复后的全量构建快照（169 包 × 多架构）
-          git fetch --depth=1 origin d417eaf9c4095522e0ba2af33de117a079349d1b || \
-            echo "⚠️ d417eaf9 拉取失败"
-          # 今天各批次推送的 commit（由 git log 自动发现）
-          for sha in $(git log --format='%H %s' | grep 'auto: add built .deb' | awk '{print $1}'); do
-            git fetch --depth=1 origin "$sha" 2>/dev/null || true
-          done
-          git log --all --oneline | head -20
+        with:
+          fetch-depth: 80
 
       - name: Restore all historical debs into incoming/
         run: |
           set -euo pipefail
           mkdir -p incoming
-          # 按提交时间从旧到新依次 restore：同名同版本文件以最新为准；
-          # 已消失的旧版本文件也会被找回（由 publish.sh 的按包名去重淘汰旧版）。
-          for sha in $(git log --all --format='%H %ct %s' | grep 'auto: add built .deb\|fix(publish)\|chore' | sort -k2 -n | awk '{print $1}'); do
-            echo "♻️  restore from ${sha:0:8}"
-            git restore --source="$sha" -- incoming/ 2>/dev/null || true
+          BASE=$(git log --format='%H %s' | grep 'auto: add built .deb for auto' | awk '{print $1}')
+          echo "== 基底快照(全量构建): $BASE =="
+          # 按提交时间从旧到新依次 restore：同名文件以最新为准；
+          # 已被清理删除的历史文件也会找回（publish.sh 的按包名去重会淘汰旧版本）
+          for sha in $(git rev-list --reverse HEAD); do
+            msg=$(git log -1 --format='%s' "$sha")
+            case "$msg" in
+              *"add built .deb"*)
+                echo "♻️  restore from ${sha:0:8} ($msg)"
+                git restore --source="$sha" -- incoming/ || true ;;
+            esac
           done
-          # 基底快照最后再补一遍（它是全量构建产物，内容最权威）
-          if git cat-file -e d417eaf9c4095522e0ba2af33de117a079349d1b^{commit} 2>/dev/null; then
-            git restore --source=d417eaf9c4095522e0ba2af33de117a079349d1b -- incoming/ 2>/dev/null || true
-          fi
           echo "== 恢复结果 =="
-          ls incoming/*.deb | wc -l
+          echo "deb 文件数: $(ls incoming/*.deb | wc -l)"
 
       - name: Commit restored database
         run: |
@@ -51,14 +48,14 @@ jobs:
           git add -f incoming/*.deb
           if git diff --cached --quiet; then
             echo "ℹ️ 无需恢复"
-          else
-            git commit -m "restore: rebuild incoming/ package database from history"
-            git push origin main
-            gh api repos/LeisureLinux/apt-repo/dispatches -X POST \
-              -H "Accept: application/vnd.github.v3+json" \
-              -f event_type=publish \
-              -f 'client_payload[package]=__all__' \
-              -f 'client_payload[success]=true'
+            exit 0
           fi
+          git commit -m "restore: rebuild incoming/ package database from history"
+          git push origin main
+          gh api repos/LeisureLinux/apt-repo/dispatches -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -f event_type=publish \
+            -f 'client_payload[package]=__all__' \
+            -f 'client_payload[success]=true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
