@@ -9,10 +9,10 @@ homepage: https://github.com/checkpoint-restore/checkpointctl
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.5.0"
-latest_tag: "v1.5.0"
-commit_hash: "891978fb0574c92308fd2f94aaa497c705b194bb"
-upstream_version: "1.5.0"
+version_tag: "v1.6.0"
+latest_tag: "v1.6.0"
+commit_hash: "7b6ed54c57d4f55728c69bdbc77cbde3a695dea3"
+upstream_version: "1.6.0"
 
 # Go 构建配置
 ldflags: "-s -w"

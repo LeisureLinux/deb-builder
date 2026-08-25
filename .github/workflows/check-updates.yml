@@ -1,0 +1,58 @@
+name: Check Upstream Updates
+
+# 每天检查所有 recipe 的上游最新 release；
+# 发现新版本时更新 recipe 并逐包触发构建，保证仓库始终跟随上游。
+on:
+  schedule:
+    - cron: '30 18 * * *'   # 每天 02:30 北京时间
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-updates
+  cancel-in-progress: false
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check upstream releases
+        id: check
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq jq >/dev/null
+          bash scripts/check-updates.sh /tmp/updated-pkgs.txt
+          mapfile -t PKGS < /tmp/updated-pkgs.txt
+          echo "count=${#PKGS[@]}" >> "$GITHUB_OUTPUT"
+          {
+            echo "pkgs<<EOF"
+            cat /tmp/updated-pkgs.txt
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Commit updated recipes
+        if: steps.check.outputs.count != '0'
+        run: |
+          git config user.name "Deb Builder Bot"
+          git config user.email "deb-builder@leisurelinux.org"
+          git add recipes/
+          git commit -m "chore: auto-bump $(wc -l < /tmp/updated-pkgs.txt) recipe(s) to latest upstream tags"
+          git push origin main
+
+      # 逐包触发构建（每包一个独立 run，互不阻塞；失败可单独重跑）
+      - name: Trigger per-package builds
+        if: steps.check.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PKGS: ${{ steps.check.outputs.pkgs }}
+        run: |
+          while IFS= read -r pkg; do
+            [[ -z "$pkg" ]] && continue
+            echo "🚀 触发构建: $pkg"
+            gh workflow run receive-trigger.yml --ref main -f package="$pkg" || \
+              echo "⚠️  $pkg 触发失败（稍后由每日兜底 publish 补发？需人工检查）"
+            sleep 3   # 轻微间隔，避免 API 突发限流
+          done <<< "$PKGS"

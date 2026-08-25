@@ -9,10 +9,10 @@ homepage: https://github.com/prometheus/mysqld_exporter
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.19.0"
-latest_tag: "v0.19.0"
-commit_hash: "464bc5de74325c3ba85b237561e4b6c0bc3ca6d7"
-upstream_version: "0.19.0"
+version_tag: "v0.20.0"
+latest_tag: "v0.20.0"
+commit_hash: "11da31c961d37eab296c48ab50c38c3bdff8e2e3"
+upstream_version: "0.20.0"
 
 # Go 构建配置
 ldflags: "-s -w"

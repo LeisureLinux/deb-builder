@@ -9,10 +9,10 @@ homepage: https://github.com/nginx/nginx-prometheus-exporter
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.5.1"
-latest_tag: "v1.5.1"
-commit_hash: "3c38a4c27ce2c2784739064da5c9acf5b2021680"
-upstream_version: "1.5.1"
+version_tag: "v1.5.3"
+latest_tag: "v1.5.3"
+commit_hash: "9956da7073198e272ff915c5e06c360290c50b6b"
+upstream_version: "1.5.3"
 
 # Go 构建配置
 ldflags: "-s -w"

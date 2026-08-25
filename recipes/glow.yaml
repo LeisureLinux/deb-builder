@@ -9,10 +9,10 @@ homepage: https://github.com/charmbracelet/glow
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.1.2"
-latest_tag: "v2.1.2"
-commit_hash: "f57087499b407d420cdad1d76d0e1ed33c77a3d8"
-upstream_version: "2.1.2"
+version_tag: "v3.0.0"
+latest_tag: "v3.0.0"
+commit_hash: "add5e7a1f63cf0b1de4dfb457c147986e1b1d1fb"
+upstream_version: "3.0.0"
 
 # Go 构建配置
 ldflags: "-s -w"

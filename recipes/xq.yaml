@@ -9,10 +9,10 @@ homepage: https://github.com/sibprogrammer/xq
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.4.0"
-latest_tag: "v1.4.0"
-commit_hash: "02a8c391497a63acbea1c57f036770cef2e87b65"
-upstream_version: "1.4.0"
+version_tag: "v1.5.1"
+latest_tag: "v1.5.1"
+commit_hash: "9803fc9565174eacc844319409688172ce1412aa"
+upstream_version: "1.5.1"
 
 # Go 构建配置
 ldflags: "-s -w"

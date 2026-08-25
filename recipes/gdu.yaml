@@ -9,10 +9,10 @@ homepage: https://github.com/dundee/gdu
 section: admin
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v5.36.1"
-latest_tag: "v5.36.1"
-commit_hash: "8d64b4f1ef50bf6694cd17e060f9fd80aed3e297"
-upstream_version: "5.36.1"
+version_tag: "v5.37.0"
+latest_tag: "v5.37.0"
+commit_hash: "a3138344aba3f41f00c196bd7a994902b8dac490"
+upstream_version: "5.37.0"
 
 # Go 构建配置
 ldflags: "-s -w"

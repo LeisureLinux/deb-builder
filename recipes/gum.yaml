@@ -9,10 +9,10 @@ homepage: https://github.com/charmbracelet/gum
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.17.0"
-latest_tag: "v0.17.0"
-commit_hash: "6045525ab92f75c169d3c69596844d8748437e37"
-upstream_version: "0.17.0"
+version_tag: "v2.0.0"
+latest_tag: "v2.0.0"
+commit_hash: "4d089f95507708a71f64dacfe7ca513219dd5267"
+upstream_version: "2.0.0"
 
 # Go 构建配置
 ldflags: "-s -w"

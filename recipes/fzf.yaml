@@ -9,10 +9,10 @@ homepage: https://github.com/junegunn/fzf
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.74.2"
-latest_tag: "v0.74.2"
-commit_hash: "3337be9d450cd349e99273a2d3985ceaf5f3753f"
-upstream_version: "0.74.2"
+version_tag: "v0.74.3"
+latest_tag: "v0.74.3"
+commit_hash: "15f64c492a08f0840b81540c7d1de35737448086"
+upstream_version: "0.74.3"
 
 # Go 构建配置
 ldflags: "-s -w"
