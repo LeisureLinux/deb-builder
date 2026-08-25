@@ -15,6 +15,8 @@ upstream_version: "4.53.6"
 
 # Go 构建配置
 ldflags: "-s -w"
+# amd64 编译内存峰值过高会被 OOM killer 静默击杀，限制并行度
+build_env: "GOFLAGS=-p=1"
 
 # 构建入口（自动检测不可靠的显式指定）
 build_path: "./cmd"
