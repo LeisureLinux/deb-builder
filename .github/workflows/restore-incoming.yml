@@ -49,11 +49,15 @@ jobs:
       - name: Commit and trigger publish
         run: |
           cd /tmp/apt-repo
-          if [[ -z "$(git status --porcelain incoming/)" ]]; then
-            echo "ℹ️ 无需恢复"
+          # 注意：.gitignore 忽略 incoming/*.deb，必须 -f 强制添加；
+          # 用 --cached diff 判断真实变化，不能用 git status（会漏掉 ignored 文件）
+          git add -f incoming/*.deb
+          if ! git diff --cached --numstat | grep -q .; then
+            echo "ℹ️ 数据库与远端一致，无需提交"
             exit 0
           fi
-          git add -f incoming/*.deb
+          echo "== 待提交变更 =="
+          git diff --cached --stat | tail -2
           git commit -m "restore: rebuild incoming/ package database from history"
           for attempt in 1 2 3; do
             git pull --rebase origin main 2>/dev/null || true
