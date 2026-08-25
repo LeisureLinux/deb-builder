@@ -61,6 +61,9 @@ jobs:
           sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
           command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
           export PATH="$HOME/.cargo/bin:$PATH"
+          # 大包编译（如 yq）内存峰值高，7GB runner 易被 OOM killer 静默击杀，加 swap 兜底
+          sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile
+          free -h
           bash scripts/build-all.sh
 
       - name: Build specific package
@@ -72,6 +75,7 @@ jobs:
           sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
           command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
           export PATH="$HOME/.cargo/bin:$PATH"
+          sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile
           rc=0
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}" || rc=$?
           # exit 2 = recipe 已禁用，属正常跳过
