@@ -24,22 +24,23 @@ jobs:
 
       - name: Restore all historical debs into incoming/
         run: |
-          set -euo pipefail
           mkdir -p incoming
-          BASE=$(git log --format='%H %s' | grep 'auto: add built .deb for auto' | awk '{print $1}')
-          echo "== 基底快照(全量构建): $BASE =="
+          echo "== 今日提交历史（近 80 条）=="
+          git log --format='%h %ct %s' | head -40
           # 按提交时间从旧到新依次 restore：同名文件以最新为准；
           # 已被清理删除的历史文件也会找回（publish.sh 的按包名去重会淘汰旧版本）
+          FOUND=0
           for sha in $(git rev-list --reverse HEAD); do
-            msg=$(git log -1 --format='%s' "$sha")
+            msg=$(git log -1 --format='%s' "$sha" || true)
             case "$msg" in
               *"add built .deb"*)
                 echo "♻️  restore from ${sha:0:8} ($msg)"
-                git restore --source="$sha" -- incoming/ || true ;;
+                git restore --source="$sha" -- incoming/ 2>/dev/null || true
+                FOUND=1 ;;
             esac
           done
           echo "== 恢复结果 =="
-          echo "deb 文件数: $(ls incoming/*.deb | wc -l)"
+          echo "匹配的快照数: $FOUND; deb 文件数: $(ls incoming/*.deb 2>/dev/null | wc -l)"
 
       - name: Commit restored database
         run: |
