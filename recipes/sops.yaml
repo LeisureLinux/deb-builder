@@ -1,0 +1,27 @@
+# sops 构建配方 (第五批补齐)
+repo: getsops/sops
+package: sops
+summary: "Secrets OPerationS - encrypted secrets editor"
+description: |
+  sops is an editor of encrypted files that supports YAML, JSON, ENV, INI and BINARY formats, encrypted with AWS KMS, GCP KMS, Azure Key Vault or PGP.
+homepage: https://github.com/getsops/sops
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.13.3"
+latest_tag: "v3.13.3"
+commit_hash: "26e2f4784ca61353082c32dbd987c25eda086dc9"
+upstream_version: "3.13.3"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "./cmd/sops"
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

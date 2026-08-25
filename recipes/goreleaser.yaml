@@ -1,0 +1,27 @@
+# goreleaser 构建配方 (第五批补齐)
+repo: goreleaser/goreleaser
+package: goreleaser
+summary: "Deliver Go binaries as fast and easily as possible"
+description: |
+  Goreleaser builds, signs and publishes Go binaries to multiple targets with minimal configuration.
+homepage: https://github.com/goreleaser/goreleaser
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.18.0"
+latest_tag: "v2.18.0"
+commit_hash: "a38ac3174c591f95049234d25bb326104d3ca820"
+upstream_version: "2.18.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "."
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

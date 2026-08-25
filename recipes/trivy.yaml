@@ -1,0 +1,27 @@
+# trivy 构建配方 (第五批补齐)
+repo: aquasecurity/trivy
+package: trivy
+summary: "Find vulnerabilities, misconfigurations, secrets in containers and IaC"
+description: |
+  Trivy is a comprehensive security scanner for containers, filesystems, git repos and cloud environments.
+homepage: https://github.com/aquasecurity/trivy
+section: admin
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.74.0"
+latest_tag: "v0.74.0"
+commit_hash: "e1fd17a0ea4a8cf24bc4b4dd7e2cfbf4bb31b994"
+upstream_version: "0.74.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "./cmd/trivy"
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,24 @@
+# fd 构建配方 (Rust 项目, 上游 sharkdp/fd)
+repo: sharkdp/fd
+package: fd
+summary: "Simple, fast and user-friendly alternative to find"
+description: |
+  fd is a simple, fast and user-friendly alternative to find(1). It does not aim to support all of find's powerful functionality.
+homepage: https://github.com/sharkdp/fd
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v10.4.2"
+latest_tag: "v10.4.2"
+commit_hash: "7027d45303b412be6fa9c09d689cc6276748fb38"
+upstream_version: "10.4.2"
+
+# Rust 项目：使用 cargo 构建
+language: rust
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

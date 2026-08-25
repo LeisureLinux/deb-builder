@@ -1,0 +1,27 @@
+# terraform 构建配方 (第五批补齐)
+repo: hashicorp/terraform
+package: terraform
+summary: "Infrastructure as Code tool by HashiCorp"
+description: |
+  Terraform enables you to safely and predictably create, change, and improve infrastructure. Note: built from source under BUSL-1.1 license terms.
+homepage: https://github.com/hashicorp/terraform
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.15.9"
+latest_tag: "v1.15.9"
+commit_hash: "87488977e32a400445e0c0b4d95c0713a5eee941"
+upstream_version: "1.15.9"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "."
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

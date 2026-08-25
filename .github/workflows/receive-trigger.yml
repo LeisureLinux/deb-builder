@@ -57,8 +57,10 @@ jobs:
           # CI 只构建发布 amd64 + arm64；loong64/riscv64 由本地构建或后续单独支持
           ARCHS_OVERRIDE: amd64,arm64
         run: |
-          # cgo recipe 需要：交叉编译器、protoc、以及 mender/opensnitch 的 C 依赖头文件
+          # cgo/rust recipe 需要：交叉编译器、protoc、C 头文件；cargo 由 runner 预装（缺失则装 rustup）
           sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
+          command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
+          export PATH="$HOME/.cargo/bin:$PATH"
           bash scripts/build-all.sh
 
       - name: Build specific package
@@ -68,6 +70,8 @@ jobs:
           ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches || 'amd64,arm64' }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
+          command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
+          export PATH="$HOME/.cargo/bin:$PATH"
           rc=0
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}" || rc=$?
           # exit 2 = recipe 已禁用，属正常跳过

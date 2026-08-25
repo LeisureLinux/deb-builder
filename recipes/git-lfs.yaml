@@ -1,0 +1,27 @@
+# git-lfs 构建配方 (第五批补齐)
+repo: git-lfs/git-lfs
+package: git-lfs
+summary: "Git extension for versioning large files"
+description: |
+  Git Large File Storage (LFS) replaces large files with text pointers inside Git, while storing the file contents on a remote server.
+homepage: https://github.com/git-lfs/git-lfs
+section: vcs
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v3.7.1"
+latest_tag: "v3.7.1"
+commit_hash: "b84b33847fe6458f36ef521534dc0eac953cb379"
+upstream_version: "3.7.1"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "."
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

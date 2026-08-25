@@ -1,0 +1,27 @@
+# gh 构建配方 (第五批补齐)
+repo: cli/cli
+package: gh
+summary: "GitHub's official command-line tool"
+description: |
+  gh is GitHub's official command-line tool for pull requests, issues and other GitHub concepts.
+homepage: https://github.com/cli/cli
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v2.98.0"
+latest_tag: "v2.98.0"
+commit_hash: "a255baf71d13fe5947a4eb7ad521ffd412d64cee"
+upstream_version: "2.98.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "./cmd/gh"
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

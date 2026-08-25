@@ -177,6 +177,10 @@ fi
 # cgo 构建支持：recipe 声明 cgo: true 时启用 CGO 并配置对应架构的交叉编译器
 CGO_BUILD=$(grep '^cgo:' "$RECIPE" 2>/dev/null | head -n1 | awk '{print $2}' | tr -d '"' || true)
 
+# Rust 构建支持：recipe 声明 language: rust 时改用 cargo 构建
+RUST_BUILD=$(grep '^language:' "$RECIPE" 2>/dev/null | head -n1 | awk '{print $2}' | tr -d '"' || true)
+[[ "$RUST_BUILD" == "rust" ]] || RUST_BUILD=""
+
 # 嵌套模块支持：若 build_path 所在的模块根（向上最近的有 go.mod 的目录）不是仓库根，
 # 则进入该模块根构建（如 amazon-ecr-credential-helper 的 ecr-login/）。
 if [[ "$BUILD_PATH" != "." ]]; then
@@ -195,8 +199,9 @@ if [[ "$BUILD_PATH" != "." ]]; then
 fi
 
 
-# go module setup (only if upstream has no go.mod)
-if [[ ! -f go.mod ]]; then
+# go module setup (Go 项目专用；Rust 项目跳过)
+if [[ "$RUST_BUILD" != "true" ]]; then
+  if [[ ! -f go.mod ]]; then
   # 已知历史模块改名（大小写问题）：自动修正源码 import，避免 go mod tidy 解析失败
   grep -rl 'github.com/Sirupsen/logrus' --include='*.go' . 2>/dev/null \
     | xargs -r sed -i 's#github\.com/Sirupsen/logrus#github.com/sirupsen/logrus#g' || true
@@ -204,6 +209,7 @@ if [[ ! -f go.mod ]]; then
   echo "💡 No go.mod found; running 'go mod init' + 'go mod tidy'" >&2
   go mod init "github.com/${repo_line}" || true
   go mod tidy || true
+  fi
 fi
 
 # 依赖版本微调：recipe 中每条 go_get: <module>@<version> 在模块就绪后执行
@@ -252,33 +258,75 @@ for ARCH in "${ARCH_LIST[@]}"; do
   BIN="${BUILD_PREFIX}/${PKG_NAME}"
 
   BUILD_RC=0
-  BUILD_LOG=$(go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1) || BUILD_RC=$?
-  if (( BUILD_RC != 0 )); then
-    # vendor/modules.txt 与 go.mod 不同步的老项目：改用 -mod=mod 忽略 vendor 重试一次
-    if echo "$BUILD_LOG" | grep -q 'modules.txt'; then
-      echo "⚠️  vendor/ inconsistent with go.mod; retrying with -mod=mod ..." >&2
-      if ! BUILD_LOG=$(go build -mod=mod -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1); then
-        echo "$BUILD_LOG" >&2
-        echo "❌ go build failed for ${ARCH}" >&2
-        FAILED_ARCHES+=("$ARCH")
-        continue
+
+  # ---- Rust 分支：cargo 构建，产出多二进制到 target/<triple>/release/ ----
+  if [[ "$RUST_BUILD" == "true" ]]; then
+    TRIPLE=""
+    case "$ARCH" in
+      amd64)
+        TRIPLE="x86_64-unknown-linux-gnu" ;;
+      arm64)
+        TRIPLE="aarch64-unknown-linux-gnu"
+        CROSS_CC="aarch64-linux-gnu-gcc"
+        if ! command -v "$CROSS_CC" >/dev/null; then
+          echo "❌ rust arm64 cross build requires $CROSS_CC (apt install gcc-aarch64-linux-gnu)" >&2
+          FAILED_ARCHES+=("$ARCH"); continue
+        fi
+        export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER="$CROSS_CC"
+        export CC_aarch64_unknown_linux_gnu="$CROSS_CC"
+        rustup target add "$TRIPLE" >/dev/null 2>&1 || { echo "❌ rustup target add $TRIPLE failed" >&2; FAILED_ARCHES+=("$ARCH"); continue; } ;;
+      *)
+        echo "⚠️  rust build not supported for ${ARCH}; skipping" >&2
+        FAILED_ARCHES+=("$ARCH"); continue ;;
+    esac
+    LOCKED=""
+    [[ -f Cargo.lock ]] && LOCKED="--locked"
+    echo "🦀 cargo build --release $LOCKED --target $TRIPLE" >&2
+    if ! cargo build --release $LOCKED --target "$TRIPLE"; then
+      echo "❌ cargo build failed for ${ARCH}" >&2
+      FAILED_ARCHES+=("$ARCH"); continue
+    fi
+    # 从 Cargo.toml 的 [[bin]] 段提取二进制名；缺省用包名（cargo 默认产物）
+    RUST_BINS=$(grep -A3 '^\[\[bin\]\]' Cargo.toml 2>/dev/null | sed -n 's/^[[:space:]]*name[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' | sort -u)
+    [[ -z "$RUST_BINS" ]] && RUST_BINS="$PKG_NAME"
+    for b in $RUST_BINS; do
+      if [[ ! -f "target/${TRIPLE}/release/${b}" ]]; then
+        echo "❌ binary not found: target/${TRIPLE}/release/${b}" >&2
+        FAILED_ARCHES+=("$ARCH"); continue 2
       fi
-    else
+    done
+  else
+  # ---- Go 分支 ----
+  BUILD_LOG=$(go build -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1) || true
+  if [[ -n "$(echo "$BUILD_LOG" | head -1)" ]] && ! grep -q 'modules.txt' <<<"$BUILD_LOG"; then
+    echo "$BUILD_LOG" >&2
+    echo "❌ go build failed for ${ARCH}" >&2
+    FAILED_ARCHES+=("$ARCH"); continue
+  fi
+  if grep -q 'modules.txt' <<<"$BUILD_LOG"; then
+    echo "⚠️  vendor/ inconsistent with go.mod; retrying with -mod=mod ..." >&2
+    if ! BUILD_LOG=$(go build -mod=mod -trimpath ${LDFLAGS:+-ldflags="$LDFLAGS"} -o "$BIN" "$BUILD_PATH" 2>&1); then
       echo "$BUILD_LOG" >&2
       echo "❌ go build failed for ${ARCH}" >&2
-      FAILED_ARCHES+=("$ARCH")
-      continue
+      FAILED_ARCHES+=("$ARCH"); continue
     fi
   fi
   if [[ ! -f "$BIN" ]]; then
     echo "❌ Binary not created: $BIN" >&2
     exit 1
   fi
+  fi
 
   DEB_ROOT="${BUILD_PREFIX}/deb-root"
   rm -rf "$DEB_ROOT"
   mkdir -p "$DEB_ROOT/usr/bin"
-  cp "$BIN" "$DEB_ROOT/usr/bin/"
+  if [[ "$RUST_BUILD" == "true" ]]; then
+    for b in $RUST_BINS; do
+      cp "target/${TRIPLE}/release/${b}" "$DEB_ROOT/usr/bin/"
+    done
+  else
+    cp "$BIN" "$DEB_ROOT/usr/bin/"
+  fi
 
   # Description field (support multi-line "description: |")
   if grep -q '^description: |' "$RECIPE"; then

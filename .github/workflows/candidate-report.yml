@@ -1,0 +1,67 @@
+name: Candidate Report (monthly scan)
+
+# 每月运行 scanner + checker：
+#   1. 扫描 Debian 官方索引，找出 Homepage 指向 GitHub 的 Go 项目
+#   2. 与官方 release / 架构覆盖交叉对比，输出缺口报告
+# 报告更新后自动提交到仓库，作为挑选下一批打包候选的依据。
+on:
+  schedule:
+    - cron: '15 3 1 * *'   # 每月 1 日 11:15 北京时间
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: candidate-report
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Scan Debian index for Go candidates
+        run: |
+          go run ./cmd/scan -golang -out candidates.json
+          echo "候选数量: $(jq length candidates.json)"
+
+      - name: Check gaps vs official releases
+        run: |
+          go run ./cmd/check -candidates candidates.json \
+            -report report.md -gaps gaps.json \
+            -arches amd64,arm64,riscv64,loong64
+
+      - name: Append job summary
+        if: always()
+        run: |
+          { echo "## 候选/缺口扫描结果"
+            echo ""
+            tail -n 40 report.md 2>/dev/null || echo "(报告生成失败)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit refreshed report
+        run: |
+          git config user.name "Deb Builder Bot"
+          git config user.email "deb-builder@leisurelinux.org"
+          git add candidates.json report.md gaps.json
+          if git diff --cached --quiet; then
+            echo "ℹ️ 报告无变化"
+          else
+            git commit -m "chore(scanner): monthly candidate/gap report refresh"
+            git push origin main
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-report
+          path: |
+            candidates.json
+            report.md
+            gaps.json

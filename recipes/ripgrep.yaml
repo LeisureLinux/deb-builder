@@ -1,18 +1,24 @@
+# ripgrep 构建配方 (Rust 项目)
 repo: BurntSushi/ripgrep
-owner: BurntSushi
 package: ripgrep
-summary: "Recursive search tool optimized for speed"
+summary: "Recursively search directories for a regex pattern"
 description: |
-  Ripgrep is a line-oriented search tool that recursively searches the current directory for a regex pattern.
+  ripgrep recursively searches directories for a regex pattern while respecting your gitignore.
+homepage: https://github.com/BurntSushi/ripgrep
 section: utils
 
-version_tag: "ref:v*"
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "15.2.0"
+latest_tag: "15.2.0"
+commit_hash: "e89fff89ac9af12e8d4ce9d5fd07beb408ca730f"
+upstream_version: "15.2.0"
+
+# Rust 项目：使用 cargo 构建
+language: rust
+
 target_arches:
-  - loong64   # Targeting LoongArch only initially (Debian lacks binary there)
+  - amd64
+  - arm64
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
-depends: [ "libc6" ]                      # standard dependency for most binaries
-
-# ⛔ 暂时禁用：Rust 项目，不适用 Go 构建器
-# 待逐包修复（或改用原生工具链构建）后移除 disabled 行重新启用
-disabled: true # Rust 项目，不适用 Go 构建器
+depends: []

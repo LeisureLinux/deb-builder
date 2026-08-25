@@ -1,0 +1,27 @@
+# yq 构建配方 (第五批补齐)
+repo: mikefarah/yq
+package: yq
+summary: "Lightweight and portable command-line YAML, JSON and XML processor"
+description: |
+  yq is a lightweight command-line YAML processor, portable and written in Go.
+homepage: https://github.com/mikefarah/yq
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v4.53.6"
+latest_tag: "v4.53.6"
+commit_hash: "c14f446382944492701b16c1ddb48bb9dbe683e3"
+upstream_version: "4.53.6"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "./cmd"
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,27 @@
+# tflint 构建配方 (第五批补齐)
+repo: terraform-linters/tflint
+package: tflint
+summary: "A Pluggable Terraform Linter"
+description: |
+  TFLint is a framework for checking possible errors, deprecated syntax and enforce best practices in Terraform.
+homepage: https://github.com/terraform-linters/tflint
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.64.0"
+latest_tag: "v0.64.0"
+commit_hash: "15c65a33b322750f6131e286cd9597896299ba32"
+upstream_version: "0.64.0"
+
+# Go 构建配置
+ldflags: "-s -w"
+
+# 构建入口（自动检测不可靠的显式指定）
+build_path: "."
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []
