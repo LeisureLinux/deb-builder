@@ -68,7 +68,11 @@ jobs:
           ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches || 'amd64,arm64' }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
-          bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}"
+          rc=0
+          bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}" || rc=$?
+          # exit 2 = recipe 已禁用，属正常跳过
+          if (( rc == 2 )); then echo "⏭️ 已禁用，跳过"; exit 0; fi
+          exit $rc
 
       # Option 2: push the built .deb files directly into apt-repo's incoming/,
       # then dispatch its publish workflow to sign + publish to GitHub Pages.
