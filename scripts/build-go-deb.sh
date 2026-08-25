@@ -51,11 +51,20 @@ SECTION=$(grep '^section:' "$RECIPE" 2>/dev/null | sed 's/^section:[ ]*//' | tr 
 SECTION="${SECTION:-utils}"
 
 # depends: join list items, default "none"
-DEPENDS="none"
+# 解析 depends：支持块列表（- item）与内联列表（[a, b]）两种格式；
+# 为空则不写 Depends 字段（Depends 可选，写成 "none" 会导致安装失败）
+DEPENDS=""
 if grep -q '^depends:' "$RECIPE"; then
-  raw=$(awk '/^depends:/{flag=1; next} /^[a-zA-Z]/ && flag{exit} flag && /^- /{sub(/^- /,""); printf "%s,", $0}' "$RECIPE")
+  raw=$(awk '/^depends:/{flag=1; next} /^[a-zA-Z]/ && flag{exit} flag && /^- /{sub(/^- /,""); gsub(/"/,""); printf "%s,", $0}' "$RECIPE")
   raw="${raw%,}"
-  [[ -n "$raw" ]] && DEPENDS="$raw"
+  # 内联格式：depends: ["libc6", "zlib1g"] 或 depends: []
+  inline=$(grep '^depends:' "$RECIPE" | head -n1 | sed 's/^depends:[[:space:]]*//' | tr -d '"' || true)
+  if [[ "$inline" == \[*\]* ]]; then
+    inline="${inline#\[}"; inline="${inline%\]}"
+    inline=$(echo "$inline" | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | grep -v '^$' | paste -sd, - || true)
+    if [[ -n "$inline" ]]; then raw="$inline"; fi
+  fi
+  DEPENDS="$raw"
 fi
 
 GITDATE="$(date +%Y%m%d)"
@@ -279,18 +288,25 @@ for ARCH in "${ARCH_LIST[@]}"; do
   fi
 
   mkdir -p "$DEB_ROOT/DEBIAN"
-  cat > "$DEB_ROOT/DEBIAN/control" << EOF
+  {
+    cat << EOF
 Package: ${PKG_NAME}
 Version: ${FINAL_VERSION}
 Section: ${SECTION}
 Priority: optional
 Architecture: ${ARCH}
-Depends: ${DEPENDS}
+EOF
+    # Depends 是可选字段：无依赖时不输出，绝不能写 "none"（会被当成包名导致安装失败）
+    if [[ -n "${DEPENDS:-}" ]]; then
+      echo "Depends: ${DEPENDS}"
+    fi
+    cat << EOF
 Maintainer: ${MAINTAINER}
 Homepage: ${HOMEPAGE:-https://github.com/${repo_line}}
 Source: ${PKG_NAME} (${UPGRADE_VERSION}+git${GITDATE}.${SHORT_SHA})
 Description: ${DESCRIPTION:-Auto-built Go package from ${repo_line}}
 EOF
+  } > "$DEB_ROOT/DEBIAN/control"
 
   DEB_FILE="${OUTPUT_DIR}/${PKG_NAME}_${FINAL_VERSION}_${ARCH}.deb"
   if ! dpkg-deb --build --root-owner-group "$DEB_ROOT" "$DEB_FILE" >/dev/null; then
