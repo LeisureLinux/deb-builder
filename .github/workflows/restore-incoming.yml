@@ -1,8 +1,8 @@
 name: Restore incoming database
 
 # 一次性修复：2026-08-25 的 incoming 清理误删了作为仓库数据库的全部历史 .deb。
-# 从 git 历史按时间顺序恢复所有出现过的 incoming/*.deb，
-# 然后提交并触发 publish 重建完整 APT 仓库。
+# 从 apt-repo 的 git 历史按时间顺序恢复所有出现过的 incoming/*.deb，
+# 提交后触发 publish 重建完整 APT 仓库。
 on:
   workflow_dispatch:
 
@@ -17,42 +17,49 @@ jobs:
   restore:
     runs-on: ubuntu-latest
     steps:
-      # depth=80 覆盖 incoming 清理前的完整今日历史（含 d417eaf9 全量构建快照）
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 80
+
+      - name: Full clone of apt-repo (history contains all debs)
+        run: |
+          git config --global user.name "Deb Builder Bot"
+          git config --global user.email "deb-builder@leisurelinux.org"
+          # 完整历史克隆（.deb 都在 git 对象里，体积大但必要）
+          git clone "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LeisureLinux/apt-repo.git" /tmp/apt-repo
+          cd /tmp/apt-repo
+          echo "== apt-repo 提交总数: $(git rev-list --count HEAD) =="
 
       - name: Restore all historical debs into incoming/
         run: |
+          cd /tmp/apt-repo
           mkdir -p incoming
-          echo "== 今日提交历史（近 80 条）=="
-          git log --format='%h %ct %s' | head -40
-          # 按提交时间从旧到新依次 restore：同名文件以最新为准；
-          # 已被清理删除的历史文件也会找回（publish.sh 的按包名去重会淘汰旧版本）
           FOUND=0
           for sha in $(git rev-list --reverse HEAD); do
             msg=$(git log -1 --format='%s' "$sha" || true)
             case "$msg" in
-              *"add built .deb"*)
+              *"add built .deb"*|*"for auto"*)
                 echo "♻️  restore from ${sha:0:8} ($msg)"
-                git restore --source="$sha" -- incoming/ 2>/dev/null || true
-                FOUND=1 ;;
+                git restore --source="$sha" -- incoming/ || true
+                FOUND=$((FOUND+1)) ;;
             esac
           done
           echo "== 恢复结果 =="
-          echo "匹配的快照数: $FOUND; deb 文件数: $(ls incoming/*.deb 2>/dev/null | wc -l)"
+          echo "匹配快照数: $FOUND; deb 文件数: $(ls incoming/*.deb 2>/dev/null | wc -l)"
+          du -sh incoming/
 
-      - name: Commit restored database
+      - name: Commit and trigger publish
         run: |
-          git config user.name "Deb Builder Bot"
-          git config user.email "deb-builder@leisurelinux.org"
-          git add -f incoming/*.deb
-          if git diff --cached --quiet; then
+          cd /tmp/apt-repo
+          if [[ -z "$(git status --porcelain incoming/)" ]]; then
             echo "ℹ️ 无需恢复"
             exit 0
           fi
+          git add -f incoming/*.deb
           git commit -m "restore: rebuild incoming/ package database from history"
-          git push origin main
+          for attempt in 1 2 3; do
+            git pull --rebase origin main 2>/dev/null || true
+            if git push origin main; then echo "✅ pushed"; break; fi
+            sleep $((RANDOM % 8 + 3))
+          done
           gh api repos/LeisureLinux/apt-repo/dispatches -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -f event_type=publish \
