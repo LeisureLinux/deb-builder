@@ -93,6 +93,7 @@ jobs:
           # 1~4. 推送到 apt-repo（带重试：并行构建同时 push 会产生非快进冲突）
           PUSH_OK=0
           for attempt in 1 2 3 4 5; do
+            cd "$WS"   # 关键：先离开旧目录再删除，否则 cwd 失效导致后续 git 操作全部报错
             rm -rf /tmp/apt-repo
             git clone --depth 1 \
               "https://x-access-token:${BUILDER_PAT}@github.com/LeisureLinux/apt-repo.git" \
