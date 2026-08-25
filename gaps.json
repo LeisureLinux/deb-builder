@@ -1,32 +1,3962 @@
 [
   {
     "gaps": [
-      "bookworm/arm64",
-      "bookworm/armhf",
       "bookworm/riscv64",
-      "bookworm/loong64"
+      "bookworm/loong64",
+      "trixie/loong64"
     ],
-    "homepage": "https://github.com/BurntSushi/ripgrep",
-    "latest": "15.2.0",
-    "name": "ripgrep",
+    "homepage": "https://github.com/paultag/minica",
+    "latest": "",
+    "name": "minica",
+    "official_deb_arches": null,
+    "repo": "paultag/minica"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/benbjohnson/tmpl",
+    "latest": "v1.1.0",
+    "name": "golang-github-benbjohnson-tmpl-dev",
+    "official_deb_arches": null,
+    "repo": "benbjohnson/tmpl"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/awslabs/amazon-ecr-credential-helper",
+    "latest": "v0.12.0",
+    "name": "amazon-ecr-credential-helper",
+    "official_deb_arches": null,
+    "repo": "awslabs/amazon-ecr-credential-helper"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/makeworld-the-better-one/amfora",
+    "latest": "v1.11.0",
+    "name": "amfora",
+    "official_deb_arches": null,
+    "repo": "makeworld-the-better-one/amfora"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/arduino/arduino-builder",
+    "latest": "1.6.1",
+    "name": "arduino-builder",
+    "official_deb_arches": null,
+    "repo": "arduino/arduino-builder"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rebuy-de/aws-nuke",
+    "latest": "v2.25.0",
+    "name": "aws-nuke",
+    "official_deb_arches": null,
+    "repo": "rebuy-de/aws-nuke"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dgraph-io/badger",
+    "latest": "v4.9.6",
+    "name": "badger",
+    "official_deb_arches": null,
+    "repo": "dgraph-io/badger"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/DCSO/balboa",
+    "latest": "v2.1.2",
+    "name": "balboa",
+    "official_deb_arches": null,
+    "repo": "DCSO/balboa"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/linkedin/Burrow",
+    "latest": "v1.9.6",
+    "name": "burrow",
+    "official_deb_arches": null,
+    "repo": "linkedin/Burrow"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/elliotchance/c2go",
+    "latest": "v0.26.11",
+    "name": "c2go",
+    "official_deb_arches": null,
+    "repo": "elliotchance/c2go"
+  },
+  {
+    "gaps": [
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/caddyserver/caddy",
+    "latest": "v2.11.4",
+    "name": "caddy",
+    "official_deb_arches": [
+      "amd64",
+      "arm64",
+      "armhf",
+      "riscv64",
+      "s390x"
+    ],
+    "repo": "caddyserver/caddy"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/britram/canid",
+    "latest": "",
+    "name": "canid",
+    "official_deb_arches": null,
+    "repo": "britram/canid"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/pete911/certinfo",
+    "latest": "v1.0.40",
+    "name": "certinfo",
+    "official_deb_arches": null,
+    "repo": "pete911/certinfo"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/FiloSottile/yubikey-agent",
+    "latest": "",
+    "name": "yubikey-agent",
+    "official_deb_arches": null,
+    "repo": "FiloSottile/yubikey-agent"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/yory8/clipman",
+    "latest": "",
+    "name": "clipman",
+    "official_deb_arches": null,
+    "repo": "yory8/clipman"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/GoogleCloudPlatform/cloudsql-proxy",
+    "latest": "v2.25.3",
+    "name": "cloudsql-proxy",
+    "official_deb_arches": null,
+    "repo": "GoogleCloudPlatform/cloudsql-proxy"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/spf13/cobra-cli",
+    "latest": "v1.3.0",
+    "name": "cobra-cli",
+    "official_deb_arches": null,
+    "repo": "spf13/cobra-cli"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/crowdsecurity/crowdsec",
+    "latest": "v1.7.8",
+    "name": "crowdsec",
+    "official_deb_arches": null,
+    "repo": "crowdsecurity/crowdsec"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/crowdsecurity/cs-custom-bouncer",
+    "latest": "v0.0.17",
+    "name": "crowdsec-custom-bouncer",
+    "official_deb_arches": null,
+    "repo": "crowdsecurity/cs-custom-bouncer"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/crowdsecurity/cs-firewall-bouncer",
+    "latest": "v0.0.36",
+    "name": "crowdsec-firewall-bouncer",
+    "official_deb_arches": null,
+    "repo": "crowdsecurity/cs-firewall-bouncer"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/crun",
+    "latest": "1.29.1",
+    "name": "crun",
+    "official_deb_arches": null,
+    "repo": "containers/crun"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/yktoo/ymuse",
+    "latest": "v0.22",
+    "name": "ymuse",
     "official_deb_arches": [
       "amd64"
     ],
-    "repo": "BurntSushi/ripgrep"
+    "repo": "yktoo/ymuse"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kong/deck",
+    "latest": "v1.65.2",
+    "name": "deck",
+    "official_deb_arches": [
+      "amd64",
+      "arm64"
+    ],
+    "repo": "kong/deck"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/yggdrasil-network/yggdrasil-go",
+    "latest": "v0.5.14",
+    "name": "golang-github-yggdrasil-network-yggdrasil-go-dev",
+    "official_deb_arches": [
+      "amd64",
+      "arm64",
+      "armhf",
+      "i386"
+    ],
+    "repo": "yggdrasil-network/yggdrasil-go"
+  },
+  {
+    "gaps": [
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/johnkerl/miller",
+    "latest": "v6.21.0",
+    "name": "miller",
+    "official_deb_arches": [
+      "amd64",
+      "arm64",
+      "armhf",
+      "riscv64",
+      "s390x"
+    ],
+    "repo": "johnkerl/miller"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/keltia/dmarc-cat",
+    "latest": "v0.15.0",
+    "name": "dmarc-cat",
+    "official_deb_arches": null,
+    "repo": "keltia/dmarc-cat"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/docker/distribution",
+    "latest": "v3.1.1",
+    "name": "docker-registry",
+    "official_deb_arches": null,
+    "repo": "docker/distribution"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/muesli/duf",
+    "latest": "v0.9.1",
+    "name": "duf",
+    "official_deb_arches": [
+      "amd64",
+      "arm64",
+      "armhf"
+    ],
+    "repo": "muesli/duf"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-easygen/easygen",
+    "latest": "v5.3.0",
+    "name": "easygen",
+    "official_deb_arches": [
+      "amd64",
+      "arm64"
+    ],
+    "repo": "go-easygen/easygen"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mattn/efm-langserver",
+    "latest": "v0.0.57",
+    "name": "efm-langserver",
+    "official_deb_arches": null,
+    "repo": "mattn/efm-langserver"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mh-cbon/emd",
+    "latest": "1.0.1",
+    "name": "emd",
+    "official_deb_arches": [
+      "amd64"
+    ],
+    "repo": "mh-cbon/emd"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/DCSO/ethflux",
+    "latest": "v1.0",
+    "name": "ethflux",
+    "official_deb_arches": null,
+    "repo": "DCSO/ethflux"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mvdan/fdroidcl",
+    "latest": "v0.8.1",
+    "name": "fdroidcl",
+    "official_deb_arches": null,
+    "repo": "mvdan/fdroidcl"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/DCSO/fever",
+    "latest": "v1.4.0",
+    "name": "fever",
+    "official_deb_arches": null,
+    "repo": "DCSO/fever"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/suntong/ffcvt",
+    "latest": "",
+    "name": "ffcvt",
+    "official_deb_arches": null,
+    "repo": "suntong/ffcvt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ffuf/ffuf",
+    "latest": "",
+    "name": "ffuf",
+    "official_deb_arches": null,
+    "repo": "ffuf/ffuf"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/wader/fq",
+    "latest": "",
+    "name": "fq",
+    "official_deb_arches": null,
+    "repo": "wader/fq"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/fscrypt",
+    "latest": "",
+    "name": "fscrypt",
+    "official_deb_arches": null,
+    "repo": "google/fscrypt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/junegunn/fzf",
+    "latest": "",
+    "name": "fzf",
+    "official_deb_arches": null,
+    "repo": "junegunn/fzf"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/xorpaul/g10k",
+    "latest": "",
+    "name": "g10k",
+    "official_deb_arches": null,
+    "repo": "xorpaul/g10k"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/valinurovam/garagemq",
+    "latest": "",
+    "name": "garagemq",
+    "official_deb_arches": null,
+    "repo": "valinurovam/garagemq"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dundee/gdu",
+    "latest": "",
+    "name": "gdu",
+    "official_deb_arches": null,
+    "repo": "dundee/gdu"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gogetdata/ggd-utils",
+    "latest": "",
+    "name": "ggd-utils",
+    "official_deb_arches": null,
+    "repo": "gogetdata/ggd-utils"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/liamg/gifwrap",
+    "latest": "",
+    "name": "gifwrap",
+    "official_deb_arches": null,
+    "repo": "liamg/gifwrap"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hickford/git-credential-oauth",
+    "latest": "",
+    "name": "git-credential-oauth",
+    "official_deb_arches": null,
+    "repo": "hickford/git-credential-oauth"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/isacikgoz/gitbatch",
+    "latest": "",
+    "name": "gitbatch",
+    "official_deb_arches": null,
+    "repo": "isacikgoz/gitbatch"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sibprogrammer/xq",
+    "latest": "",
+    "name": "xq",
+    "official_deb_arches": null,
+    "repo": "sibprogrammer/xq"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hanwen/go-mtpfs",
+    "latest": "",
+    "name": "go-mtpfs",
+    "official_deb_arches": null,
+    "repo": "hanwen/go-mtpfs"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/skip2/go-qrcode",
+    "latest": "",
+    "name": "go-qrcode",
+    "official_deb_arches": null,
+    "repo": "skip2/go-qrcode"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/knqyf263/go-rpmdb",
+    "latest": "",
+    "name": "go-rpmdb",
+    "official_deb_arches": null,
+    "repo": "knqyf263/go-rpmdb"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/osrg/gobgp",
+    "latest": "",
+    "name": "gobgpd",
+    "official_deb_arches": null,
+    "repo": "osrg/gobgp"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/OJ/gobuster",
+    "latest": "",
+    "name": "gobuster",
+    "official_deb_arches": null,
+    "repo": "OJ/gobuster"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/goccmack/gocc",
+    "latest": "",
+    "name": "gocc",
+    "official_deb_arches": null,
+    "repo": "goccmack/gocc"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rfjakob/gocryptfs",
+    "latest": "",
+    "name": "gocryptfs",
+    "official_deb_arches": null,
+    "repo": "rfjakob/gocryptfs"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ctdk/goiardi",
+    "latest": "",
+    "name": "goiardi",
+    "official_deb_arches": null,
+    "repo": "ctdk/goiardi"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cloudflare/gokey",
+    "latest": "",
+    "name": "gokey",
+    "official_deb_arches": null,
+    "repo": "cloudflare/gokey"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jteeuwen/go-bindata",
+    "latest": "",
+    "name": "go-bindata",
+    "official_deb_arches": null,
+    "repo": "jteeuwen/go-bindata"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/onsi/ginkgo",
+    "latest": "",
+    "name": "ginkgo",
+    "official_deb_arches": null,
+    "repo": "onsi/ginkgo"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/anacrolix/dms",
+    "latest": "",
+    "name": "anacrolix-dms",
+    "official_deb_arches": null,
+    "repo": "anacrolix/dms"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/anacrolix/missinggo",
+    "latest": "",
+    "name": "golang-github-anacrolix-missinggo-bin-static",
+    "official_deb_arches": null,
+    "repo": "anacrolix/missinggo"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/asciimoo/wuzz",
+    "latest": "",
+    "name": "wuzz",
+    "official_deb_arches": null,
+    "repo": "asciimoo/wuzz"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/avast/apkverifier",
+    "latest": "",
+    "name": "apkverifier",
+    "official_deb_arches": null,
+    "repo": "avast/apkverifier"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/axgle/mahonia",
+    "latest": "",
+    "name": "golang-github-axgle-mahonia-dev",
+    "official_deb_arches": null,
+    "repo": "axgle/mahonia"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/aymerick/douceur",
+    "latest": "",
+    "name": "douceur",
+    "official_deb_arches": null,
+    "repo": "aymerick/douceur"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/FiloSottile/age",
+    "latest": "",
+    "name": "age",
+    "official_deb_arches": null,
+    "repo": "FiloSottile/age"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/bmatsuo/lmdb-go",
+    "latest": "",
+    "name": "golang-github-bmatsuo-lmdb-go-dev",
+    "official_deb_arches": null,
+    "repo": "bmatsuo/lmdb-go"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/canonical/go-dqlite",
+    "latest": "",
+    "name": "go-dqlite",
+    "official_deb_arches": null,
+    "repo": "canonical/go-dqlite"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cavaliergopher/grab",
+    "latest": "",
+    "name": "golang-github-cavaliergopher-grab-dev",
+    "official_deb_arches": null,
+    "repo": "cavaliergopher/grab"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cheekybits/genny",
+    "latest": "",
+    "name": "genny",
+    "official_deb_arches": null,
+    "repo": "cheekybits/genny"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cloudflare/cfssl",
+    "latest": "",
+    "name": "golang-cfssl",
+    "official_deb_arches": null,
+    "repo": "cloudflare/cfssl"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cloudflare/redoctober",
+    "latest": "",
+    "name": "golang-github-cloudflare-redoctober-dev",
+    "official_deb_arches": null,
+    "repo": "cloudflare/redoctober"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/colinmarc/hdfs",
+    "latest": "",
+    "name": "golang-github-colinmarc-hdfs-dev",
+    "official_deb_arches": null,
+    "repo": "colinmarc/hdfs"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containerd/stargz-snapshotter",
+    "latest": "",
+    "name": "golang-github-containerd-stargz-snapshotter-dev",
+    "official_deb_arches": null,
+    "repo": "containerd/stargz-snapshotter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containernetworking/plugins",
+    "latest": "",
+    "name": "containernetworking-plugins",
+    "official_deb_arches": null,
+    "repo": "containernetworking/plugins"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/buildah",
+    "latest": "",
+    "name": "buildah",
+    "official_deb_arches": null,
+    "repo": "containers/buildah"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/dnsname",
+    "latest": "",
+    "name": "golang-github-containernetworking-plugin-dnsname",
+    "official_deb_arches": null,
+    "repo": "containers/dnsname"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/storage",
+    "latest": "",
+    "name": "containers-storage",
+    "official_deb_arches": null,
+    "repo": "containers/storage"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dataence/porter2",
+    "latest": "",
+    "name": "golang-github-dataence-porter2-dev",
+    "official_deb_arches": null,
+    "repo": "dataence/porter2"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/DCSO/bloom",
+    "latest": "",
+    "name": "golang-github-dcso-bloom-cli",
+    "official_deb_arches": null,
+    "repo": "DCSO/bloom"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dnstap/golang-dnstap",
+    "latest": "",
+    "name": "golang-github-dnstap-golang-dnstap-cli",
+    "official_deb_arches": null,
+    "repo": "dnstap/golang-dnstap"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/docker/docker-credential-helpers",
+    "latest": "",
+    "name": "golang-docker-credential-helpers",
+    "official_deb_arches": null,
+    "repo": "docker/docker-credential-helpers"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/eknkc/amber",
+    "latest": "",
+    "name": "amber",
+    "official_deb_arches": null,
+    "repo": "eknkc/amber"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/emersion/go-msgauth",
+    "latest": "",
+    "name": "go-msgauth",
+    "official_deb_arches": null,
+    "repo": "emersion/go-msgauth"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/evanw/esbuild",
+    "latest": "",
+    "name": "esbuild",
+    "official_deb_arches": null,
+    "repo": "evanw/esbuild"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/fernet/fernet-go",
+    "latest": "",
+    "name": "fernet-go",
+    "official_deb_arches": null,
+    "repo": "fernet/fernet-go"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/francoispqt/gojay",
+    "latest": "",
+    "name": "gojay",
+    "official_deb_arches": null,
+    "repo": "francoispqt/gojay"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/glendc/go-external-ip",
+    "latest": "",
+    "name": "exip",
+    "official_deb_arches": null,
+    "repo": "glendc/go-external-ip"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/psanford/wormhole-william",
+    "latest": "",
+    "name": "golang-github-psanford-wormhole-william-dev",
+    "official_deb_arches": null,
+    "repo": "psanford/wormhole-william"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-git/go-git",
+    "latest": "",
+    "name": "go-git",
+    "official_deb_arches": null,
+    "repo": "go-git/go-git"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/golang-jwt/jwt",
+    "latest": "",
+    "name": "golang-github-golang-jwt-jwt-dev",
+    "official_deb_arches": null,
+    "repo": "golang-jwt/jwt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/golang/mock",
+    "latest": "",
+    "name": "golang-github-golang-mock-dev",
+    "official_deb_arches": null,
+    "repo": "golang/mock"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/golang/protobuf",
+    "latest": "",
+    "name": "golang-github-golang-protobuf-1-3-dev",
+    "official_deb_arches": null,
+    "repo": "golang/protobuf"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/blueprint",
+    "latest": "",
+    "name": "blueprint-tools",
+    "official_deb_arches": null,
+    "repo": "google/blueprint"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/wire",
+    "latest": "",
+    "name": "golang-github-google-wire-dev",
+    "official_deb_arches": null,
+    "repo": "google/wire"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/grpc-ecosystem/grpc-gateway",
+    "latest": "",
+    "name": "golang-github-grpc-ecosystem-grpc-gateway-dev",
+    "official_deb_arches": null,
+    "repo": "grpc-ecosystem/grpc-gateway"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gucumber/gucumber",
+    "latest": "",
+    "name": "golang-github-gucumber-gucumber-dev",
+    "official_deb_arches": null,
+    "repo": "gucumber/gucumber"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/influxdata/yarpc",
+    "latest": "",
+    "name": "golang-github-influxdata-yarpc-dev",
+    "official_deb_arches": null,
+    "repo": "influxdata/yarpc"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jhillyerd/enmime",
+    "latest": "",
+    "name": "enmime",
+    "official_deb_arches": null,
+    "repo": "jhillyerd/enmime"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mailru/easyjson",
+    "latest": "",
+    "name": "golang-easyjson",
+    "official_deb_arches": null,
+    "repo": "mailru/easyjson"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mendersoftware/mender-artifact",
+    "latest": "",
+    "name": "golang-github-mendersoftware-mender-artifact-dev",
+    "official_deb_arches": null,
+    "repo": "mendersoftware/mender-artifact"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/micromdm/scep",
+    "latest": "",
+    "name": "golang-github-micromdm-scep-dev",
+    "official_deb_arches": null,
+    "repo": "micromdm/scep"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mozillazg/go-pinyin",
+    "latest": "",
+    "name": "golang-github-mozillazg-go-pinyin-dev",
+    "official_deb_arches": null,
+    "repo": "mozillazg/go-pinyin"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/muka/go-bluetooth",
+    "latest": "",
+    "name": "go-bluetooth",
+    "official_deb_arches": null,
+    "repo": "muka/go-bluetooth"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/odeke-em/cli-spinner",
+    "latest": "",
+    "name": "cli-spinner",
+    "official_deb_arches": null,
+    "repo": "odeke-em/cli-spinner"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/odeke-em/ripper",
+    "latest": "",
+    "name": "golang-github-odeke-em-ripper-dev",
+    "official_deb_arches": null,
+    "repo": "odeke-em/ripper"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/openshift/imagebuilder",
+    "latest": "",
+    "name": "golang-github-openshift-imagebuilder-dev",
+    "official_deb_arches": null,
+    "repo": "openshift/imagebuilder"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/pelletier/go-toml",
+    "latest": "",
+    "name": "golang-github-pelletier-go-toml",
+    "official_deb_arches": null,
+    "repo": "pelletier/go-toml"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/pointlander/peg",
+    "latest": "",
+    "name": "golang-github-pointlander-peg-dev",
+    "official_deb_arches": null,
+    "repo": "pointlander/peg"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/packer-community/winrmcp",
+    "latest": "",
+    "name": "golang-github-packer-community-winrmcp-dev",
+    "official_deb_arches": null,
+    "repo": "packer-community/winrmcp"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rakyll/statik",
+    "latest": "",
+    "name": "golang-github-rakyll-statik-dev",
+    "official_deb_arches": null,
+    "repo": "rakyll/statik"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rogpeppe/go-internal",
+    "latest": "",
+    "name": "go-internal",
+    "official_deb_arches": null,
+    "repo": "rogpeppe/go-internal"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rsc/devweb",
+    "latest": "",
+    "name": "golang-github-rsc-devweb",
+    "official_deb_arches": null,
+    "repo": "rsc/devweb"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rubenv/sql-migrate",
+    "latest": "",
+    "name": "golang-github-rubenv-sql-migrate-dev",
+    "official_deb_arches": null,
+    "repo": "rubenv/sql-migrate"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sebest/xff",
+    "latest": "",
+    "name": "golang-github-sebest-xff",
+    "official_deb_arches": null,
+    "repo": "sebest/xff"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/segmentio/ksuid",
+    "latest": "",
+    "name": "golang-github-segmentio-ksuid-dev",
+    "official_deb_arches": null,
+    "repo": "segmentio/ksuid"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/smallstep/truststore",
+    "latest": "",
+    "name": "golang-github-smallstep-truststore-dev",
+    "official_deb_arches": null,
+    "repo": "smallstep/truststore"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sylabs/sif",
+    "latest": "",
+    "name": "golang-github-sylabs-sif-dev",
+    "official_deb_arches": null,
+    "repo": "sylabs/sif"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tinylib/msgp",
+    "latest": "",
+    "name": "golang-github-tinylib-msgp-dev",
+    "official_deb_arches": null,
+    "repo": "tinylib/msgp"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/joewalnes/websocketd",
+    "latest": "",
+    "name": "websocketd",
+    "official_deb_arches": null,
+    "repo": "joewalnes/websocketd"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ugorji/go",
+    "latest": "",
+    "name": "golang-github-ugorji-go-codec",
+    "official_deb_arches": null,
+    "repo": "ugorji/go"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/varlink/go",
+    "latest": "",
+    "name": "golang-github-varlink-go-dev",
+    "official_deb_arches": null,
+    "repo": "varlink/go"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/vbatts/tar-split",
+    "latest": "",
+    "name": "golang-github-vbatts-tar-split-dev",
+    "official_deb_arches": null,
+    "repo": "vbatts/tar-split"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/vincent-petithory/dataurl",
+    "latest": "",
+    "name": "dataurl",
+    "official_deb_arches": null,
+    "repo": "vincent-petithory/dataurl"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/FiloSottile/mkcert",
+    "latest": "",
+    "name": "mkcert",
+    "official_deb_arches": null,
+    "repo": "FiloSottile/mkcert"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/xordataexchange/crypt",
+    "latest": "",
+    "name": "golang-github-xordataexchange-crypt",
+    "official_deb_arches": null,
+    "repo": "xordataexchange/crypt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/yosssi/ace",
+    "latest": "",
+    "name": "ace",
+    "official_deb_arches": null,
+    "repo": "yosssi/ace"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gogo/protobuf",
+    "latest": "",
+    "name": "gogoprotobuf",
+    "official_deb_arches": null,
+    "repo": "gogo/protobuf"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containerd/ttrpc",
+    "latest": "",
+    "name": "gogottrpc",
+    "official_deb_arches": null,
+    "repo": "containerd/ttrpc"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/protocolbuffers/protobuf-go",
+    "latest": "",
+    "name": "golang-google-protobuf-dev",
+    "official_deb_arches": null,
+    "repo": "protocolbuffers/protobuf-go"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/gvisor",
+    "latest": "",
+    "name": "golang-gvisor-gvisor-dev",
+    "official_deb_arches": null,
+    "repo": "google/gvisor"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dominikh/go-tools",
+    "latest": "",
+    "name": "go-staticcheck",
+    "official_deb_arches": null,
+    "repo": "dominikh/go-tools"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kubernetes/kube-openapi",
+    "latest": "",
+    "name": "golang-k8s-kube-openapi-dev",
+    "official_deb_arches": null,
+    "repo": "kubernetes/kube-openapi"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mvdan/sh",
+    "latest": "",
+    "name": "golang-mvdan-sh-dev",
+    "official_deb_arches": null,
+    "repo": "mvdan/sh"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/paultag/go-ykpiv",
+    "latest": "",
+    "name": "golang-pault-go-ykpiv-dev",
+    "official_deb_arches": null,
+    "repo": "paultag/go-ykpiv"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dustinkirkland/golang-petname",
+    "latest": "",
+    "name": "golang-github-dustinkirkland-golang-petname-dev",
+    "official_deb_arches": null,
+    "repo": "dustinkirkland/golang-petname"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/v2fly/v2ray-core",
+    "latest": "",
+    "name": "golang-v2ray-core-dev",
+    "official_deb_arches": null,
+    "repo": "v2fly/v2ray-core"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/GoogleCloudPlatform/guest-agent",
+    "latest": "",
+    "name": "google-guest-agent",
+    "official_deb_arches": null,
+    "repo": "GoogleCloudPlatform/guest-agent"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/adnanh/webhook",
+    "latest": "",
+    "name": "webhook",
+    "official_deb_arches": null,
+    "repo": "adnanh/webhook"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ProtonMail/gosop",
+    "latest": "",
+    "name": "gosop",
+    "official_deb_arches": null,
+    "repo": "ProtonMail/gosop"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tianon/gosu",
+    "latest": "",
+    "name": "gosu",
+    "official_deb_arches": null,
+    "repo": "tianon/gosu"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gotestyourself/gotestsum",
+    "latest": "",
+    "name": "gotestsum",
+    "official_deb_arches": null,
+    "repo": "gotestyourself/gotestsum"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mitchellh/gox",
+    "latest": "",
+    "name": "gox",
+    "official_deb_arches": null,
+    "repo": "mitchellh/gox"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/martinhoefling/goxkcdpwgen",
+    "latest": "",
+    "name": "goxkcdpwgen",
+    "official_deb_arches": null,
+    "repo": "martinhoefling/goxkcdpwgen"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tomnomnom/gron",
+    "latest": "",
+    "name": "gron",
+    "official_deb_arches": null,
+    "repo": "tomnomnom/gron"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/brentp/gsort",
+    "latest": "",
+    "name": "golang-github-brentp-gsort-dev",
+    "official_deb_arches": null,
+    "repo": "brentp/gsort"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hetznercloud/cli",
+    "latest": "",
+    "name": "hcloud-cli",
+    "official_deb_arches": null,
+    "repo": "hetznercloud/cli"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/titanous/heartbleeder",
+    "latest": "",
+    "name": "heartbleeder",
+    "official_deb_arches": null,
+    "repo": "titanous/heartbleeder"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rakyll/hey",
+    "latest": "",
+    "name": "hey",
+    "official_deb_arches": null,
+    "repo": "rakyll/hey"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hjson/hjson-go",
+    "latest": "",
+    "name": "golang-github-hjson-hjson-go-dev",
+    "official_deb_arches": null,
+    "repo": "hjson/hjson-go"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/github/hub",
+    "latest": "",
+    "name": "hub",
+    "official_deb_arches": null,
+    "repo": "github/hub"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rchakode/hugo-mx-gateway",
+    "latest": "",
+    "name": "hugo-mx-gateway",
+    "official_deb_arches": null,
+    "repo": "rchakode/hugo-mx-gateway"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/coreos/ignition",
+    "latest": "",
+    "name": "ignition",
+    "official_deb_arches": null,
+    "repo": "coreos/ignition"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/OpenPrinting/ipp-usb",
+    "latest": "",
+    "name": "ipp-usb",
+    "official_deb_arches": null,
+    "repo": "OpenPrinting/ipp-usb"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/peteheist/irtt",
+    "latest": "",
+    "name": "irtt",
+    "official_deb_arches": null,
+    "repo": "peteheist/irtt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/simeji/jid/",
+    "latest": "",
+    "name": "jid",
+    "official_deb_arches": null,
+    "repo": "simeji/jid"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jmespath/jp",
+    "latest": "",
+    "name": "jp",
+    "official_deb_arches": null,
+    "repo": "jmespath/jp"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/noahgorstein/jqp",
+    "latest": "",
+    "name": "jqp",
+    "official_deb_arches": null,
+    "repo": "noahgorstein/jqp"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/nonoo/kappanhang",
+    "latest": "",
+    "name": "kappanhang",
+    "official_deb_arches": null,
+    "repo": "nonoo/kappanhang"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/xtaci/kcptun",
+    "latest": "",
+    "name": "kcptun",
+    "official_deb_arches": null,
+    "repo": "xtaci/kcptun"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/k0swe/kel-agent",
+    "latest": "",
+    "name": "kel-agent",
+    "official_deb_arches": null,
+    "repo": "k0swe/kel-agent"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dty1er/kubecolor",
+    "latest": "",
+    "name": "kubecolor",
+    "official_deb_arches": null,
+    "repo": "dty1er/kubecolor"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ahmetb/kubectx",
+    "latest": "",
+    "name": "kubectx",
+    "official_deb_arches": null,
+    "repo": "ahmetb/kubectx"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gokcehan/lf",
+    "latest": "",
+    "name": "lf",
+    "official_deb_arches": null,
+    "repo": "gokcehan/lf"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/podman",
+    "latest": "",
+    "name": "podman",
+    "official_deb_arches": null,
+    "repo": "containers/podman"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sonots/lltsv",
+    "latest": "",
+    "name": "lltsv",
+    "official_deb_arches": null,
+    "repo": "sonots/lltsv"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/johnkerl/lumin",
+    "latest": "",
+    "name": "golang-github-johnkerl-lumin-dev",
+    "official_deb_arches": null,
+    "repo": "johnkerl/lumin"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cybertec-postgresql/vip-manager",
+    "latest": "",
+    "name": "vip-manager",
+    "official_deb_arches": null,
+    "repo": "cybertec-postgresql/vip-manager"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mendersoftware/mender-cli",
+    "latest": "",
+    "name": "mender-cli",
+    "official_deb_arches": null,
+    "repo": "mendersoftware/mender-cli"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mendersoftware/mender",
+    "latest": "",
+    "name": "mender-client",
+    "official_deb_arches": null,
+    "repo": "mendersoftware/mender"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/VictoriaMetrics/VictoriaMetrics",
+    "latest": "",
+    "name": "golang-github-victoriametrics-victoriametrics-dev",
+    "official_deb_arches": null,
+    "repo": "VictoriaMetrics/VictoriaMetrics"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/Debian/dh-make-golang",
+    "latest": "",
+    "name": "dh-make-golang",
+    "official_deb_arches": null,
+    "repo": "Debian/dh-make-golang"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/alertmanager-irc-relay",
+    "latest": "",
+    "name": "alertmanager-irc-relay",
+    "official_deb_arches": null,
+    "repo": "google/alertmanager-irc-relay"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/xo/terminfo",
+    "latest": "",
+    "name": "golang-github-xo-terminfo-dev",
+    "official_deb_arches": null,
+    "repo": "xo/terminfo"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/vektra/mockery",
+    "latest": "",
+    "name": "mockery",
+    "official_deb_arches": null,
+    "repo": "vektra/mockery"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/brentp/vcfanno",
+    "latest": "",
+    "name": "vcfanno",
+    "official_deb_arches": null,
+    "repo": "brentp/vcfanno"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/mtail/",
+    "latest": "",
+    "name": "mtail",
+    "official_deb_arches": null,
+    "repo": "google/mtail"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/nats-io/nats-server",
+    "latest": "",
+    "name": "golang-github-nats-io-nats-server-dev",
+    "official_deb_arches": null,
+    "repo": "nats-io/nats-server"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/slackhq/nebula",
+    "latest": "",
+    "name": "golang-github-slackhq-nebula-dev",
+    "official_deb_arches": null,
+    "repo": "slackhq/nebula"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/strukturag/nextcloud-spreed-signaling",
+    "latest": "",
+    "name": "nextcloud-spreed-signaling",
+    "official_deb_arches": null,
+    "repo": "strukturag/nextcloud-spreed-signaling"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/notaryproject/notary",
+    "latest": "",
+    "name": "golang-github-docker-notary-dev",
+    "official_deb_arches": null,
+    "repo": "notaryproject/notary"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/muesli/obs-cli",
+    "latest": "",
+    "name": "obs-cli",
+    "official_deb_arches": null,
+    "repo": "muesli/obs-cli"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/opencontainers/image-tools",
+    "latest": "",
+    "name": "oci-image-tool",
+    "official_deb_arches": null,
+    "repo": "opencontainers/image-tools"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/oci-seccomp-bpf-hook",
+    "latest": "",
+    "name": "oci-seccomp-bpf-hook",
+    "official_deb_arches": null,
+    "repo": "containers/oci-seccomp-bpf-hook"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/poolporg/filter-rspamd",
+    "latest": "",
+    "name": "opensmtpd-filter-rspamd",
+    "official_deb_arches": null,
+    "repo": "poolporg/filter-rspamd"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/poolporg/filter-senderscore",
+    "latest": "",
+    "name": "opensmtpd-filter-senderscore",
+    "official_deb_arches": null,
+    "repo": "poolporg/filter-senderscore"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/evilsocket/opensnitch",
+    "latest": "",
+    "name": "opensnitch",
+    "official_deb_arches": null,
+    "repo": "evilsocket/opensnitch"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/letsencrypt/pebble",
+    "latest": "",
+    "name": "pebble",
+    "official_deb_arches": null,
+    "repo": "letsencrypt/pebble"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/peco/peco",
+    "latest": "",
+    "name": "peco",
+    "official_deb_arches": null,
+    "repo": "peco/peco"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/nanoporetech/pinfish",
+    "latest": "",
+    "name": "pinfish",
+    "official_deb_arches": null,
+    "repo": "nanoporetech/pinfish"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/Lusitaniae/apache_exporter/",
+    "latest": "",
+    "name": "prometheus-apache-exporter",
+    "official_deb_arches": null,
+    "repo": "Lusitaniae/apache_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus-community/bind_exporter/",
+    "latest": "",
+    "name": "prometheus-bind-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus-community/bind_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/czerwonk/bird_exporter",
+    "latest": "",
+    "name": "prometheus-bird-exporter",
+    "official_deb_arches": null,
+    "repo": "czerwonk/bird_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus/blackbox_exporter",
+    "latest": "",
+    "name": "prometheus-blackbox-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus/blackbox_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus-community/elasticsearch_exporter",
+    "latest": "",
+    "name": "prometheus-elasticsearch-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus-community/elasticsearch_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/QubitProducts/exporter_exporter",
+    "latest": "",
+    "name": "prometheus-exporter-exporter",
+    "official_deb_arches": null,
+    "repo": "QubitProducts/exporter_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tynany/frr_exporter",
+    "latest": "",
+    "name": "prometheus-frr-exporter",
+    "official_deb_arches": null,
+    "repo": "tynany/frr_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ClusterLabs/ha_cluster_exporter",
+    "latest": "",
+    "name": "prometheus-hacluster-exporter",
+    "official_deb_arches": null,
+    "repo": "ClusterLabs/ha_cluster_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus/haproxy_exporter",
+    "latest": "",
+    "name": "prometheus-haproxy-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus/haproxy_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/shenwei356/unikmer",
+    "latest": "",
+    "name": "unikmer",
+    "official_deb_arches": null,
+    "repo": "shenwei356/unikmer"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus-community/ipmi_exporter",
+    "latest": "",
+    "name": "prometheus-ipmi-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus-community/ipmi_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/liamg/tml",
+    "latest": "",
+    "name": "golang-github-liamg-tml-dev",
+    "official_deb_arches": null,
+    "repo": "liamg/tml"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cherti/mailexporter",
+    "latest": "",
+    "name": "prometheus-mailexporter",
+    "official_deb_arches": null,
+    "repo": "cherti/mailexporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dcu/mongodb_exporter",
+    "latest": "",
+    "name": "prometheus-mongodb-exporter",
+    "official_deb_arches": null,
+    "repo": "dcu/mongodb_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hikhvar/mqtt2prometheus",
+    "latest": "",
+    "name": "prometheus-mqtt-exporter",
+    "official_deb_arches": null,
+    "repo": "hikhvar/mqtt2prometheus"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus/mysqld_exporter",
+    "latest": "",
+    "name": "prometheus-mysqld-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus/mysqld_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/xperimental/nextcloud-exporter",
+    "latest": "",
+    "name": "prometheus-nextcloud-exporter",
+    "official_deb_arches": null,
+    "repo": "xperimental/nextcloud-exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/dinedal/textql/",
+    "latest": "",
+    "name": "textql",
+    "official_deb_arches": null,
+    "repo": "dinedal/textql"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus/node_exporter",
+    "latest": "",
+    "name": "prometheus-node-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus/node_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kumina/postfix_exporter",
+    "latest": "",
+    "name": "prometheus-postfix-exporter",
+    "official_deb_arches": null,
+    "repo": "kumina/postfix_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus-community/postgres_exporter",
+    "latest": "",
+    "name": "prometheus-postgres-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus-community/postgres_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ncabatoff/process-exporter",
+    "latest": "",
+    "name": "prometheus-process-exporter",
+    "official_deb_arches": null,
+    "repo": "ncabatoff/process-exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus/pushgateway",
+    "latest": "",
+    "name": "prometheus-pushgateway",
+    "official_deb_arches": null,
+    "repo": "prometheus/pushgateway"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/oliver006/redis_exporter",
+    "latest": "",
+    "name": "prometheus-redis-exporter",
+    "official_deb_arches": null,
+    "repo": "oliver006/redis_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/SuperQ/smokeping_prober",
+    "latest": "",
+    "name": "prometheus-smokeping-prober",
+    "official_deb_arches": null,
+    "repo": "SuperQ/smokeping_prober"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/prometheus/snmp_exporter",
+    "latest": "",
+    "name": "prometheus-snmp-exporter",
+    "official_deb_arches": null,
+    "repo": "prometheus/snmp_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/justwatchcom/sql_exporter",
+    "latest": "",
+    "name": "prometheus-sql-exporter",
+    "official_deb_arches": null,
+    "repo": "justwatchcom/sql_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/boynux/squid-exporter",
+    "latest": "",
+    "name": "prometheus-squid-exporter",
+    "official_deb_arches": null,
+    "repo": "boynux/squid-exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/fffonion/tplink-plug-exporter",
+    "latest": "",
+    "name": "prometheus-tplink-plug-exporter",
+    "official_deb_arches": null,
+    "repo": "fffonion/tplink-plug-exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jonnenauha/prometheus_varnish_exporter",
+    "latest": "",
+    "name": "prometheus-varnish-exporter",
+    "official_deb_arches": null,
+    "repo": "jonnenauha/prometheus_varnish_exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ericchiang/pup",
+    "latest": "",
+    "name": "pup",
+    "official_deb_arches": null,
+    "repo": "ericchiang/pup"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mdp/qrterminal",
+    "latest": "",
+    "name": "golang-github-mdp-qrterminal-dev",
+    "official_deb_arches": null,
+    "repo": "mdp/qrterminal"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/debian/ratt",
+    "latest": "",
+    "name": "ratt",
+    "official_deb_arches": null,
+    "repo": "debian/ratt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tianon/rawdns",
+    "latest": "",
+    "name": "rawdns",
+    "official_deb_arches": null,
+    "repo": "tianon/rawdns"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rclone/rclone",
+    "latest": "",
+    "name": "golang-github-rclone-rclone-dev",
+    "official_deb_arches": null,
+    "repo": "rclone/rclone"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cespare/reflex",
+    "latest": "",
+    "name": "reflex",
+    "official_deb_arches": null,
+    "repo": "cespare/reflex"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/restic/restic",
+    "latest": "",
+    "name": "restic",
+    "official_deb_arches": null,
+    "repo": "restic/restic"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rootless-containers/rootlesskit",
+    "latest": "",
+    "name": "golang-github-rootless-containers-rootlesskit-dev",
+    "official_deb_arches": null,
+    "repo": "rootless-containers/rootlesskit"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/opencontainers/runc",
+    "latest": "",
+    "name": "golang-github-opencontainers-runc-dev",
+    "official_deb_arches": null,
+    "repo": "opencontainers/runc"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/asipto/secsipidx",
+    "latest": "",
+    "name": "libsecsipid-dev",
+    "official_deb_arches": null,
+    "repo": "asipto/secsipidx"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/shenwei356/seqkit",
+    "latest": "",
+    "name": "seqkit",
+    "official_deb_arches": null,
+    "repo": "shenwei356/seqkit"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gcla/termshark",
+    "latest": "",
+    "name": "termshark",
+    "official_deb_arches": null,
+    "repo": "gcla/termshark"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/thousandeyes/shoelaces",
+    "latest": "",
+    "name": "shoelaces",
+    "official_deb_arches": null,
+    "repo": "thousandeyes/shoelaces"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/antavelos/terminews",
+    "latest": "",
+    "name": "terminews",
+    "official_deb_arches": null,
+    "repo": "antavelos/terminews"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/skeema/skeema",
+    "latest": "",
+    "name": "skeema",
+    "official_deb_arches": null,
+    "repo": "skeema/skeema"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/skopeo",
+    "latest": "",
+    "name": "skopeo",
+    "official_deb_arches": null,
+    "repo": "containers/skopeo"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/DCSO/slinkwatch",
+    "latest": "",
+    "name": "slinkwatch",
+    "official_deb_arches": null,
+    "repo": "DCSO/slinkwatch"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/inconshreveable/slt",
+    "latest": "",
+    "name": "slt",
+    "official_deb_arches": null,
+    "repo": "inconshreveable/slt"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/snapcore/snapd",
+    "latest": "",
+    "name": "golang-github-snapcore-snapd-dev",
+    "official_deb_arches": null,
+    "repo": "snapcore/snapd"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jaksi/sshesame",
+    "latest": "",
+    "name": "sshesame",
+    "official_deb_arches": null,
+    "repo": "jaksi/sshesame"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/bgp/stayrtr",
+    "latest": "",
+    "name": "golang-github-bgp-stayrtr-dev",
+    "official_deb_arches": null,
+    "repo": "bgp/stayrtr"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/stenographer",
+    "latest": "",
+    "name": "stenographer",
+    "official_deb_arches": null,
+    "repo": "google/stenographer"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kumina/libvirt_exporter",
+    "latest": "",
+    "name": "prometheus-libvirt-exporter",
+    "official_deb_arches": null,
+    "repo": "kumina/libvirt_exporter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sigstore/cosign",
+    "latest": "",
+    "name": "cosign",
+    "official_deb_arches": null,
+    "repo": "sigstore/cosign"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/bschaatsbergen/cidr",
+    "latest": "",
+    "name": "cidr",
+    "official_deb_arches": null,
+    "repo": "bschaatsbergen/cidr"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/maximbaz/yubikey-touch-detector",
+    "latest": "",
+    "name": "yubikey-touch-detector",
+    "official_deb_arches": null,
+    "repo": "maximbaz/yubikey-touch-detector"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/schachmat/wego",
+    "latest": "",
+    "name": "wego",
+    "official_deb_arches": null,
+    "repo": "schachmat/wego"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/elisescu/tty-record",
+    "latest": "",
+    "name": "tty-record",
+    "official_deb_arches": null,
+    "repo": "elisescu/tty-record"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tillitis/tkey-ssh-agent",
+    "latest": "",
+    "name": "golang-github-tillitis-tkey-ssh-agent-dev",
+    "official_deb_arches": null,
+    "repo": "tillitis/tkey-ssh-agent"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/openfibernet/tftp-proxy",
+    "latest": "",
+    "name": "tftp-proxy",
+    "official_deb_arches": null,
+    "repo": "openfibernet/tftp-proxy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jstemmer/go-junit-report",
+    "latest": "",
+    "name": "go-junit-report",
+    "official_deb_arches": null,
+    "repo": "jstemmer/go-junit-report"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jrhouston/tfk8s",
+    "latest": "",
+    "name": "tfk8s",
+    "official_deb_arches": null,
+    "repo": "jrhouston/tfk8s"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/riscv64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/pzhin/go-sophia",
+    "latest": "",
+    "name": "golang-github-pzhin-go-sophia-dev",
+    "official_deb_arches": null,
+    "repo": "pzhin/go-sophia"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/warrensbox/terraform-switcher",
+    "latest": "",
+    "name": "terraform-switcher",
+    "official_deb_arches": null,
+    "repo": "warrensbox/terraform-switcher"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sigstore/sigstore-go",
+    "latest": "",
+    "name": "golang-github-sigstore-sigstore-go-dev",
+    "official_deb_arches": null,
+    "repo": "sigstore/sigstore-go"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sigstore/rekor",
+    "latest": "",
+    "name": "golang-github-sigstore-rekor-dev",
+    "official_deb_arches": null,
+    "repo": "sigstore/rekor"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/riscv64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-delve/delve",
+    "latest": "",
+    "name": "delve",
+    "official_deb_arches": null,
+    "repo": "go-delve/delve"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ansible/receptor",
+    "latest": "",
+    "name": "golang-github-ansible-receptor-dev",
+    "official_deb_arches": null,
+    "repo": "ansible/receptor"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/openrdap/rdap",
+    "latest": "",
+    "name": "rdap",
+    "official_deb_arches": null,
+    "repo": "openrdap/rdap"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tomnomnom/assetfinder",
+    "latest": "",
+    "name": "assetfinder",
+    "official_deb_arches": null,
+    "repo": "tomnomnom/assetfinder"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gen2brain/cam2ip",
+    "latest": "",
+    "name": "cam2ip",
+    "official_deb_arches": null,
+    "repo": "gen2brain/cam2ip"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/d-Rickyy-b/certstream-server-go",
+    "latest": "",
+    "name": "certstream-server-go",
+    "official_deb_arches": null,
+    "repo": "d-Rickyy-b/certstream-server-go"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containerd/protobuild",
+    "latest": "",
+    "name": "protobuild",
+    "official_deb_arches": null,
+    "repo": "containerd/protobuild"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sentriz/cliphist",
+    "latest": "",
+    "name": "cliphist",
+    "official_deb_arches": null,
+    "repo": "sentriz/cliphist"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/codesearch",
+    "latest": "",
+    "name": "codesearch",
+    "official_deb_arches": null,
+    "repo": "google/codesearch"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/inetaf/tcpproxy",
+    "latest": "",
+    "name": "golang-github-inetaf-tcpproxy-dev",
+    "official_deb_arches": null,
+    "repo": "inetaf/tcpproxy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/lxc/distrobuilder",
+    "latest": "",
+    "name": "distrobuilder",
+    "official_deb_arches": null,
+    "repo": "lxc/distrobuilder"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/DNSCrypt/dnscrypt-proxy",
+    "latest": "",
+    "name": "dnscrypt-proxy",
+    "official_deb_arches": null,
+    "repo": "DNSCrypt/dnscrypt-proxy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tvrzna/emptty",
+    "latest": "",
+    "name": "emptty",
+    "official_deb_arches": null,
+    "repo": "tvrzna/emptty"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/aydinnyunus/exiflooter",
+    "latest": "",
+    "name": "exiflooter",
+    "official_deb_arches": null,
+    "repo": "aydinnyunus/exiflooter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hickford/git-credential-azure",
+    "latest": "",
+    "name": "git-credential-azure",
+    "official_deb_arches": null,
+    "repo": "hickford/git-credential-azure"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/github/git-sizer",
+    "latest": "",
+    "name": "git-sizer",
+    "official_deb_arches": null,
+    "repo": "github/git-sizer"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gitleaks/gitleaks",
+    "latest": "",
+    "name": "gitleaks",
+    "official_deb_arches": null,
+    "repo": "gitleaks/gitleaks"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/sigstore/gitsign",
+    "latest": "",
+    "name": "gitsign",
+    "official_deb_arches": null,
+    "repo": "sigstore/gitsign"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gittuf/gittuf",
+    "latest": "",
+    "name": "gittuf",
+    "official_deb_arches": null,
+    "repo": "gittuf/gittuf"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/charmbracelet/glow",
+    "latest": "",
+    "name": "glow",
+    "official_deb_arches": null,
+    "repo": "charmbracelet/glow"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kzemek/go-mmproxy",
+    "latest": "",
+    "name": "go-mmproxy",
+    "official_deb_arches": null,
+    "repo": "kzemek/go-mmproxy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/connectrpc/connect-go",
+    "latest": "",
+    "name": "golang-connectrpc-connect-dev",
+    "official_deb_arches": null,
+    "repo": "connectrpc/connect-go"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/awslabs/soci-snapshotter",
+    "latest": "",
+    "name": "golang-github-awslabs-soci-snapshotter-dev",
+    "official_deb_arches": null,
+    "repo": "awslabs/soci-snapshotter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/checkpoint-restore/checkpointctl",
+    "latest": "",
+    "name": "checkpointctl",
+    "official_deb_arches": null,
+    "repo": "checkpoint-restore/checkpointctl"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containerd/imgcrypt",
+    "latest": "",
+    "name": "golang-github-containerd-imgcrypt-dev",
+    "official_deb_arches": null,
+    "repo": "containerd/imgcrypt"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containerd/nydus-snapshotter",
+    "latest": "",
+    "name": "golang-github-containerd-nydus-snapshotter-dev",
+    "official_deb_arches": null,
+    "repo": "containerd/nydus-snapshotter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/containers/luksy",
+    "latest": "",
+    "name": "golang-github-containers-luksy-dev",
+    "official_deb_arches": null,
+    "repo": "containers/luksy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cowsql/go-cowsql",
+    "latest": "",
+    "name": "go-cowsql",
+    "official_deb_arches": null,
+    "repo": "cowsql/go-cowsql"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/denisbrodbeck/machineid",
+    "latest": "",
+    "name": "golang-github-denisbrodbeck-machineid-dev",
+    "official_deb_arches": null,
+    "repo": "denisbrodbeck/machineid"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/ffuf/pencode",
+    "latest": "",
+    "name": "golang-github-ffuf-pencode-dev",
+    "official_deb_arches": null,
+    "repo": "ffuf/pencode"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-enry/go-license-detector",
+    "latest": "",
+    "name": "golang-github-go-enry-go-license-detector-dev",
+    "official_deb_arches": null,
+    "repo": "go-enry/go-license-detector"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-jose/go-jose",
+    "latest": "",
+    "name": "golang-github-go-jose-go-jose-dev",
+    "official_deb_arches": null,
+    "repo": "go-jose/go-jose"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/googleapis/enterprise-certificate-proxy",
+    "latest": "",
+    "name": "enterprise-certificate-proxy-signer",
+    "official_deb_arches": null,
+    "repo": "googleapis/enterprise-certificate-proxy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hashicorp/terraform-config-inspect",
+    "latest": "",
+    "name": "golang-github-hashicorp-terraform-config-inspect-dev",
+    "official_deb_arches": null,
+    "repo": "hashicorp/terraform-config-inspect"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/hhatto/gorst",
+    "latest": "",
+    "name": "golang-github-hhatto-gorst-dev",
+    "official_deb_arches": null,
+    "repo": "hhatto/gorst"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/humanlogio/humanlog",
+    "latest": "",
+    "name": "golang-github-humanlogio-humanlog-dev",
+    "official_deb_arches": null,
+    "repo": "humanlogio/humanlog"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/Lusitaniae/phpfpm_exporter",
+    "latest": "",
+    "name": "prometheus-phpfpm-exporter",
+    "official_deb_arches": null,
+    "repo": "Lusitaniae/phpfpm_exporter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/raitonoberu/sptlrx",
+    "latest": "",
+    "name": "sptlrx",
+    "official_deb_arches": null,
+    "repo": "raitonoberu/sptlrx"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/katalix/go-l2tp",
+    "latest": "",
+    "name": "go-l2tp",
+    "official_deb_arches": null,
+    "repo": "katalix/go-l2tp"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/mightyguava/jl",
+    "latest": "",
+    "name": "golang-github-mightyguava-jl-dev",
+    "official_deb_arches": null,
+    "repo": "mightyguava/jl"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/protocolbuffers/txtpbfmt",
+    "latest": "",
+    "name": "golang-github-protocolbuffers-txtpbfmt-dev",
+    "official_deb_arches": null,
+    "repo": "protocolbuffers/txtpbfmt"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rootless-containers/bypass4netns",
+    "latest": "",
+    "name": "bypass4netns",
+    "official_deb_arches": null,
+    "repo": "rootless-containers/bypass4netns"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/santhosh-tekuri/jsonschema",
+    "latest": "",
+    "name": "golang-github-santhosh-tekuri-jsonschema-dev",
+    "official_deb_arches": null,
+    "repo": "santhosh-tekuri/jsonschema"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kubernetes-sigs/kustomize",
+    "latest": "",
+    "name": "golang-k8s-sigs-kustomize-api-dev",
+    "official_deb_arches": null,
+    "repo": "kubernetes-sigs/kustomize"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/tulir/gomuks",
+    "latest": "",
+    "name": "gomuks",
+    "official_deb_arches": null,
+    "repo": "tulir/gomuks"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/goss-org/goss",
+    "latest": "",
+    "name": "goss",
+    "official_deb_arches": null,
+    "repo": "goss-org/goss"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/varnamproject/govarnam",
+    "latest": "",
+    "name": "libgovarnam-dev",
+    "official_deb_arches": null,
+    "repo": "varnamproject/govarnam"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/charmbracelet/gum",
+    "latest": "",
+    "name": "gum",
+    "official_deb_arches": null,
+    "repo": "charmbracelet/gum"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/adelolmo/hd-idle",
+    "latest": "",
+    "name": "hd-idle",
+    "official_deb_arches": null,
+    "repo": "adelolmo/hd-idle"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/in-toto/in-toto-golang",
+    "latest": "",
+    "name": "golang-github-in-toto-in-toto-golang-dev",
+    "official_deb_arches": null,
+    "repo": "in-toto/in-toto-golang"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/darkhz/invidtui",
+    "latest": "",
+    "name": "invidtui",
+    "official_deb_arches": null,
+    "repo": "darkhz/invidtui"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/kubernetes-sigs/kind",
+    "latest": "",
+    "name": "kind",
+    "official_deb_arches": null,
+    "repo": "kubernetes-sigs/kind"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/jesseduffield/lazygit",
+    "latest": "",
+    "name": "lazygit",
+    "official_deb_arches": null,
+    "repo": "jesseduffield/lazygit"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/librespeed/speedtest-cli",
+    "latest": "",
+    "name": "librespeed-cli",
+    "official_deb_arches": null,
+    "repo": "librespeed/speedtest-cli"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/FiloSottile/litetlog",
+    "latest": "",
+    "name": "golang-github-filosottile-litetlog-dev",
+    "official_deb_arches": null,
+    "repo": "FiloSottile/litetlog"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/canonical/lxd",
+    "latest": "",
+    "name": "golang-github-canonical-lxd-dev",
+    "official_deb_arches": null,
+    "repo": "canonical/lxd"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/McKael/madonctl",
+    "latest": "",
+    "name": "madonctl",
+    "official_deb_arches": null,
+    "repo": "McKael/madonctl"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/magefile/mage",
+    "latest": "",
+    "name": "golang-github-magefile-mage-dev",
+    "official_deb_arches": null,
+    "repo": "magefile/mage"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/minio/mc",
+    "latest": "",
+    "name": "minio-client",
+    "official_deb_arches": null,
+    "repo": "minio/mc"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/etix/mirrorbits",
+    "latest": "",
+    "name": "mirrorbits",
+    "official_deb_arches": null,
+    "repo": "etix/mirrorbits"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/binwiederhier/ntfy",
+    "latest": "",
+    "name": "ntfy",
+    "official_deb_arches": null,
+    "repo": "binwiederhier/ntfy"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/nwg-piotr/nwg-bar",
+    "latest": "",
+    "name": "nwg-bar",
+    "official_deb_arches": null,
+    "repo": "nwg-piotr/nwg-bar"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/nwg-piotr/nwg-look",
+    "latest": "",
+    "name": "nwg-look",
+    "official_deb_arches": null,
+    "repo": "nwg-piotr/nwg-look"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/openpubkey/opkssh",
+    "latest": "",
+    "name": "golang-github-openpubkey-opkssh-dev",
+    "official_deb_arches": null,
+    "repo": "openpubkey/opkssh"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/oras-project/oras",
+    "latest": "",
+    "name": "oras",
+    "official_deb_arches": null,
+    "repo": "oras-project/oras"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/xyproto/png2svg",
+    "latest": "",
+    "name": "png2svg",
+    "official_deb_arches": null,
+    "repo": "xyproto/png2svg"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/justjanne/powerline-go",
+    "latest": "",
+    "name": "powerline-go",
+    "official_deb_arches": null,
+    "repo": "justjanne/powerline-go"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/gearnode/privatebin",
+    "latest": "",
+    "name": "privatebin-cli",
+    "official_deb_arches": null,
+    "repo": "gearnode/privatebin"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/google/dnsmasq_exporter",
+    "latest": "",
+    "name": "prometheus-dnsmasq-exporter",
+    "official_deb_arches": null,
+    "repo": "google/dnsmasq_exporter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/NightTsarina/homeplug_exporter",
+    "latest": "",
+    "name": "prometheus-homeplug-exporter",
+    "official_deb_arches": null,
+    "repo": "NightTsarina/homeplug_exporter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/rluisr/mysqlrouter_exporter",
+    "latest": "",
+    "name": "prometheus-mysqlrouter-exporter",
+    "official_deb_arches": null,
+    "repo": "rluisr/mysqlrouter_exporter"
+  },
+  {
+    "gaps": [
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/nginx/nginx-prometheus-exporter",
+    "latest": "",
+    "name": "prometheus-nginx-exporter",
+    "official_deb_arches": null,
+    "repo": "nginx/nginx-prometheus-exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/arm64",
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/riscv64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-debos/fakemachine",
+    "latest": "",
+    "name": "fakemachine",
+    "official_deb_arches": null,
+    "repo": "go-debos/fakemachine"
   },
   {
     "gaps": [
       "bookworm/riscv64",
       "bookworm/loong64"
     ],
-    "homepage": "https://github.com/sharkdp/fd",
-    "latest": "v10.4.2",
-    "name": "fd-find",
-    "official_deb_arches": [
-      "amd64",
-      "arm64",
-      "armhf"
+    "homepage": "https://github.com/lxc/lxd",
+    "latest": "",
+    "name": "lxd",
+    "official_deb_arches": null,
+    "repo": "lxc/lxd"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
     ],
-    "repo": "sharkdp/fd"
+    "homepage": "https://github.com/shadowsocks/v2ray-plugin",
+    "latest": "",
+    "name": "shadowsocks-v2ray-plugin",
+    "official_deb_arches": null,
+    "repo": "shadowsocks/v2ray-plugin"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/cloudflare/cfrpki",
+    "latest": "",
+    "name": "octorpki",
+    "official_deb_arches": null,
+    "repo": "cloudflare/cfrpki"
+  },
+  {
+    "gaps": [
+      "bookworm/arm64",
+      "bookworm/riscv64",
+      "bookworm/loong64",
+      "trixie/riscv64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/go-debos/debos",
+    "latest": "",
+    "name": "debos",
+    "official_deb_arches": null,
+    "repo": "go-debos/debos"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/nginxinc/nginx-prometheus-exporter",
+    "latest": "",
+    "name": "prometheus-nginx-exporter",
+    "official_deb_arches": null,
+    "repo": "nginxinc/nginx-prometheus-exporter"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/NebulousLabs/Sia",
+    "latest": "",
+    "name": "sia",
+    "official_deb_arches": null,
+    "repo": "NebulousLabs/Sia"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/appc/spec",
+    "latest": "",
+    "name": "appc-spec",
+    "official_deb_arches": null,
+    "repo": "appc/spec"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/path-network/go-mmproxy",
+    "latest": "",
+    "name": "go-mmproxy",
+    "official_deb_arches": null,
+    "repo": "path-network/go-mmproxy"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/traefik/yaegi",
+    "latest": "",
+    "name": "golang-github-traefik-yaegi-dev",
+    "official_deb_arches": null,
+    "repo": "traefik/yaegi"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/aviau/gopass",
+    "latest": "",
+    "name": "golang-github-aviau-gopass-dev",
+    "official_deb_arches": null,
+    "repo": "aviau/gopass"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/mendersoftware/mender-connect",
+    "latest": "",
+    "name": "mender-connect",
+    "official_deb_arches": null,
+    "repo": "mendersoftware/mender-connect"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/asciimoo/morty",
+    "latest": "",
+    "name": "morty",
+    "official_deb_arches": null,
+    "repo": "asciimoo/morty"
+  },
+  {
+    "gaps": [
+      "bookworm/riscv64",
+      "bookworm/loong64"
+    ],
+    "homepage": "https://github.com/brandond/homeplug_exporter",
+    "latest": "",
+    "name": "prometheus-homeplug-exporter",
+    "official_deb_arches": null,
+    "repo": "brandond/homeplug_exporter"
+  },
+  {
+    "gaps": [
+      "trixie/riscv64",
+      "trixie/loong64"
+    ],
+    "homepage": "https://github.com/cilium/pwru",
+    "latest": "",
+    "name": "pwru",
+    "official_deb_arches": null,
+    "repo": "cilium/pwru"
   }
 ]
