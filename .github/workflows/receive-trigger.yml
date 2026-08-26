@@ -34,13 +34,17 @@ jobs:
       - name: Determine package from event
         id: pkg
         run: |
-          # Prefer client_payload.package (sent by debian-auto-builder scanner),
-          # then fall back to the workflow_dispatch input, else auto mode.
+          # 优先级：批量包名列表(client_payload.packages) > 单包名 > workflow_dispatch 输入 > auto 全量。
           CLIENT_PKG="${{ github.event.client_payload.package }}"
+          CLIENT_PKGS="${{ github.event.client_payload.packages }}"
           INPUT_PKG="${{ inputs.package }}"
           echo "arches=${{ inputs.arches }}" >> "$GITHUB_OUTPUT"
 
-          if [ -n "$CLIENT_PKG" ] && [ "$CLIENT_PKG" != "null" ]; then
+          if [ -n "$CLIENT_PKGS" ] && [ "$CLIENT_PKGS" != "null" ]; then
+            # 批量模式：扫描器一次事件带全部缺口包，本 runner 顺序构建后统一推送一次
+            echo "pkg_list=$CLIENT_PKGS" >> "$GITHUB_OUTPUT"
+            echo "📦 Batch mode: $CLIENT_PKGS (from repository_dispatch)"
+          elif [ -n "$CLIENT_PKG" ] && [ "$CLIENT_PKG" != "null" ]; then
             echo "pkg_name=$CLIENT_PKG" >> "$GITHUB_OUTPUT"
             echo "📦 Building package: $CLIENT_PKG (from repository_dispatch)"
           elif [ -n "$INPUT_PKG" ] && [ "$INPUT_PKG" != "null" ]; then
@@ -67,24 +71,50 @@ jobs:
           free -h
           bash scripts/build-all.sh
 
-      - name: Build specific package
+      - name: Build specific package(s)
         id: build
         if: steps.pkg.outputs.pkg_name != 'auto'
         env:
           # 默认只建 amd64+arm64；可用 workflow_dispatch 的 arches 输入覆盖
           ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches || 'amd64,arm64' }}
+          PKG_SINGLE: ${{ steps.pkg.outputs.pkg_name }}
+          PKG_LIST: ${{ steps.pkg.outputs.pkg_list }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
           command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
           export PATH="$HOME/.cargo/bin:$PATH"
           sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile
           rc=0
-          bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}" || rc=$?
-          # exit 2 = recipe 已禁用，属正常跳过（不产出 .deb，后续推送步骤整体跳过）
-          if (( rc == 2 )); then
-            echo "⏭️ 已禁用，跳过"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-            exit 0
+          if [ -n "$PKG_LIST" ]; then
+            # 批量模式：顺序构建每个包；单个包失败不阻塞其余（缺口由扫描器次日自愈）
+            IFS=',' read -ra TARGETS <<< "$PKG_LIST"
+            for t in "${TARGETS[@]}"; do
+              t="$(echo "$t" | xargs)"   # 去除可能的首尾空格
+              [ -z "$t" ] && continue
+              echo "🔨 Building: $t"
+              rc=0
+              bash scripts/build-one.sh "$t" || rc=$?
+              if (( rc == 2 )); then
+                echo "⏭️ $t 已禁用或无 recipe，跳过"
+              elif (( rc != 0 )); then
+                echo "❌ $t 构建失败（继续构建其余包）"
+              fi
+            done
+            # 只要产出了任意 .deb 就推送；全被跳过则整体跳过推送
+            if compgen -G "dist/*.deb" >/dev/null; then
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "⏭️ 本次没有任何 .deb 产出，整体跳过推送"
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            bash scripts/build-one.sh "$PKG_SINGLE" || rc=$?
+            # exit 2 = recipe 已禁用/不存在，属正常跳过（不产出 .deb，后续推送步骤整体跳过）
+            if (( rc == 2 )); then
+              echo "⏭️ 已禁用，跳过"
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
           fi
           exit $rc
 
