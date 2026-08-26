@@ -1,0 +1,39 @@
+# deb-builder 禁用的 recipe 清单（对应 recipes/*.yaml 中 disabled: true）
+# debian-auto-builder 每日扫描据此跳过这些包，避免重复派发注定跳过的构建
+# 更新方式：修改 recipe 后重新生成此文件
+buildah
+containernetworking-plugins
+crowdsec
+debos
+distrobuilder
+dmarc-cat
+emptty
+enterprise-certificate-proxy-signer
+fscrypt
+go-cowsql
+go-dqlite
+go-l2tp
+golang-docker-credential-helpers
+golang-github-ugorji-go-codec
+golang-github-xordataexchange-crypt
+go-mtpfs
+go-staticcheck
+ignition
+ipp-usb
+mender-cli
+nwg-bar
+nwg-look
+oci-image-tool
+oci-seccomp-bpf-hook
+podman
+prometheus-homeplug-exporter
+prometheus-libvirt-exporter
+prometheus-mongodb-exporter
+prometheus-postfix-exporter
+pwru
+skopeo
+textql
+tty-record
+wuzz
+yubikey-agent
+yubikey-touch-detector

@@ -68,6 +68,7 @@ jobs:
           bash scripts/build-all.sh
 
       - name: Build specific package
+        id: build
         if: steps.pkg.outputs.pkg_name != 'auto'
         env:
           # 默认只建 amd64+arm64；可用 workflow_dispatch 的 arches 输入覆盖
@@ -79,13 +80,19 @@ jobs:
           sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile
           rc=0
           bash scripts/build-one.sh "${{ steps.pkg.outputs.pkg_name }}" || rc=$?
-          # exit 2 = recipe 已禁用，属正常跳过
-          if (( rc == 2 )); then echo "⏭️ 已禁用，跳过"; exit 0; fi
+          # exit 2 = recipe 已禁用，属正常跳过（不产出 .deb，后续推送步骤整体跳过）
+          if (( rc == 2 )); then
+            echo "⏭️ 已禁用，跳过"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           exit $rc
 
       # Option 2: push the built .deb files directly into apt-repo's incoming/,
       # then dispatch its publish workflow to sign + publish to GitHub Pages.
       - name: Push .deb to apt-repo and trigger publish
+        # 禁用的包没有产物，无需推送；整个任务按成功处理，避免每日误报失败邮件
+        if: steps.build.outputs.skip != 'true'
         env:
           BUILDER_PAT: ${{ secrets.BUILDER_PAT }}
         run: |
@@ -97,7 +104,7 @@ jobs:
 
           # 1~4. 推送到 apt-repo（带重试：并行构建同时 push 会产生非快进冲突）
           PUSH_OK=0
-          for attempt in 1 2 3 4 5; do
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
             cd "$WS"   # 关键：先离开旧目录再删除，否则 cwd 失效导致后续 git 操作全部报错
             rm -rf /tmp/apt-repo
             git clone --depth 1 \
@@ -119,7 +126,8 @@ jobs:
               PUSH_OK=1; break
             fi
             echo "⚠️ push rejected (attempt $attempt), will re-clone and retry..."
-            sleep $((RANDOM % 8 + 3))   # 随机退避，错开并发窗口
+            # 退避随尝试次数增长（12~96s+），错开并发窗口；10 次总退避最长约 9 分钟
+            sleep $((RANDOM % 8 + attempt * 12))
           done
           (( PUSH_OK == 1 )) || { echo "❌ failed to push to apt-repo after retries"; exit 1; }
 
