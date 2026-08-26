@@ -1,0 +1,100 @@
+name: Daily Package Count Report
+
+# 每天北京时间 12:00 报告线上 apt 仓库的软件包数量。
+# 时序依赖：deb-builder 增量构建(北京 02:30) -> apt-repo aptly 发布(北京 10:00) -> 本报告(12:00)。
+on:
+  schedule:
+    - cron: '0 4 * * *'    # UTC 04:00 = 北京时间 12:00
+  workflow_dispatch:       # 支持手动触发测试
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 统计线上仓库各架构包数
+        id: count
+        env:
+          TZ: Asia/Shanghai
+        run: |
+          set -uo pipefail
+          REPORT=/tmp/report.txt
+          {
+            echo "repo.freelamp.com 每日包数报告"
+            echo "日期: $(date '+%F %A')"
+            echo ""
+          } > "$REPORT"
+
+          TOTAL_UNIQUE=0; FAILED=0
+          ALL_NAMES=/tmp/all_names.txt; : > "$ALL_NAMES"
+          SUMMARY_LINE=""
+
+          for arch in amd64 arm64 loong64 riscv64 armhf; do
+            url="https://repo.freelamp.com/dists/bookworm/main/binary-$arch/Packages"
+            if body=$(curl -fsSL --max-time 30 "$url"); then
+              n=$(grep -c '^Package:' <<<"$body" || true)
+              grep '^Package:' <<<"$body" | awk '{print $2}' | sort -u >> "$ALL_NAMES"
+              printf '%-8s %6d 个\n' "$arch:" "$n" >> "$REPORT"
+              SUMMARY_LINE+=" $arch=$n"
+            else
+              FAILED=$((FAILED+1))
+              printf '%-8s %6s\n' "$arch:" "获取失败!" >> "$REPORT"
+              SUMMARY_LINE+=" $arch=FAIL"
+            fi
+          done
+
+          TOTAL_UNIQUE=$(sort -u "$ALL_NAMES" | wc -l)
+          {
+            echo "----------------------------------------"
+            printf '去重后总包名(全架构): %d 个\n' "$TOTAL_UNIQUE"
+            if (( FAILED > 0 )); then
+              echo "⚠️ 有 ${FAILED} 个架构的索引获取失败！"
+            else
+              echo "状态: ✅ 全部正常"
+            fi
+          } >> "$REPORT"
+
+          DATE_TAG=$(date '+%F')
+          {
+            echo "date=$DATE_TAG"
+            echo "summary=$SUMMARY_LINE"
+            echo "failed=$FAILED"
+            echo "report=$REPORT"
+          } >> "$GITHUB_OUTPUT"
+
+          cat "$REPORT"
+
+      # 未配置 SMTP secrets 时优雅跳过，不影响任务成功
+      - name: 检查邮件配置
+        id: cfg
+        env:
+          M_SERVER: ${{ secrets.MAIL_SERVER }}
+        run: |
+          if [[ -n "$M_SERVER" ]]; then
+            echo "mail=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "mail=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️ 未配置 MAIL_SERVER/MAIL_USER/MAIL_PASS secrets，跳过发邮件"
+          fi
+
+      - name: 发送邮件
+        if: steps.cfg.outputs.mail == 'true'
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT || 465 }}
+          username: ${{ secrets.MAIL_USER }}
+          password: ${{ secrets.MAIL_PASS }}
+          subject: "[deb-builder] 每日包数报告 ${{ steps.count.outputs.date }}:${{ steps.count.outputs.summary }}"
+          to: albertxu@freelamp.com
+          from: ${{ secrets.MAIL_USER }}
+          body: file://${{ steps.count.outputs.report }}
+
+      # 索引获取失败时让整个 job 失败，触发 GitHub 内置的失败告警
+      - name: 失败兜底
+        if: steps.count.outputs.failed != '0'
+        run: |
+          echo "❌ 有 ${{ steps.count.outputs.failed }} 个架构索引获取失败"
+          exit 1
