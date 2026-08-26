@@ -8,8 +8,10 @@ cd "$(dirname "$0")/.." || exit 1
 
 recipe="recipes/${PKG_NAME}.yaml"
 if [[ ! -f "$recipe" ]]; then
-    echo "❌ Recipe not found for $PKG_NAME at $recipe" >&2
-    exit 1
+    echo "⏭️ Recipe not found for $PKG_NAME at $recipe（跳过；如需构建请先补充 recipe）" >&2
+    # exit 2 = skipped：CI 中与禁用包同等处理（干净跳过，不报失败）；
+    # 扫描器仍会将其作为缺口上报 issue，提醒补 recipe
+    exit 2
 fi
 
 # 已声明禁用的 recipe：跳过（exit 2 = skipped），不视为失败
