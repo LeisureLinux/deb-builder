@@ -8,10 +8,10 @@ homepage: https://github.com/git-lfs/git-lfs
 section: vcs
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v3.7.1"
-latest_tag: "v3.7.1"
-commit_hash: "b84b33847fe6458f36ef521534dc0eac953cb379"
-upstream_version: "3.7.1"
+version_tag: "v3.8.0"
+latest_tag: "v3.8.0"
+commit_hash: "aece9221f8c09221a14395d964806b956289bc07"
+upstream_version: "3.8.0"
 
 # Go 构建配置
 ldflags: "-s -w"
