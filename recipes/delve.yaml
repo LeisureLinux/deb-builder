@@ -9,10 +9,10 @@ homepage: https://github.com/go-delve/delve
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.27.1"
-latest_tag: "v1.27.1"
-commit_hash: "f053895a26cbf22694fcd72ea07b3b5210314ada"
-upstream_version: "1.27.1"
+version_tag: "v1.27.2"
+latest_tag: "v1.27.2"
+commit_hash: "d116177dd925e085ba5dd340f8c644f4a1501a3b"
+upstream_version: "1.27.2"
 
 # Go 构建配置
 ldflags: "-s -w"

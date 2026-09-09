@@ -9,10 +9,10 @@ homepage: https://github.com/ffuf/ffuf
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.2.1"
-latest_tag: "v2.2.1"
-commit_hash: "1571aa17535d8bfcf42258659a141df0b12efa51"
-upstream_version: "2.2.1"
+version_tag: "v2.3.0"
+latest_tag: "v2.3.0"
+commit_hash: "256c1b02499f5f8672af965d4ad7a321d606bc65"
+upstream_version: "2.3.0"
 
 # Go 构建配置
 ldflags: "-s -w"
