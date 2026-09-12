@@ -9,10 +9,10 @@ homepage: https://github.com/gittuf/gittuf
 section: vcs
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.15.0"
-latest_tag: "v0.15.0"
-commit_hash: "dce66d2550000c0b07cbee866bc68bd7d6a784b7"
-upstream_version: "0.15.0"
+version_tag: "v0.16.0"
+latest_tag: "v0.16.0"
+commit_hash: "fa3c295e1e46c1cff10aec1194edc29f19677723"
+upstream_version: "0.16.0"
 
 # Go 构建配置
 ldflags: "-s -w"
