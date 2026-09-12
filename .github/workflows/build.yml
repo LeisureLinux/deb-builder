@@ -21,7 +21,17 @@ jobs:
   build-changed:
     # 仅 main 的 branch push 或 pull_request 时构建本次被改动的 recipe；tag push 走 build-all
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # 按架构拆到各自的 runner 上原生构建（原因同 receive-trigger.yml：
+      # cgo 包交叉链接需要目标架构的开发包，x64 runner 上编不出 arm64 的产物）。
+      matrix:
+        include:
+          - runner: ubuntu-latest           # x86_64 原生
+            arch: amd64
+          - runner: ubuntu-24.04-arm        # aarch64 原生（公开仓库免费）
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +41,22 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+
+      # 与 receive-trigger.yml 保持同一套依赖，否则 PR 检查跑的环境和真正发布的
+      # 环境不一致，cgo / eBPF / rust 类的包会在这里失败而在那边成功（或反过来）。
+      - name: Install build dependencies
+        run: |
+          EXTRA=""
+          if [ "${{ matrix.arch }}" = "amd64" ]; then EXTRA="gcc-aarch64-linux-gnu"; fi
+          sudo apt-get update -qq
+          # shellcheck disable=SC2086
+          sudo apt-get install -y -qq $EXTRA protobuf-compiler liblzma-dev libssl-dev \
+            libglib2.0-dev libnetfilter-queue-dev pkg-config clang >/dev/null
+          sudo apt-get install -y -qq "linux-headers-$(uname -r)" \
+            || sudo apt-get install -y -qq linux-headers-generic \
+            || echo "⚠️ 内核头文件安装失败，eBPF 类包本次可能构建不出来"
+          command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
       - name: Detect and build changed recipes
         run: |
@@ -47,16 +73,23 @@ jobs:
           fi
           echo "📦 Changed packages: $CHANGED"
           while read -r pkg; do
-            echo "    building: $pkg"
-            # 仅构建 amd64+arm64（loong64/riscv64 临时禁用，声明保留在 recipe 注释中）
-            ARCHS_OVERRIDE=amd64,arm64 bash scripts/build-one.sh "$pkg" || { echo "❌ $pkg failed"; exit 1; }
+            echo "    building: $pkg (arch=${{ matrix.arch }})"
+            ARCHS_OVERRIDE=${{ matrix.arch }} bash scripts/build-one.sh "$pkg" || { echo "❌ $pkg failed"; exit 1; }
           done <<< "$CHANGED"
-          echo "✅ All changed packages built"
+          echo "✅ All changed packages built (arch=${{ matrix.arch }})"
 
   build-all:
     # tag 全量构建，或手动触发（package 为空=全量，非空=单个）
     if: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest           # x86_64 原生
+            arch: amd64
+          - runner: ubuntu-24.04-arm        # aarch64 原生（公开仓库免费）
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
 
@@ -65,13 +98,26 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
+      - name: Install build dependencies
+        run: |
+          EXTRA=""
+          if [ "${{ matrix.arch }}" = "amd64" ]; then EXTRA="gcc-aarch64-linux-gnu"; fi
+          sudo apt-get update -qq
+          # shellcheck disable=SC2086
+          sudo apt-get install -y -qq $EXTRA protobuf-compiler liblzma-dev libssl-dev \
+            libglib2.0-dev libnetfilter-queue-dev pkg-config clang >/dev/null
+          sudo apt-get install -y -qq "linux-headers-$(uname -r)" \
+            || sudo apt-get install -y -qq linux-headers-generic \
+            || echo "⚠️ 内核头文件安装失败，eBPF 类包本次可能构建不出来"
+          command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
       - name: Build single package (manual dispatch, package given)
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.package != '' }}
         run: |
-          bash scripts/build-one.sh "${{ github.event.inputs.package }}"
+          ARCHS_OVERRIDE=${{ matrix.arch }} bash scripts/build-one.sh "${{ github.event.inputs.package }}"
 
       - name: Build all recipes (tag / manual empty dispatch)
         if: ${{ !(github.event_name == 'workflow_dispatch' && github.event.inputs.package != '') }}
         run: |
-          # 仅构建 amd64+arm64（loong64/riscv64 临时禁用，声明保留在 recipe 注释中）
-          ARCHS_OVERRIDE=amd64,arm64 bash scripts/build-all.sh
+          ARCHS_OVERRIDE=${{ matrix.arch }} bash scripts/build-all.sh

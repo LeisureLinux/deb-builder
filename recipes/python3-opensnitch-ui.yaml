@@ -1,0 +1,75 @@
+# python3-opensnitch-ui —— opensnitch 的图形界面（Python + PyQt6）
+#
+# 与 recipes/opensnitch.yaml 共用同一份上游源码树和同一个 commit，
+# upstream_version 必须保持一致 —— daemon 与 UI 之间有协议版本校验，
+# 版本号不统一会在界面上报警。
+#
+# 为什么自建而不重托管上游 release 的 python3-opensnitch-ui_1.8.0-1_all.deb：
+#   上游 deb 版本是 1.8.0-1，本仓库自建的 daemon 是 1.8.0+LL，两者不一致。
+#   自建走同一套 +LL 版本规则，天然统一。
+repo: evilsocket/opensnitch
+package: python3-opensnitch-ui
+summary: "GNU/Linux interactive application firewall GUI"
+description: |
+  OpenSnitch is a GNU/Linux interactive application firewall.
+  This package provides the graphical interface, written in Python with PyQt6.
+  It shows live outgoing connections and lets the user allow or deny them,
+  optionally remembering the decision per process, uid, port or destination.
+  It talks to the opensnitch daemon over gRPC; the daemon package is named
+  opensnitch.
+homepage: https://github.com/evilsocket/opensnitch
+section: net
+
+# 版本策略：与 opensnitch.yaml 完全一致（同一 tag、同一 commit）
+version_tag: "v1.8.0"
+latest_tag: "v1.8.0"
+commit_hash: "b404c4c6316760fa7bc415509d3f8d747f7dc9cc"
+upstream_version: "1.8.0"
+
+# 架构无关包（Architecture: all）：只产出一个 _all.deb。
+# 这里只列 amd64，含义是"由 amd64 那条构建线负责产出"——CI 现在是按架构拆 runner 的
+# matrix，arm64 那台会因为这个包不在自己的 target_arches 里而干净跳过（exit 2），
+# 于是全流程只产出一份 _all.deb，两个架构的 artifact 合并时不会撞同名文件。
+# （与 Debian 的 arch: all 语义一致：装在任何架构上都行，但只需要构建一次。）
+target_arches:
+  - amd64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+
+# 运行期依赖：等价于上游 deb 的 Depends（已对照 python3-opensnitch-ui_1.8.0-1_all.deb）。
+# 上游用 python3:any 限定解释器不限架构，arch:all 包里保留这个写法。
+# 注意：PyQt6 只在 trixie / noble 及更新的发行版里有，
+#       bookworm / bullseye / buster / jammy 上装不了这个包（取决于 python3-pyqt6 是否可得）。
+depends:
+  - netbase
+  - pyqt6-dev-tools
+  - libqt6sql6
+  - libqt6sql6-sqlite
+  - python3:any
+  - python3-six
+  - python3-pyqt6
+  - python3-pyqt6.qtsvg
+  - python3-pyinotify
+  - python3-grpcio
+  - python3-protobuf
+  - python3-packaging
+  - python3-slugify
+  - python3-notify2
+  - xdg-user-dirs
+  - gtk-update-icon-cache
+recommends:
+  - python3-pyasn
+suggests:
+  - opensnitch
+
+# 只发布到 trixie。
+# 本包依赖 PyQt6，而 python3-pyqt6 从 Debian 13 (trixie) 起才进官方仓库
+# （bookworm 及更早、Ubuntu jammy 都只有 PyQt5）。发到没有 PyQt6 的发行版上，
+# apt 会因依赖无法满足而拒绝安装 —— 等于发了个装不上的包。
+# 该字段会写进 control 的 XB-Suites，apt-repo 的 publish.sh 据此只把它放进 trixie 的索引。
+# opensnitch 套件（daemon + 界面 + eBPF）统一只在 trixie 提供，避免用户装到半套。
+suites:
+  - trixie
+
+# 非 Go 包：交给专门的构建脚本（铺 python 包体、data_files、control）
+build_script: scripts/pkgs/python3-opensnitch-ui.sh

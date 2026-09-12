@@ -1,0 +1,38 @@
+#!/bin/sh
+set -e
+
+# opensnitch 守护进程 postinst
+# 与 Debian 官方包（dh_installinit / dh_installsystemd 生成的片段）保持一致：
+# 首次安装 enable + 启动，升级时 restart。
+# 差异：rc 动作失败不阻断安装（容器/CI 里没有运行中的 init 时不至于装不上）。
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
+
+	# --- sysvinit ---
+	if [ -x "/etc/init.d/opensnitch" ]; then
+		update-rc.d opensnitch defaults >/dev/null || true
+		if [ -n "$2" ]; then
+			_dh_action=restart
+		else
+			_dh_action=start
+		fi
+		invoke-rc.d opensnitch "$_dh_action" || true
+	fi
+
+	# --- systemd ---
+	if command -v deb-systemd-helper >/dev/null 2>&1; then
+		# 清掉 d-s-h 加的 mask
+		deb-systemd-helper unmask 'opensnitch.service' >/dev/null || true
+
+		# was-enabled 默认为 true，所以全新安装会自动 enable
+		if deb-systemd-helper --quiet was-enabled 'opensnitch.service'; then
+			# 首次安装时 enable；升级时若 unit 变了会重建符号链接
+			deb-systemd-helper enable 'opensnitch.service' >/dev/null || true
+		else
+			# 更新 statefile，补上新增的符号链接（purge 时好清理）
+			deb-systemd-helper update-state 'opensnitch.service' >/dev/null || true
+		fi
+	fi
+fi
+
+exit 0

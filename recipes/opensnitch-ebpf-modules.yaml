@@ -1,0 +1,63 @@
+# opensnitch-ebpf-modules —— opensnitch 的内核态拦截模块（eBPF）
+#
+# 与 recipes/opensnitch.yaml 共用同一份上游源码树和同一个 commit，版本号靠同一套
+# +LL 规则统一。
+#
+# 为什么必须自建：
+#   upstream v1.8.0 的 release 资产里只有 opensnitch / python3-opensnitch-ui 的 .deb
+#   与一堆 rpm，**没有** eBPF 模块的 deb —— 它只在自己的 CI 里编成 artifact。
+#   Debian 官方是把它拆成一个独立的二进制包（opensnitch-ebpf-modules），
+#   本仓库沿用同样的拆包方式。
+#
+# 关键约束（决定了这里只能用 build_script 而非通用 Go 流程）：
+#   1. ebpf_prog/Makefile 不是 CO-RE：clang -emit-llvm 出 .bc，再 llc -march=bpf 出 .o，
+#      结构体偏移在编译期由内核头文件固化。换内核大版本要重编。
+#   2. 目标架构必须与构建机一致（KERNEL_ARCH 取自 uname -m，头文件也是按本机取的），
+#      所以不做交叉编译 —— 不匹配的架构由脚本如实跳过，不产假包。
+#   3. 构建机需要 clang（含 BPF 后端）+ 对应内核的 headers。
+repo: evilsocket/opensnitch
+package: opensnitch-ebpf-modules
+summary: "GNU/Linux interactive application firewall eBPF modules"
+description: |
+  OpenSnitch is a GNU/Linux interactive application firewall.
+  This package provides the eBPF modules loaded by the opensnitch daemon to
+  intercept connections at kernel level. Compared with the userspace process
+  monitor this is faster and cannot be bypassed as easily.
+  The modules are installed into /usr/lib/opensnitchd/ebpf/ and loaded by
+  opensnitchd when ProcMonitorMethod is set to "ebpf" (the upstream default).
+homepage: https://github.com/evilsocket/opensnitch
+section: net
+
+# 版本策略：与 opensnitch.yaml 完全一致（同一 tag、同一 commit）
+version_tag: "v1.8.0"
+latest_tag: "v1.8.0"
+commit_hash: "b404c4c6316760fa7bc415509d3f8d747f7dc9cc"
+upstream_version: "1.8.0"
+
+# eBPF 模块按**构建机架构**产出（KERNEL_ARCH 与内核头文件都绑定构建机）。
+# CI 现在按架构拆到原生 runner：amd64→ubuntu-latest，arm64→ubuntu-24.04-arm，
+# 各自编出自己架构的模块，不需要交叉编译（交叉也编不出可用的 —— 结构体偏移在编译期固化）。
+# 若某台 runner 上找不到可用的内核头文件，脚本会如实报错退出，不会产出假包。
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+
+# 包体只有 .o 文件，不链接任何共享库，因此没有 Depends。
+# 故意不加 `Depends: opensnitch (= <版本>)`：那会让 apt 在只有单架构 ebpf 包时
+# 直接拒绝安装 daemon。统一版本由"同一次 CI 运行产出"保证，
+# 反向的关联写在 opensnitch 的 Recommends 里。
+suggests:
+  - opensnitch
+
+# 只发布到 trixie。
+# 模块是用 trixie 的内核头文件（6.12.48+deb13）编译的：这套 eBPF 不是 CO-RE，
+# 结构体偏移在编译期就被固化，只有同代内核才加载得起来。其它发行版的内核差距更大，
+# 发出去也只是一堆加载失败的 .o。要跨发行版就得按内核逐份构建。
+# 该字段会写进 control 的 XB-Suites，apt-repo 的 publish.sh 据此只把它放进 trixie 的索引。
+suites:
+  - trixie
+
+# 非 Go 包：交给专门的构建脚本（编译 eBPF、校验挂载点、铺包根）
+build_script: scripts/pkgs/opensnitch-ebpf-modules.sh

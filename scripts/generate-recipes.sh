@@ -71,6 +71,15 @@ jq -c '.[]' "$CAND" | while IFS= read -r line; do
     debver="${tag#v}"
 
     pkg="$name"
+    # 已存在的 recipe 不覆盖。
+    # 本脚本只会生成基础字段；仓库里不少 recipe 是生成之后手工维护的
+    # （opensnitch 这类要带 depends / binary_name / deb_files / extra_root /
+    # control_dir / build_script），被这里 cat > 冲掉就等于把手工内容全丢了。
+    # 需要重新生成时显式 FORCE=1。
+    if [[ -f "$OUT_DIR/${pkg}.yaml" && "${FORCE:-0}" != "1" ]]; then
+        echo "   ⏭️  已存在，跳过: ${OUT_DIR}/${pkg}.yaml （要覆盖: FORCE=1 bash $0）"
+        skipped=$((skipped+1)); continue
+    fi
     cat > "$OUT_DIR/${pkg}.yaml" <<YAML
 # ${pkg} 构建配方 (Phase 1 自动生成)
 repo: ${repo}

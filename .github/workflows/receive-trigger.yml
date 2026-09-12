@@ -10,7 +10,7 @@ on:
         description: 'Package name to build (e.g., gdu, ripgrep)'
         required: false
       arches:
-        description: 'Optional comma-separated arch override (e.g., amd64,arm64); empty = use recipe target_arches'
+        description: 'Optional comma-separated arch override (e.g., amd64,arm64); empty = amd64,arm64'
         required: false
         default: ''
 
@@ -23,14 +23,22 @@ concurrency:
   group: deb-builder-${{ github.event.client_payload.package || inputs.package || 'auto' }}
   cancel-in-progress: ${{ (github.event.client_payload.package || '') == '' && (inputs.package || '') == '' }}
 
+permissions:
+  contents: read
+
 jobs:
-  receive-trigger:
+  # ==========================================================================
+  # 1. 解析：本次构建哪些包、在哪些架构上跑，以及每个架构用哪台 runner
+  # ==========================================================================
+  # 单独拆一个 job，是为了让下面 matrix 的每个实例看到同一份判定结果
+  # （否则多个 runner 各自解析一遍，逻辑重复且容易不一致）。
+  setup:
     runs-on: ubuntu-latest
-
+    outputs:
+      pkg_name: ${{ steps.pkg.outputs.pkg_name }}
+      pkg_list: ${{ steps.pkg.outputs.pkg_list }}
+      matrix: ${{ steps.arch.outputs.matrix }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Determine package from event
         id: pkg
         run: |
@@ -38,10 +46,8 @@ jobs:
           CLIENT_PKG="${{ github.event.client_payload.package }}"
           CLIENT_PKGS="${{ github.event.client_payload.packages }}"
           INPUT_PKG="${{ inputs.package }}"
-          echo "arches=${{ inputs.arches }}" >> "$GITHUB_OUTPUT"
 
           if [ -n "$CLIENT_PKGS" ] && [ "$CLIENT_PKGS" != "null" ]; then
-            # 批量模式：扫描器一次事件带全部缺口包，本 runner 顺序构建后统一推送一次
             echo "pkg_list=$CLIENT_PKGS" >> "$GITHUB_OUTPUT"
             echo "📦 Batch mode: $CLIENT_PKGS (from repository_dispatch)"
           elif [ -n "$CLIENT_PKG" ] && [ "$CLIENT_PKG" != "null" ]; then
@@ -55,36 +61,96 @@ jobs:
             echo "🔍 Auto mode: building all recipes"
           fi
 
-      - name: Build all recipes (auto mode)
-        if: steps.pkg.outputs.pkg_name == 'auto'
+      - name: Determine build matrix (native runner per arch)
+        id: arch
         env:
-          # 临时仅构建发布 amd64+arm64；loong64/riscv64 暂不构建
-          # （声明仍保留在 recipe 的 target_arches 注释中，后续可启用）
-          ARCHS_OVERRIDE: amd64,arm64
+          INPUT_ARCHES: ${{ inputs.arches }}
         run: |
-          # cgo/rust recipe 需要：交叉编译器、protoc、C 头文件；cargo 由 runner 预装（缺失则装 rustup）
-          sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
+          # 为什么按架构拆 runner：
+          #   过去是单台 x64 runner 上 ARCHS_OVERRIDE=amd64,arm64 一次构建全部架构。
+          #   纯 Go 的静态二进制没问题，但 cgo 包行不通 —— 例如 opensnitch 要链
+          #   libnetfilter_queue，交叉链接 arm64 需要 **arm64 版**的开发包，而 x64
+          #   runner 上只有 amd64 的，实测报 "找不到 -lnetfilter_queue"。
+          #   给 runner 加 arm64 ports 源能做交叉编译，但要额外维护一套依赖。
+          #   本仓库是公开仓库，GitHub 的 arm64 runner 免费，原生构建更干净：
+          #   每个架构在自己的 runner 上编自己，cgo、KERNEL_ARCH、内核头文件全都自然
+          #   正确（eBPF 模块尤其要求"构建机架构 = 目标架构 = 内核头文件架构"）。
+          A="${INPUT_ARCHES:-amd64,arm64}"
+          include="[]"
+          IFS=',' read -ra items <<< "$A"
+          for a in "${items[@]}"; do
+            a="$(echo "$a" | xargs)"          # 去首尾空格
+            [ -z "$a" ] && continue
+            case "$a" in
+              amd64) runner="ubuntu-latest" ;;      # x86_64 原生
+              arm64) runner="ubuntu-24.04-arm" ;;   # aarch64 原生（公开仓库免费）
+              *)     runner="ubuntu-latest" ;;      # loong64/riscv64 等仍走交叉编译
+            esac
+            include="$(jq -c --arg a "$a" --arg r "$runner" '. + [{arch:$a, runner:$r}]' <<< "$include")"
+          done
+          m="$(jq -c -n --argjson i "$include" '{include:$i}')"
+          echo "matrix=$m" >> "$GITHUB_OUTPUT"
+          echo "🔧 构建矩阵: $m"
+
+  # ==========================================================================
+  # 2. 构建：每个架构一台原生 runner，各自产出 .deb 作为 artifact 上传
+  # ==========================================================================
+  build:
+    needs: setup
+    if: ${{ needs.setup.outputs.matrix != '' && needs.setup.outputs.matrix != '{"include":[]}' }}
+    strategy:
+      # 一个架构失败不取消另一个：arm64 挂了时 amd64 的产物仍会上传，便于对比排查。
+      # （发布仍要求全部成功 —— publish 的 needs 决定了有失败就不发。）
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          # 交叉编译器只在 x86_64 runner 上有意义（给 loong64/riscv64 之类预留）；
+          # 原生 arm64 runner 上既不需要，装了也白占时间。
+          EXTRA=""
+          if [ "${{ matrix.arch }}" = "amd64" ]; then EXTRA="gcc-aarch64-linux-gnu"; fi
+          sudo apt-get update -qq
+          # shellcheck disable=SC2086
+          sudo apt-get install -y -qq $EXTRA protobuf-compiler liblzma-dev libssl-dev \
+            libglib2.0-dev libnetfilter-queue-dev pkg-config clang >/dev/null
+          # eBPF 类包（opensnitch-ebpf-modules）编译时需要内核头文件：这套 eBPF 不是 CO-RE，
+          # 结构体偏移在编译期由头文件固化。先试与运行内核完全匹配的版本，再退到发行版的
+          # generic 头文件 —— 不是运行内核也能编过，我们只需要 struct 定义。
+          sudo apt-get install -y -qq "linux-headers-$(uname -r)" \
+            || sudo apt-get install -y -qq linux-headers-generic \
+            || echo "⚠️ 内核头文件安装失败，eBPF 类包本次可能构建不出来"
           command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
-          export PATH="$HOME/.cargo/bin:$PATH"
-          # 大包编译（如 yq）内存峰值高，7GB runner 易被 OOM killer 静默击杀，加 swap 兜底
-          sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          # 大包编译（如 yq）内存峰值高，易被 OOM killer 静默击杀，加 swap 兜底。
+          # 不同 runner 镜像的挂载点不一样（x64 是 /mnt，arm64 上不一定），逐个试；
+          # 都失败也不致命，只是失去保护。
+          ( sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile \
+              && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile ) \
+            || ( sudo fallocate -l 6G /swapfile && sudo chmod 600 /swapfile \
+              && sudo mkswap /swapfile >/dev/null && sudo swapon /swapfile ) \
+            || echo "⚠️ swap 创建失败，继续构建"
           free -h
+
+      - name: Build all recipes (auto mode)
+        if: needs.setup.outputs.pkg_name == 'auto'
+        env:
+          ARCHS_OVERRIDE: ${{ matrix.arch }}
+        run: |
+          echo "🔨 全量构建，架构: ${{ matrix.arch }}（runner: ${{ matrix.runner }}）"
           bash scripts/build-all.sh
 
       - name: Build specific package(s)
-        id: build
-        if: steps.pkg.outputs.pkg_name != 'auto'
+        if: needs.setup.outputs.pkg_name != 'auto'
         env:
-          # 默认只建 amd64+arm64；可用 workflow_dispatch 的 arches 输入覆盖
-          ARCHS_OVERRIDE: ${{ steps.pkg.outputs.arches || 'amd64,arm64' }}
-          PKG_SINGLE: ${{ steps.pkg.outputs.pkg_name }}
-          PKG_LIST: ${{ steps.pkg.outputs.pkg_list }}
+          ARCHS_OVERRIDE: ${{ matrix.arch }}
+          PKG_SINGLE: ${{ needs.setup.outputs.pkg_name }}
+          PKG_LIST: ${{ needs.setup.outputs.pkg_list }}
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu protobuf-compiler liblzma-dev libssl-dev libglib2.0-dev libnetfilter-queue-dev pkg-config >/dev/null
-          command -v cargo >/dev/null || { curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; }
-          export PATH="$HOME/.cargo/bin:$PATH"
-          sudo fallocate -l 6G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile >/dev/null && sudo swapon /mnt/swapfile
-          rc=0
           if [ -n "$PKG_LIST" ]; then
             # 批量模式：顺序构建每个包；单个包失败不阻塞其余（缺口由扫描器次日自愈）
             IFS=',' read -ra TARGETS <<< "$PKG_LIST"
@@ -100,34 +166,60 @@ jobs:
                 echo "❌ $t 构建失败（继续构建其余包）"
               fi
             done
-            # 只要产出了任意 .deb 就推送；全被跳过则整体跳过推送
-            if compgen -G "dist/*.deb" >/dev/null; then
-              echo "skip=false" >> "$GITHUB_OUTPUT"
-            else
-              echo "⏭️ 本次没有任何 .deb 产出，整体跳过推送"
-              echo "skip=true" >> "$GITHUB_OUTPUT"
-            fi
           else
+            rc=0
             bash scripts/build-one.sh "$PKG_SINGLE" || rc=$?
-            # exit 2 = recipe 已禁用/不存在，属正常跳过（不产出 .deb，后续推送步骤整体跳过）
+            # exit 2 = recipe 已禁用/不存在，属正常跳过（不产出 .deb）
             if (( rc == 2 )); then
-              echo "⏭️ 已禁用，跳过"
-              echo "skip=true" >> "$GITHUB_OUTPUT"
-              exit 0
+              echo "⏭️ 已禁用或无 recipe，跳过"
+            elif (( rc != 0 )); then
+              exit $rc
             fi
           fi
-          exit $rc
 
-      # Option 2: push the built .deb files directly into apt-repo's incoming/,
-      # then dispatch its publish workflow to sign + publish to GitHub Pages.
+      - name: Upload .deb artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: debs-${{ matrix.arch }}
+          # 本架构没产出（包被禁用）就不上传，交给 publish 统一判断
+          if-no-files-found: ignore
+          retention-days: 3
+          path: dist/*.deb
+
+  # ==========================================================================
+  # 3. 发布：汇总所有架构的产物，一次性推送到 apt-repo 并触发发布
+  # ==========================================================================
+  publish:
+    needs: [setup, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all .deb artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: debs-*
+          path: dist
+          merge-multiple: true
+
+      - name: Check artifacts
+        id: check
+        run: |
+          if compgen -G "dist/*.deb" >/dev/null; then
+            ls -lh dist/*.deb
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "⏭️ 本次没有任何 .deb 产出（包被禁用/无 recipe），跳过推送"
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 推送所有架构的产物到 apt-repo 的 incoming/，再触发其 publish 工作流做签名与发布。
+      # 两个架构在各自 runner 上并行构建、这里统一推送一次，避免两路并发 push 同一个仓库。
       - name: Push .deb to apt-repo and trigger publish
-        # 禁用的包没有产物，无需推送；整个任务按成功处理，避免每日误报失败邮件
-        if: steps.build.outputs.skip != 'true'
+        if: steps.check.outputs.found == 'true'
         env:
           BUILDER_PAT: ${{ secrets.BUILDER_PAT }}
         run: |
           set -euo pipefail
-          PKG="${{ steps.pkg.outputs.pkg_name }}"
+          PKG="${{ needs.setup.outputs.pkg_name }}"
           WS="$GITHUB_WORKSPACE"
 
           ls -lh "$WS"/dist/*.deb 2>/dev/null || { echo "❌ no .deb artifacts found in dist/"; exit 1; }

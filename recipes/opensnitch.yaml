@@ -1,10 +1,20 @@
-# opensnitch 构建配方 (Phase 1 自动生成)
+# opensnitch 守护进程（Go + cgo + libnetfilter_queue）
+#
+# 上游同一份源码树产出 3 个二进制包，本仓库对应用 3 个 recipe：
+#   recipes/opensnitch.yaml                → opensnitch             （daemon，cgo，amd64/arm64）
+#   recipes/python3-opensnitch-ui.yaml     → python3-opensnitch-ui  （PyQt6 GUI，arch:all）
+#   recipes/opensnitch-ebpf-modules.yaml   → opensnitch-ebpf-modules（eBPF 模块，amd64）
+# 三者共用 upstream_version，保证 deb 版本号一致（daemon 与 UI 之间会做版本校验，
+# 版本不一致会告警）。
 repo: evilsocket/opensnitch
 package: opensnitch
 summary: "GNU/Linux interactive application firewall"
 description: |
-  GNU/Linux interactive application firewall
-  (Phase 1 auto-built for all architectures.)
+  OpenSnitch is a GNU/Linux interactive application firewall.
+  It intercepts outgoing connections and asks the user whether to allow or deny
+  them; the decision can be remembered per process, uid, port, destination or a
+  combination of them. The GUI is provided by python3-opensnitch-ui and
+  kernel-level interception by opensnitch-ebpf-modules.
 homepage: https://github.com/evilsocket/opensnitch
 section: net
 
@@ -17,7 +27,16 @@ upstream_version: "1.8.0"
 # Go 构建配置
 ldflags: "-s -w"
 
-# 全架构打包
+# 上游仓库根没有 go.mod，守护进程是一个独立的 Go 模块，位于 daemon/ 子目录。
+# 显式写出来（脚本也能靠扫 go.mod 自动发现，但发布用的配方不该依赖启发式）。
+build_path: daemon
+
+# 打包架构
+# amd64 与 arm64 都已启用，靠 CI 的原生 runner 实现（见 .github/workflows/receive-trigger.yml）：
+#   守护进程依赖 netfilter_queue，是 cgo 包，交叉链接 arm64 需要 **arm64 版**的
+#   libnetfilter_queue/libnfnetlink —— 在 x64 runner 上实测报 "找不到 -lnetfilter_queue"。
+#   现在每个架构在自己的 runner 上原生构建（amd64→ubuntu-latest，arm64→ubuntu-24.04-arm），
+#   依赖包由 apt 装成原生架构，链接自然成立，不需要维护 arm64 ports 源那套交叉编译环境。
 target_arches:
   - amd64
   - arm64
@@ -25,10 +44,46 @@ target_arches:
 #   - riscv64  # 临时禁用: loong64/riscv64 暂不构建，声明保留待用
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
-depends: []
 
-# netfilter 包自带 C 源码（queue.c），需要 cgo
+# 运行时依赖：等价于 Debian 官方包的 ${shlibs:Depends}
+depends:
+  - libc6 (>= 2.34)
+  - libnetfilter-queue1
+  - libnfnetlink0
+recommends:
+  - python3-opensnitch-ui
+  - opensnitch-ebpf-modules
+
+# 只发布到 trixie。
+# opensnitch 是一套三件（daemon + 界面 + eBPF 模块），要装就得齐。
+# 界面依赖的 PyQt6 只有 trixie 起才有，eBPF 模块也只对 trixie 的内核编译，
+# 单独把 daemon 发到别的发行版只会让用户装到"没有界面、内核拦截也起不来"的半套；
+# 另外 daemon 自身要求 libc6 >= 2.34，bullseye/buster 也不满足。
+# 该字段会写进 control 的 XB-Suites，apt-repo 的 publish.sh 据此只把它放进 trixie 的索引。
+suites:
+  - trixie
+
+# 守护进程在源码、systemd unit 与 Debian 官方包里都叫 opensnitchd；
+# 默认会按包名装成 /usr/bin/opensnitch，unit 的 ExecStart 就找不到它。
+binary_name: opensnitchd
+
+# 从源码树铺配置文件：上游 daemon/data 下已有，随版本 bump 自动更新，
+# 无需在本仓库维护副本。格式: "<源码树内路径> <包内目标目录> [权限]"
+deb_files:
+  - "daemon/data/default-config.json      etc/opensnitchd/        0644"
+  - "daemon/data/system-fw.json           etc/opensnitchd/        0644"
+  - "daemon/data/network_aliases.json     etc/opensnitchd/        0644"
+  - "daemon/data/tasks/tasks.json         etc/opensnitchd/tasks/  0644"
+  - "daemon/data/rules/000-allow-localhost.json   etc/opensnitchd/rules/  0644"
+  - "daemon/data/rules/000-allow-localhost6.json  etc/opensnitchd/rules/  0644"
+
+# 需要随本仓库维护、上游源码树里没有（只存在于 Debian 打包目录）的静态文件：
+#   lib/systemd/system/opensnitch.service、etc/init.d/opensnitch、etc/logrotate.d/opensnitch
+extra_root: scripts/pkgs/opensnitch/root
+# 控制文件：conffiles + postinst/prerm/postrm（enable/start 服务、清理 init 状态）
+control_dir: scripts/pkgs/opensnitch/debian
+
+# netfilter 包自带 C 源码（queue.c），需要 cgo + libnetfilter-queue-dev
 cgo: true
 # daemon/ui/protocol 的 gRPC 代码由 proto/ui.proto 生成，构建前先生成
 pre_build: 'go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.2 && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1 && mkdir -p daemon/ui/protocol && cd proto && protoc -I. ui.proto --go_out=../daemon/ui/protocol/ --go-grpc_out=../daemon/ui/protocol/ --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative && cd ../daemon && go get google.golang.org/grpc@latest google.golang.org/protobuf@latest google.golang.org/genproto@latest google.golang.org/genproto/googleapis/rpc@latest'
-

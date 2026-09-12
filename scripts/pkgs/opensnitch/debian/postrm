@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+# opensnitch 守护进程 postrm：清理 init/systemd 状态
+if [ "$1" = "purge" ]; then
+	update-rc.d opensnitch remove >/dev/null || true
+fi
+
+if command -v deb-systemd-helper >/dev/null 2>&1; then
+	if [ "$1" = "remove" ]; then
+		deb-systemd-helper mask 'opensnitch.service' >/dev/null || true
+	fi
+	if [ "$1" = "purge" ]; then
+		deb-systemd-helper purge 'opensnitch.service' >/dev/null || true
+		deb-systemd-helper unmask 'opensnitch.service' >/dev/null || true
+	fi
+fi
+
+exit 0

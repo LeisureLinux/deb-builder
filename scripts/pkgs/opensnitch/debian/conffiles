@@ -1,0 +1,8 @@
+/etc/init.d/opensnitch
+/etc/logrotate.d/opensnitch
+/etc/opensnitchd/default-config.json
+/etc/opensnitchd/network_aliases.json
+/etc/opensnitchd/rules/000-allow-localhost.json
+/etc/opensnitchd/rules/000-allow-localhost6.json
+/etc/opensnitchd/system-fw.json
+/etc/opensnitchd/tasks/tasks.json

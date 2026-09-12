@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+# opensnitch 守护进程 prerm：仅卸载时停服务（升级时不停，由 systemd 的
+# restart-after-upgrade 负责）。失败不阻断。
+if [ -x "/etc/init.d/opensnitch" ] && [ "$1" = remove ]; then
+	invoke-rc.d opensnitch stop || true
+fi
+
+exit 0

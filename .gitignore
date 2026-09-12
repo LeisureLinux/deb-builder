@@ -12,3 +12,14 @@ vendor/
 age/
 fzf/
 tmp/
+
+# 本地构建/验证临时目录（不入库）
+.build-tmp/
+
+# 本机工具产生的目录：沙箱/文件管理器的回收站、运行时状态
+.Trash-*/
+.omo/
+
+# 本机 agent 的工作记忆（每日日志等），属个人工作流，不入库。
+# 只忽略 memory/ 而不是整个 .workbuddy/，以便将来放团队共享的 skills/。
+.workbuddy/memory/
