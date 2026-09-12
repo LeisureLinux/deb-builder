@@ -64,7 +64,10 @@ jobs:
       - name: Determine build matrix (native runner per arch)
         id: arch
         env:
-          INPUT_ARCHES: ${{ inputs.arches }}
+          # 同时支持 workflow_dispatch 的 inputs.arches 与 repository_dispatch 的 client_payload.arches，
+          # 这样批量 dispatch（client_payload.packages）也能精确控制只跑某架构，避免在 arm64
+          # 链路首次验证期间承担失败阻断的风险。
+          INPUT_ARCHES: ${{ inputs.arches || github.event.client_payload.arches }}
         run: |
           # 为什么按架构拆 runner：
           #   过去是单台 x64 runner 上 ARCHS_OVERRIDE=amd64,arm64 一次构建全部架构。
