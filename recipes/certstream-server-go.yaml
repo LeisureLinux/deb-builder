@@ -9,10 +9,10 @@ homepage: https://github.com/d-Rickyy-b/certstream-server-go
 section: admin
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.9.0"
-latest_tag: "v1.9.0"
-commit_hash: "af4105b7a6465efa9626d25e7bf604de8622c6f2"
-upstream_version: "1.9.0"
+version_tag: "v1.10.0"
+latest_tag: "v1.10.0"
+commit_hash: "677305cbcafbf242950c13a483a12c9d34ec2713"
+upstream_version: "1.10.0"
 
 # Go 构建配置
 ldflags: "-s -w"
