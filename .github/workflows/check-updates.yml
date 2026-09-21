@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # 允许本 workflow 用 GITHUB_TOKEN dispatch 其他 workflow（gh workflow run）
 
 concurrency:
   group: check-updates
@@ -49,10 +50,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKGS: ${{ steps.check.outputs.pkgs }}
         run: |
+          FAILED_PKGS=""
           while IFS= read -r pkg; do
             [[ -z "$pkg" ]] && continue
             echo "🚀 触发构建: $pkg"
-            gh workflow run receive-trigger.yml --ref main -f package="$pkg" || \
-              echo "⚠️  $pkg 触发失败（稍后由每日兜底 publish 补发？需人工检查）"
+            if ! gh workflow run receive-trigger.yml --ref main -f package="$pkg"; then
+              echo "⚠️  $pkg 触发失败"
+              FAILED_PKGS+="${pkg} "
+            fi
             sleep 3   # 轻微间隔，避免 API 突发限流
           done <<< "$PKGS"
+          # 触发失败必须让整个 run 变红：否则 recipe 已 bump 但构建丢失，
+          # 造成 recipe 版本与线上 apt 仓库静默漂移（如 fzf v0.74.4 事件）。
+          [[ -n "$FAILED_PKGS" ]] && { echo "❌ 以下包触发失败: $FAILED_PKGS"; exit 1; }
