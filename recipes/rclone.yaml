@@ -1,0 +1,27 @@
+# rclone 构建配方 (Go 项目, 上游 rclone/rclone)
+# 来自 debian.griffo.io 第三方源的迁移：上游发布，我们从源码构建后发布到
+# repo.freelamp.com，避免依赖第三方源。Go 静态二进制（CGO_ENABLED=0），
+# 不依赖发行版 glibc，bookworm/trixie 通用。
+repo: rclone/rclone
+package: rclone
+summary: "rsync for cloud storage"
+description: |
+  rsync for cloud storage
+  Built from source by deb-builder and published to repo.freelamp.com.
+  Statically linked Go binary (CGO disabled), works across Debian/Ubuntu releases.
+homepage: https://github.com/rclone/rclone
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v1.75.1"
+latest_tag: "v1.75.1"
+commit_hash: "687d264b689b8c49a67e2e52a8a5e0caa01c04ce"
+upstream_version: "1.75.1"
+
+# 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

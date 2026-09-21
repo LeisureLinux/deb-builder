@@ -1,0 +1,27 @@
+# k9s 构建配方 (Go 项目, 上游 derailed/k9s)
+# 来自 debian.griffo.io 第三方源的迁移：上游发布，我们从源码构建后发布到
+# repo.freelamp.com，避免依赖第三方源。Go 静态二进制（CGO_ENABLED=0），
+# 不依赖发行版 glibc，bookworm/trixie 通用。
+repo: derailed/k9s
+package: k9s
+summary: "Kubernetes CLI to manage your clusters in style"
+description: |
+  Kubernetes CLI to manage your clusters in style
+  Built from source by deb-builder and published to repo.freelamp.com.
+  Statically linked Go binary (CGO disabled), works across Debian/Ubuntu releases.
+homepage: https://github.com/derailed/k9s
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.51.0"
+latest_tag: "v0.51.0"
+commit_hash: "558caafe7ba067467de46b320cc22ef11fef9c34"
+upstream_version: "0.51.0"
+
+# 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

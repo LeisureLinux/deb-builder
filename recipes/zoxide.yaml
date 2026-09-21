@@ -1,0 +1,39 @@
+# zoxide 构建配方 (Rust 项目, 上游 ajeetdsouza/zoxide)
+#
+# 为什么要自己打：yazi 的目录跳转（z）依赖它，而 Debian trixie 官方只有 0.9.7；
+# 第三方源（debian.griffo.io）虽然给了 0.10.0，但装 yazi 时依赖会被第三方源
+# "抢走"，来源不可控。我们打 0.10.0+LL 后版本高于两者
+# （dpkg --compare-versions 实测 0.10.0+LL > 0.10.0-1+trixie），apt 优先选我们。
+#
+# 与 yazi 保持一致走 musl 全静态（scripts/pkgs/zoxide.sh）：yazi 的预览/搜索
+# 依赖链里，我们仓库已有的 fd/ripgrep 是 glibc 动态链接的，只在与其构建发行版
+# 相同的系统上可用（潜在跨发行版坑），新增的包不再重复这个模式。
+repo: ajeetdsouza/zoxide
+package: zoxide
+summary: "A smarter cd command for your terminal"
+description: |
+  zoxide is a smarter cd command. It remembers which directories you use most
+  frequently, so you can "jump" to them in just a few keystrokes.
+  It is a shell tool used by yazi's z (jump) plugin and needs the shell
+  integration (zoxide init <shell>) to be loaded in your rc file.
+homepage: https://github.com/ajeetdsouza/zoxide
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.10.0"
+latest_tag: "v0.10.0"
+commit_hash: "f84f9a3e1d16fabf3e34b199ec7d552993b41f29"
+upstream_version: "0.10.0"
+
+# musl 全静态，不依赖发行版 glibc（同 yazi）
+build_script: scripts/pkgs/zoxide.sh
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []
+
+# shell 集成需要各自的 shell；推荐项不强制安装
+recommends: []
