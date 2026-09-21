@@ -84,6 +84,20 @@ export AR_x86_64_unknown_linux_musl="${AR_x86_64_unknown_linux_musl:-ar}"
 export CC_aarch64_unknown_linux_musl="${CC_aarch64_unknown_linux_musl:-musl-gcc}"
 export AR_aarch64_unknown_linux_musl="${AR_aarch64_unknown_linux_musl:-ar}"
 
+# jemalloc configure 的特性探测在 arm64 原生 runner 上会误判（2026-09-21 实测）：
+#   asm volatile / __int128 用 AC_RUN_IFELSE，编译出的测试程序依赖 musl 动态
+#   loader（ld-musl-aarch64.so.1）才能跑，runner 上跑不起来 → autoconf 全判 no
+#   → jemalloc 的 atomic.h 直接 #error "Don't have atomics"。C11/__atomic/__sync
+#   三种 atomics（AC_LINK_IFELSE）也连带失败。amd64 runner 因 x64 musl loader
+#   可用而没事，所以只有 arm64 挂。
+# 这些特性在 aarch64 musl 工具链上都是真实支持的，预置 autoconf cache 变量
+# 跳过探测（jemalloc 5.3.1 固定的变量名），configure 直接采信。
+export je_cv_c11_atomics=yes
+export je_cv_gcc_atomic_atomics=yes
+export je_cv_gcc_sync_atomics=yes
+export je_cv_asm_volatile=yes
+export je_cv_int128=yes
+
 # ldd/file 双重校验：保证"全静态"承诺不靠嘴说。
 # 注意：ldd 对静态二进制会打印 "statically linked" 且退出码为 0，
 # 所以不能拿退出码判断，要看输出里有没有 .so / 动态 loader。
