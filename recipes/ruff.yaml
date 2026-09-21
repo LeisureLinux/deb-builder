@@ -1,0 +1,30 @@
+# ruff 构建配方 (Rust 项目, 上游 astral-sh/ruff) —— musl 全静态
+# 来自 debian.griffo.io 第三方源的迁移：我们从源码构建后发布到
+# repo.freelamp.com。musl 全静态不依赖发行版 glibc，bookworm/trixie 通用。
+repo: astral-sh/ruff
+package: ruff
+summary: "An extremely fast Python linter and code formatter"
+description: |
+  An extremely fast Python linter and code formatter
+homepage: https://github.com/astral-sh/ruff
+section: python
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "0.16.8"
+latest_tag: "0.16.8"
+commit_hash: "62914c4b9b79a9e5004374a9c482ad2ed69290e1"
+upstream_version: "0.16.8"
+
+# musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
+build_script: scripts/pkgs/rust-musl.sh
+rust_bins:
+  - ruff
+rust_package: ruff
+
+# 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

@@ -1,0 +1,29 @@
+# just 构建配方 (Rust 项目, 上游 casey/just) —— musl 全静态
+# 来自 debian.griffo.io 第三方源的迁移：我们从源码构建后发布到
+# repo.freelamp.com。musl 全静态不依赖发行版 glibc，bookworm/trixie 通用。
+repo: casey/just
+package: just
+summary: "A handy way to save and run project-specific commands"
+description: |
+  A handy way to save and run project-specific commands
+homepage: https://github.com/casey/just
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "1.58.0"
+latest_tag: "1.58.0"
+commit_hash: "7f4ef81bd6a93faa2b28430912c8e9ab0e3dd29a"
+upstream_version: "1.58.0"
+
+# musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
+build_script: scripts/pkgs/rust-musl.sh
+rust_bins:
+  - just
+
+# 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

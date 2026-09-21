@@ -1,0 +1,29 @@
+# gitui 构建配方 (Rust 项目, 上游 extrawurst/gitui) —— musl 全静态
+# 来自 debian.griffo.io 第三方源的迁移：我们从源码构建后发布到
+# repo.freelamp.com。musl 全静态不依赖发行版 glibc，bookworm/trixie 通用。
+repo: extrawurst/gitui
+package: gitui
+summary: "Blazing fast terminal-ui for git"
+description: |
+  Blazing fast terminal-ui for git
+homepage: https://github.com/extrawurst/gitui
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.28.1"
+latest_tag: "v0.28.1"
+commit_hash: "e24fb45df1584ee8d8ebdc4258531b4a91ca975d"
+upstream_version: "0.28.1"
+
+# musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
+build_script: scripts/pkgs/rust-musl.sh
+rust_bins:
+  - gitui
+
+# 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []

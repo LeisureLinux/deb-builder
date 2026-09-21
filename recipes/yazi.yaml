@@ -34,18 +34,27 @@ target_arches:
   - arm64
 
 maintainer: "LeisureLinux <albertxu@freelamp.com>"
-depends: []
 
-# 运行时增强（对齐上游官方 deb 的 Recommends，减去 GUI 剪贴板工具）：
-# 预览/解码/搜索等次级功能缺失时 yazi 自动降级，不装也能用。
-recommends:
+# 依赖按 yazi 运行时实际 exec 的外部命令划分（从 v26.9.1 源码统计确认）：
+#   file(265 处 mime 判断) / zoxide(目录跳转 z) / fd(搜索 --via=fd) / fzf(模糊跳转)
+#   / rg(搜索 --via=rg) / jq(JSON 预览) / 7zz|7z(压缩包) / pdftoppm(PDF)
+#   / magick|convert(图片) / ffmpeg(视频) / xsel|xclip(剪贴板)
+# 我们自己构建的（全静态，随本仓库发布）：fd / ripgrep / fzf / zoxide
+# 引自 Debian 官方的（C/C++ 巨物，重打无收益）：file jq poppler-utils
+#   7zip(trixie) | p7zip-full(bookworm 官方没有 7zip 包，用 alternatives 兜住)
+# 重型的放 Suggests：ffmpeg / imagemagick 几百 MB，不该因装 yazi 被拉进来；
+#   缺了只影响视频/图片预览，yazi 会自动降级。
+depends:
   - file
-  - ffmpeg
-  - 7zip
-  - jq
-  - poppler-utils
-  - fd-find
+recommends:
+  - fd
   - ripgrep
   - fzf
   - zoxide
+  - jq
+  - 7zip | p7zip-full
+  - poppler-utils
+suggests:
+  - ffmpeg
   - imagemagick
+  - "xsel | xclip | wl-clipboard"

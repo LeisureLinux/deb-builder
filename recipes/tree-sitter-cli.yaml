@@ -1,0 +1,30 @@
+# tree-sitter-cli 构建配方 (Rust 项目, 上游 tree-sitter/tree-sitter) —— musl 全静态
+# 来自 debian.griffo.io 第三方源的迁移：我们从源码构建后发布到
+# repo.freelamp.com。musl 全静态不依赖发行版 glibc，bookworm/trixie 通用。
+repo: tree-sitter/tree-sitter
+package: tree-sitter-cli
+summary: "A parser generator tool and incremental parsing library"
+description: |
+  A parser generator tool and incremental parsing library
+homepage: https://github.com/tree-sitter/tree-sitter
+section: devel
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v0.27.0"
+latest_tag: "v0.27.0"
+commit_hash: "6070dbfefd326bd735e5683eb128cc1b57dad0c0"
+upstream_version: "0.27.0"
+
+# musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
+build_script: scripts/pkgs/rust-musl.sh
+rust_bins:
+  - tree-sitter
+rust_package: tree-sitter-cli
+
+# 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []
