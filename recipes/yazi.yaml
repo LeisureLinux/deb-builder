@@ -1,0 +1,51 @@
+# yazi 构建配方 (Rust 项目, 上游 sxyazi/yazi)
+#
+# 为什么走 build_script + musl 全静态，而不用通用 language: rust 流程：
+#   1. 需求方明确要求 musl 静态：不依赖 glibc 版本，bookworm/trixie 一个包通吃；
+#   2. yazi 是 cargo workspace，产出 yazi + ya 两个二进制；completions/desktop
+#      资产要随包装 —— 通用 cargo 分支（单 [[bin]]、只装一个二进制）覆盖不了；
+#   3. 上游 release 配置用了 unstable rustflags（rust-lld/ICF/trim-paths），
+#      构建 flags 需要对齐上游 xtask（yazi-build crate）。
+# 构建方式对齐上游 .github/workflows/draft.yml 的 build-musl job
+# （cross-rs 容器 + cargo xtask dist）；差别是本仓库 CI 为原生 runner，
+# 不需要 cross-rs，只需 musl C 工具链编 vendored C 依赖（如 jemalloc）。
+repo: sxyazi/yazi
+package: yazi
+summary: "Blazing fast terminal file manager written in Rust, based on async I/O"
+description: |
+  Yazi (means "duck") is a terminal file manager written in Rust, based on
+  async I/O. Ships the yazi file manager and the ya CLI helper, fully
+  statically linked against musl libc so it runs on any distribution
+  regardless of glibc version.
+homepage: https://yazi-rs.github.io
+section: utils
+
+# 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
+version_tag: "v26.9.1"
+latest_tag: "v26.9.1"
+commit_hash: "8dd895c695a5950330c2623eb43debf323b60654"
+upstream_version: "26.9.1"
+
+# 非常规构建：见文件头说明
+build_script: scripts/pkgs/yazi.sh
+
+target_arches:
+  - amd64
+  - arm64
+
+maintainer: "LeisureLinux <albertxu@freelamp.com>"
+depends: []
+
+# 运行时增强（对齐上游官方 deb 的 Recommends，减去 GUI 剪贴板工具）：
+# 预览/解码/搜索等次级功能缺失时 yazi 自动降级，不装也能用。
+recommends:
+  - file
+  - ffmpeg
+  - 7zip
+  - jq
+  - poppler-utils
+  - fd-find
+  - ripgrep
+  - fzf
+  - zoxide
+  - imagemagick
