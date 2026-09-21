@@ -20,6 +20,10 @@ build_script: scripts/pkgs/rust-musl.sh
 rust_bins:
   - atuin
 rust_package: atuin
+# musl 静态链接必须：默认 features 里的 sync 会拉 openssl-sys，
+# 系统 libssl-dev 是 glibc 的，musl 目标链不上。vendored-tls 让 openssl
+# 从源码编译并静态链进去（上游为打包场景专门提供的 feature）。
+rust_features: vendored-tls
 
 # 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
 target_arches:

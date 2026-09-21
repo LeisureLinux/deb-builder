@@ -82,6 +82,12 @@ ensure_musl_tools() {
       apt-get update -qq && apt-get install -y -qq musl-tools >/dev/null
     fi
   fi
+  # openssl vendored（atuin 的 vendored-tls 等）从源码编 OpenSSL 需要 perl/make
+  if [[ -n "$FEATURES" && "$FEATURES" == *vendored* ]] && ! command -v perl >/dev/null 2>&1; then
+    echo "🧰 安装 perl（vendored openssl 需要）..." >&2
+    sudo apt-get install -y -qq perl make >/dev/null 2>&1 || true
+  fi
+  export OPENSSL_STATIC=1   # vendored openssl 强制静态链接
 }
 
 arch_to_triple() {
