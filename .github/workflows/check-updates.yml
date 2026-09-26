@@ -50,16 +50,40 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKGS: ${{ steps.check.outputs.pkgs }}
         run: |
+          # GitHub 对 workflow_dispatch 有 secondary rate limit，密集触发会偶发
+          # 403/429。这里对每个包做重试 + 退避，并以 gh 是否打印 run URL 作为
+          # 成功判据（CI 里 gh 的退出码偶尔不可靠）。全部重试仍失败才让 run 变红，
+          # 否则会出现“recipe 已 bump 但构建丢失”的静默漂移（如 fzf v0.74.4 事件）。
           FAILED_PKGS=""
+          trigger_one() {           # $1=pkg；成功回显 run URL 并返回 0
+            local pkg="$1" out
+            out=$(gh workflow run receive-trigger.yml --ref main -f package="$pkg" 2>&1) || return 1
+            if printf '%s' "$out" | grep -q 'github.com/.*/actions/runs/'; then
+              printf '%s\n' "$out" | tail -1
+              return 0
+            fi
+            return 1
+          }
           while IFS= read -r pkg; do
             [[ -z "$pkg" ]] && continue
             echo "🚀 触发构建: $pkg"
-            if ! gh workflow run receive-trigger.yml --ref main -f package="$pkg"; then
-              echo "⚠️  $pkg 触发失败"
+            ok=0
+            for attempt in 1 2 3; do
+              if url=$(trigger_one "$pkg"); then
+                echo "✅ $pkg 已触发: $url"; ok=1; break
+              fi
+              echo "⚠️  $pkg 第 $attempt 次触发失败，退避后重试…"
+              sleep $(( attempt * 15 ))   # 15s / 30s / 45s
+            done
+            if [[ "$ok" != "1" ]]; then
+              echo "❌ $pkg 触发失败（已重试 3 次）"
               FAILED_PKGS+="${pkg} "
             fi
-            sleep 3   # 轻微间隔，避免 API 突发限流
+            sleep 3   # 包间轻微间隔，避免 API 突发限流
           done <<< "$PKGS"
           # 触发失败必须让整个 run 变红：否则 recipe 已 bump 但构建丢失，
           # 造成 recipe 版本与线上 apt 仓库静默漂移（如 fzf v0.74.4 事件）。
-          [[ -n "$FAILED_PKGS" ]] && { echo "❌ 以下包触发失败: $FAILED_PKGS"; exit 1; }
+          if [[ -n "$FAILED_PKGS" ]]; then
+            echo "❌ 以下包触发失败，需手动补跑: $FAILED_PKGS"
+            exit 1
+          fi
