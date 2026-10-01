@@ -19,18 +19,18 @@
 | certinfo | pete911/certinfo | v1.0.40 | — | — |
 | yubikey-agent | FiloSottile/yubikey-agent |  | — | — |
 | clipman | yory8/clipman |  | — | — |
-| cloudsql-proxy | GoogleCloudPlatform/cloudsql-proxy | v2.25.4 | — | — |
+| cloudsql-proxy | GoogleCloudPlatform/cloudsql-proxy | v2.26.0 | — | — |
 | cobra-cli | spf13/cobra-cli | v1.3.0 | — | — |
-| crowdsec | crowdsecurity/crowdsec | v1.8.0 | — | — |
+| crowdsec | crowdsecurity/crowdsec | v1.8.1 | — | — |
 | crowdsec-custom-bouncer | crowdsecurity/cs-custom-bouncer | v0.0.17 | — | — |
 | crowdsec-firewall-bouncer | crowdsecurity/cs-firewall-bouncer | v0.0.36 | — | — |
-| crun | containers/crun | 1.29.1 | — | — |
+| crun | containers/crun | 1.30.1 | — | — |
 | ymuse | yktoo/ymuse | v0.22 | amd64 | — |
-| deck | kong/deck | v1.65.3 | amd64,arm64 | — |
+| deck | kong/deck | v1.68.0 | amd64,arm64 | — |
 | golang-github-yggdrasil-network-yggdrasil-go-dev | yggdrasil-network/yggdrasil-go | v0.5.14 | amd64,arm64,armhf,i386 | — |
-| miller | johnkerl/miller | v6.21.0 | amd64,arm64,armhf,riscv64,s390x | — |
+| miller | johnkerl/miller | v6.22.0 | amd64,arm64,armhf,riscv64,s390x | — |
 | dmarc-cat | keltia/dmarc-cat | v0.15.0 | — | — |
-| docker-registry | docker/distribution | v3.1.1 | — | — |
+| docker-registry | docker/distribution | v3.1.2 | — | — |
 | duf | muesli/duf | v0.9.1 | amd64,arm64,armhf | — |
 | easygen | go-easygen/easygen | v5.3.0 | amd64,arm64 | — |
 | efm-langserver | mattn/efm-langserver | v0.0.57 | — | — |
@@ -39,10 +39,10 @@
 | fdroidcl | mvdan/fdroidcl | v0.8.1 | — | — |
 | fever | DCSO/fever | v1.4.0 | — | — |
 | ffcvt | suntong/ffcvt | v1.15.0 | amd64 | — |
-| ffuf | ffuf/ffuf | v2.2.1 | — | — |
+| ffuf | ffuf/ffuf | v2.3.0 | — | — |
 | fq | wader/fq | v0.18.0 | — | — |
 | fscrypt | google/fscrypt | v0.3.7 | — | — |
-| fzf | junegunn/fzf | v0.74.3 | amd64,arm64,armhf,loong64,riscv64,s390x | — |
+| fzf | junegunn/fzf | v0.74.4 | amd64,arm64,armhf,loong64,riscv64,s390x | — |
 | g10k | xorpaul/g10k | v0.10.0 | — | — |
 | garagemq | valinurovam/garagemq |  | — | — |
 | gdu | dundee/gdu | v5.37.0 | — | — |
@@ -54,9 +54,9 @@
 | go-mtpfs | hanwen/go-mtpfs |  | — | — |
 | go-qrcode | skip2/go-qrcode |  | — | — |
 | go-rpmdb | knqyf263/go-rpmdb |  | — | — |
-| gobgpd | osrg/gobgp | v4.8.0 | — | — |
-| gobuster | OJ/gobuster | v3.8.2 | — | — |
-| gocc | goccmack/gocc | v1.0.2 | — | — |
+| gobgpd | osrg/gobgp |  | — | — |
+| gobuster | OJ/gobuster |  | — | — |
+| gocc | goccmack/gocc |  | — | — |
 | gocryptfs | rfjakob/gocryptfs |  | — | — |
 | goiardi | ctdk/goiardi |  | — | — |
 | gokey | cloudflare/gokey |  | — | — |
