@@ -10,10 +10,10 @@ homepage: https://github.com/astral-sh/ruff
 section: python
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "0.16.9"
-latest_tag: "0.16.9"
-commit_hash: "0be08a206f9c3180afd3e93bcc792ed5cb1f4db1"
-upstream_version: "0.16.9"
+version_tag: "0.16.10"
+latest_tag: "0.16.10"
+commit_hash: "3265ed1f944c98bb4c04d632fbefb1257cdb583d"
+upstream_version: "0.16.10"
 
 # musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
 build_script: scripts/pkgs/rust-musl.sh
