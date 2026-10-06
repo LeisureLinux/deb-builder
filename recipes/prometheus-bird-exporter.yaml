@@ -9,10 +9,10 @@ homepage: https://github.com/czerwonk/bird_exporter
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.6.2"
-latest_tag: "v1.6.2"
-commit_hash: "ac07598b7a0ada9754864cd3975e4de6ee0f7002"
-upstream_version: "1.6.2"
+version_tag: "v1.7.0"
+latest_tag: "v1.7.0"
+commit_hash: "90350ea2d15d1447455d6ec8466595123df204c9"
+upstream_version: "1.7.0"
 
 # Go 构建配置
 ldflags: "-s -w"
