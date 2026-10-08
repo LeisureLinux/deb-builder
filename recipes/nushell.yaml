@@ -10,10 +10,10 @@ homepage: https://github.com/nushell/nushell
 section: shells
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "0.115.1"
-latest_tag: "0.115.1"
-commit_hash: "798c55d19505fd52f205d7eb32a571b9d06ec9e6"
-upstream_version: "0.115.1"
+version_tag: "0.116.1"
+latest_tag: "0.116.1"
+commit_hash: "b632ef0994e07b5176ec45171e8cee2c127c5563"
+upstream_version: "0.116.1"
 
 # musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
 build_script: scripts/pkgs/rust-musl.sh

@@ -9,10 +9,10 @@ homepage: https://github.com/oras-project/oras
 section: admin
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.3.3"
-latest_tag: "v1.3.3"
-commit_hash: "210747c29c1d38732b3194878dfd8b5a6b9ad7eb"
-upstream_version: "1.3.3"
+version_tag: "v1.3.4"
+latest_tag: "v1.3.4"
+commit_hash: "db9e29505c3059f2b8fde34ae8cae266c5c765e9"
+upstream_version: "1.3.4"
 
 # Go 构建配置
 ldflags: "-s -w"
