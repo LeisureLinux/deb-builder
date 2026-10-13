@@ -8,10 +8,10 @@ homepage: https://github.com/mikefarah/yq
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v4.53.6"
-latest_tag: "v4.53.6"
-commit_hash: "c14f446382944492701b16c1ddb48bb9dbe683e3"
-upstream_version: "4.53.6"
+version_tag: "v4.54.1"
+latest_tag: "v4.54.1"
+commit_hash: "504fc38780cc46be8444ea1b72fb55919fc0bfb0"
+upstream_version: "4.54.1"
 
 # Go 构建配置
 ldflags: "-s -w"

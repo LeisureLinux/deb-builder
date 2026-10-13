@@ -10,10 +10,10 @@ homepage: https://github.com/tree-sitter/tree-sitter
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.27.0"
-latest_tag: "v0.27.0"
-commit_hash: "6070dbfefd326bd735e5683eb128cc1b57dad0c0"
-upstream_version: "0.27.0"
+version_tag: "v0.27.1"
+latest_tag: "v0.27.1"
+commit_hash: "10eb5ac119eec9cb4267a8e035066473983f5f3a"
+upstream_version: "0.27.1"
 
 # musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
 build_script: scripts/pkgs/rust-musl.sh

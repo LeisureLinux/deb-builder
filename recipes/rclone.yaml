@@ -13,10 +13,10 @@ homepage: https://github.com/rclone/rclone
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.75.1"
-latest_tag: "v1.75.1"
-commit_hash: "687d264b689b8c49a67e2e52a8a5e0caa01c04ce"
-upstream_version: "1.75.1"
+version_tag: "v1.75.2"
+latest_tag: "v1.75.2"
+commit_hash: "be8d6044eacb843b74d335db0c5fbe09222031fe"
+upstream_version: "1.75.2"
 
 # 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
 target_arches:

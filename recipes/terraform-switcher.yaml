@@ -9,10 +9,10 @@ homepage: https://github.com/warrensbox/terraform-switcher
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.19.0"
-latest_tag: "v1.19.0"
-commit_hash: "f6db709080818727968a226474c5d461e740fffd"
-upstream_version: "1.19.0"
+version_tag: "v1.20.0"
+latest_tag: "v1.20.0"
+commit_hash: "7f8cf2c8c1e995d3793eab4da120264981695192"
+upstream_version: "1.20.0"
 
 # Go 构建配置
 ldflags: "-s -w"

@@ -8,10 +8,10 @@ homepage: https://github.com/hashicorp/terraform
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.16.4"
-latest_tag: "v1.16.4"
-commit_hash: "6ee8af215a535cfca08bf729ff1017d4221d6667"
-upstream_version: "1.16.4"
+version_tag: "v1.16.5"
+latest_tag: "v1.16.5"
+commit_hash: "ef47237fd0e03d6e93bdc510b526287f06e94c03"
+upstream_version: "1.16.5"
 
 # Go 构建配置
 ldflags: "-s -w"
