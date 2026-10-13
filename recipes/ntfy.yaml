@@ -9,10 +9,10 @@ homepage: https://github.com/binwiederhier/ntfy
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.29.0"
-latest_tag: "v2.29.0"
-commit_hash: "f18d1137c63a26e85b91ce639e7bc72bb9a82736"
-upstream_version: "2.29.0"
+version_tag: "v2.30.0"
+latest_tag: "v2.30.0"
+commit_hash: "6377b284358a75674b4e343fe40e7534b4e6fe07"
+upstream_version: "2.30.0"
 
 # Go 构建配置
 ldflags: "-s -w"
