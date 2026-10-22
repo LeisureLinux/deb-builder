@@ -9,10 +9,10 @@ homepage: https://github.com/DNSCrypt/dnscrypt-proxy
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "2.1.19"
-latest_tag: "2.1.19"
-commit_hash: "9860de40be2b3826ea585aa6956ea3d50f23b513"
-upstream_version: "2.1.19"
+version_tag: "2.1.20"
+latest_tag: "2.1.20"
+commit_hash: "c33302bc279e4d298fa19b99be8b35778db9a901"
+upstream_version: "2.1.20"
 
 # Go 构建配置
 ldflags: "-s -w"

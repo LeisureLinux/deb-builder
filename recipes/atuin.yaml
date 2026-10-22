@@ -10,10 +10,10 @@ homepage: https://github.com/atuinsh/atuin
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v18.24.1"
-latest_tag: "v18.24.1"
-commit_hash: "c58d2e993d05be423315f6ae3739e9ab3e45eea5"
-upstream_version: "18.24.1"
+version_tag: "v18.24.2"
+latest_tag: "v18.24.2"
+commit_hash: "854654ec1ec6d13e0eb2468a6e57b2e2044a2162"
+upstream_version: "18.24.2"
 
 # musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
 build_script: scripts/pkgs/rust-musl.sh
