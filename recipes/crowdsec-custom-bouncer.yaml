@@ -9,10 +9,10 @@ homepage: https://github.com/crowdsecurity/cs-custom-bouncer
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.0.19"
-latest_tag: "v0.0.19"
-commit_hash: "1a60aa3040a0b3e1abd04b5350fbc0f42d2b4c3e"
-upstream_version: "0.0.19"
+version_tag: "v0.0.22"
+latest_tag: "v0.0.22"
+commit_hash: "785c3a0fc6d446c3d576ef8a97d7a8801754472c"
+upstream_version: "0.0.22"
 
 # Go 构建配置
 ldflags: "-s -w"
