@@ -9,10 +9,10 @@ homepage: https://github.com/sigstore/gitsign
 section: vcs
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.17.1"
-latest_tag: "v0.17.1"
-commit_hash: "44f5e17fac6944fdde71c94d2e77ab075c9dca9f"
-upstream_version: "0.17.1"
+version_tag: "v0.18.0"
+latest_tag: "v0.18.0"
+commit_hash: "93dbc8d96dcba19cf57de7a1990d523207a00035"
+upstream_version: "0.18.0"
 
 # Go 构建配置
 ldflags: "-s -w"
