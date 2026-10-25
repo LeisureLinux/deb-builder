@@ -10,10 +10,10 @@ homepage: https://github.com/casey/just
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "1.58.0"
-latest_tag: "1.58.0"
-commit_hash: "7f4ef81bd6a93faa2b28430912c8e9ab0e3dd29a"
-upstream_version: "1.58.0"
+version_tag: "1.59.0"
+latest_tag: "1.59.0"
+commit_hash: "2638e9c0941edb1f409da7426fa7842887656973"
+upstream_version: "1.59.0"
 
 # musl 全静态构建（scripts/pkgs/rust-musl.sh，与 yazi/zoxide 同一套）
 build_script: scripts/pkgs/rust-musl.sh

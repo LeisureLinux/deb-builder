@@ -9,10 +9,10 @@ homepage: https://github.com/jesseduffield/lazygit
 section: vcs
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.66.1"
-latest_tag: "v0.66.1"
-commit_hash: "b741725a2413fc9cbc01529cab0e7cc654ad2054"
-upstream_version: "0.66.1"
+version_tag: "v0.66.2"
+latest_tag: "v0.66.2"
+commit_hash: "63ab89fff478854deb4a35ef8902676b3cc5ca72"
+upstream_version: "0.66.2"
 
 # Go 构建配置
 ldflags: "-s -w"

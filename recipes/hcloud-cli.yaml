@@ -9,10 +9,10 @@ homepage: https://github.com/hetznercloud/cli
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.67.0"
-latest_tag: "v1.67.0"
-commit_hash: "0177acdb085a60e9677f4168edd656a7ddb955ef"
-upstream_version: "1.67.0"
+version_tag: "v1.70.2"
+latest_tag: "v1.70.2"
+commit_hash: "80c634c2e87d2deecf69154d861428f34d2eae08"
+upstream_version: "1.70.2"
 
 # Go 构建配置
 ldflags: "-s -w"
