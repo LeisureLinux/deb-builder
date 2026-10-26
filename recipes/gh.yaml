@@ -8,10 +8,10 @@ homepage: https://github.com/cli/cli
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.103.2"
-latest_tag: "v2.103.2"
-commit_hash: "4f2cfe92e3499f8581bf39db77e0a1431fa7b55c"
-upstream_version: "2.103.2"
+version_tag: "v2.103.3"
+latest_tag: "v2.103.3"
+commit_hash: "63837fb778d6a39f02be0ce76ff89f2bc8d74bdc"
+upstream_version: "2.103.3"
 
 # Go 构建配置
 ldflags: "-s -w"
