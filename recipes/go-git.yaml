@@ -9,10 +9,10 @@ homepage: https://github.com/go-git/go-git
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v5.19.2"
-latest_tag: "v5.19.2"
-commit_hash: "3eeb238da61eb9c7a324f3ee04f990ce89175642"
-upstream_version: "5.19.2"
+version_tag: "v5.19.3"
+latest_tag: "v5.19.3"
+commit_hash: "bdae57cc427f94a6f7c627201bfe14508b5e19bd"
+upstream_version: "5.19.3"
 
 # Go 构建配置
 ldflags: "-s -w"
