@@ -9,10 +9,10 @@ homepage: https://github.com/pete911/certinfo
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.0.40"
-latest_tag: "v1.0.40"
-commit_hash: "5574ad11b2782421543936fda1a9f3c0d46882f7"
-upstream_version: "1.0.40"
+version_tag: "v1.0.41"
+latest_tag: "v1.0.41"
+commit_hash: "4a31f3c35c44b758fd969bf00dd6fcf4c657a476"
+upstream_version: "1.0.41"
 
 # Go 构建配置
 ldflags: "-s -w"

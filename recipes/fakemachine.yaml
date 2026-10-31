@@ -9,10 +9,10 @@ homepage: https://github.com/go-debos/fakemachine
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.0.12"
-latest_tag: "v0.0.12"
-commit_hash: "ebafbf75ca97bf2b5dd677728106b25c778ef6e2"
-upstream_version: "0.0.12"
+version_tag: "v0.0.13"
+latest_tag: "v0.0.13"
+commit_hash: "be376938882e3a75e5b279ece2652de3eec5d887"
+upstream_version: "0.0.13"
 
 # Go 构建配置
 ldflags: "-s -w"
