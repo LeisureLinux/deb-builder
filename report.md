@@ -14,20 +14,20 @@
 | balboa | DCSO/balboa | v2.1.2 | — | — |
 | burrow | linkedin/Burrow | v1.9.6 | — | — |
 | c2go | elliotchance/c2go | v0.26.11 | — | — |
-| caddy | caddyserver/caddy | v2.11.4 | amd64,arm64,armhf,riscv64,s390x | — |
+| caddy | caddyserver/caddy | v2.11.7 | amd64,arm64,armhf,riscv64,s390x | — |
 | canid | britram/canid |  | — | — |
-| certinfo | pete911/certinfo | v1.0.40 | — | — |
+| certinfo | pete911/certinfo | v1.0.41 | — | — |
 | yubikey-agent | FiloSottile/yubikey-agent |  | — | — |
 | clipman | yory8/clipman |  | — | — |
-| cloudsql-proxy | GoogleCloudPlatform/cloudsql-proxy | v2.26.0 | — | — |
+| cloudsql-proxy | GoogleCloudPlatform/cloudsql-proxy | v2.27.0 | — | — |
 | cobra-cli | spf13/cobra-cli | v1.3.0 | — | — |
-| crowdsec | crowdsecurity/crowdsec | v1.8.1 | — | — |
-| crowdsec-custom-bouncer | crowdsecurity/cs-custom-bouncer | v0.0.17 | — | — |
+| crowdsec | crowdsecurity/crowdsec | v1.8.2 | — | — |
+| crowdsec-custom-bouncer | crowdsecurity/cs-custom-bouncer | v0.0.22 | — | — |
 | crowdsec-firewall-bouncer | crowdsecurity/cs-firewall-bouncer | v0.0.36 | — | — |
 | crun | containers/crun | 1.30.1 | — | — |
 | ymuse | yktoo/ymuse | v0.22 | amd64 | — |
-| deck | kong/deck | v1.68.0 | amd64,arm64 | — |
-| golang-github-yggdrasil-network-yggdrasil-go-dev | yggdrasil-network/yggdrasil-go | v0.5.14 | amd64,arm64,armhf,i386 | — |
+| deck | kong/deck | v1.69.0 | amd64,arm64 | — |
+| golang-github-yggdrasil-network-yggdrasil-go-dev | yggdrasil-network/yggdrasil-go | v0.5.15 | amd64,arm64,armhf,i386 | — |
 | miller | johnkerl/miller | v6.22.0 | amd64,arm64,armhf,riscv64,s390x | — |
 | dmarc-cat | keltia/dmarc-cat | v0.15.0 | — | — |
 | docker-registry | docker/distribution | v3.1.2 | — | — |
@@ -42,22 +42,22 @@
 | ffuf | ffuf/ffuf | v2.3.0 | — | — |
 | fq | wader/fq | v0.18.0 | — | — |
 | fscrypt | google/fscrypt | v0.3.7 | — | — |
-| fzf | junegunn/fzf | v0.74.4 | amd64,arm64,armhf,loong64,riscv64,s390x | — |
+| fzf | junegunn/fzf | v0.74.5 | amd64,arm64,armhf,loong64,riscv64,s390x | — |
 | g10k | xorpaul/g10k | v0.10.0 | — | — |
 | garagemq | valinurovam/garagemq |  | — | — |
-| gdu | dundee/gdu | v5.37.0 | — | — |
+| gdu | dundee/gdu | v5.38.0 | — | — |
 | ggd-utils | gogetdata/ggd-utils | v1.0.0 | — | — |
 | gifwrap | liamg/gifwrap | v0.0.7 | — | — |
-| git-credential-oauth | hickford/git-credential-oauth | v0.17.2 | — | — |
+| git-credential-oauth | hickford/git-credential-oauth | v0.18.0 | — | — |
 | gitbatch | isacikgoz/gitbatch | v0.6.1 | — | — |
 | xq | sibprogrammer/xq | v1.5.1 | — | — |
 | go-mtpfs | hanwen/go-mtpfs |  | — | — |
 | go-qrcode | skip2/go-qrcode |  | — | — |
 | go-rpmdb | knqyf263/go-rpmdb |  | — | — |
-| gobgpd | osrg/gobgp |  | — | — |
-| gobuster | OJ/gobuster |  | — | — |
-| gocc | goccmack/gocc |  | — | — |
-| gocryptfs | rfjakob/gocryptfs |  | — | — |
+| gobgpd | osrg/gobgp | v4.11.0 | — | — |
+| gobuster | OJ/gobuster | v3.8.2 | — | — |
+| gocc | goccmack/gocc | v1.0.2 | — | — |
+| gocryptfs | rfjakob/gocryptfs | v2.6.1 | — | — |
 | goiardi | ctdk/goiardi |  | — | — |
 | gokey | cloudflare/gokey |  | — | — |
 | go-bindata | jteeuwen/go-bindata |  | — | — |
