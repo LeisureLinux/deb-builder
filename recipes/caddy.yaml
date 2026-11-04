@@ -9,10 +9,10 @@ homepage: https://github.com/caddyserver/caddy
 section: httpd
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.11.7"
-latest_tag: "v2.11.7"
-commit_hash: "72dd0fb067f6d7826c7f79907670ba4a713bfe37"
-upstream_version: "2.11.7"
+version_tag: "v2.11.8"
+latest_tag: "v2.11.8"
+commit_hash: "55996dfe05c10bb616ccdcc9bf5b8407a5be75b7"
+upstream_version: "2.11.8"
 
 # Go 构建配置
 ldflags: "-s -w"
