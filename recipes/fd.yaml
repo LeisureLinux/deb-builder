@@ -8,10 +8,10 @@ homepage: https://github.com/sharkdp/fd
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v10.5.1"
-latest_tag: "v10.5.1"
-commit_hash: "193d0df1d0ad455e44506953a2cd80428203ff35"
-upstream_version: "10.5.1"
+version_tag: "v10.5.2"
+latest_tag: "v10.5.2"
+commit_hash: "b2a287b3993768e0ec52f0852916917f23fb2a38"
+upstream_version: "10.5.2"
 
 # Rust 项目：使用 cargo 构建
 language: rust
