@@ -9,10 +9,10 @@ homepage: https://github.com/vektra/mockery
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v3.8.1"
-latest_tag: "v3.8.1"
-commit_hash: "0ddc8e48058a948e0c085b5d929ef93b8172d0fd"
-upstream_version: "3.8.1"
+version_tag: "v3.9.0"
+latest_tag: "v3.9.0"
+commit_hash: "085f793622ffdf7d8f50596d84e665c8aa4b736f"
+upstream_version: "3.9.0"
 
 # Go 构建配置
 ldflags: "-s -w"

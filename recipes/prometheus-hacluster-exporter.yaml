@@ -9,10 +9,10 @@ homepage: https://github.com/ClusterLabs/ha_cluster_exporter
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "1.4.2"
-latest_tag: "1.4.2"
-commit_hash: "a50025a652b8f6854d49777f81cd0f2e015cfbdf"
-upstream_version: "1.4.2"
+version_tag: "1.4.3"
+latest_tag: "1.4.3"
+commit_hash: "31101a08fec6346b41910eaebdcc56b778b2c7f7"
+upstream_version: "1.4.3"
 
 # Go 构建配置
 ldflags: "-s -w"
