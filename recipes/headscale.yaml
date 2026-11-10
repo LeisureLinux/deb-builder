@@ -13,10 +13,10 @@ homepage: https://github.com/juanfont/headscale
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.29.6"
-latest_tag: "v0.29.6"
-commit_hash: "a2b1d7863926834e94479dcdd91ab344a9356bd0"
-upstream_version: "0.29.6"
+version_tag: "v0.29.7"
+latest_tag: "v0.29.7"
+commit_hash: "c9cf210b8bc84d13177e18b91f555788a44b47b6"
+upstream_version: "0.29.7"
 
 # 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
 target_arches:
