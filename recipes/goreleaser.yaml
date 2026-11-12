@@ -8,10 +8,10 @@ homepage: https://github.com/goreleaser/goreleaser
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.20.0"
-latest_tag: "v2.20.0"
-commit_hash: "b8f79e0399c46895220e8479e24d599576b563a8"
-upstream_version: "2.20.0"
+version_tag: "v2.20.1"
+latest_tag: "v2.20.1"
+commit_hash: "119f88f695dc34e4b6f04c34e22005955d5675f8"
+upstream_version: "2.20.1"
 
 # Go 构建配置
 ldflags: "-s -w"

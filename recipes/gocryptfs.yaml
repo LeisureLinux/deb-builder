@@ -9,10 +9,10 @@ homepage: https://github.com/rfjakob/gocryptfs
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v2.6.1"
-latest_tag: "v2.6.1"
-commit_hash: "25e85a4454e93643ad92397d01ed532a360d7ee2"
-upstream_version: "2.6.1"
+version_tag: "v2.7.0"
+latest_tag: "v2.7.0"
+commit_hash: "756cd453d7afe69fd2a00a7592fd2d9869a6f756"
+upstream_version: "2.7.0"
 
 # Go 构建配置
 ldflags: "-s -w"

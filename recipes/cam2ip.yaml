@@ -9,10 +9,10 @@ homepage: https://github.com/gen2brain/cam2ip
 section: net
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.7.0"
-latest_tag: "v1.7.0"
-commit_hash: "88b442ee5f40cdc3fae114f70e6e6d9e4088a3b1"
-upstream_version: "1.7.0"
+version_tag: "v1.8.0"
+latest_tag: "v1.8.0"
+commit_hash: "080240f6c69c4d0646c57f7b2c21159d8a07d589"
+upstream_version: "1.8.0"
 
 # Go 构建配置
 ldflags: "-s -w"
