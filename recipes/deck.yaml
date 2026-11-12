@@ -9,10 +9,10 @@ homepage: https://github.com/kong/deck
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.70.0"
-latest_tag: "v1.70.0"
-commit_hash: "e8909bc43fe5a1b9e987a47f63f1afb8e6ac98a9"
-upstream_version: "1.70.0"
+version_tag: "v1.70.1"
+latest_tag: "v1.70.1"
+commit_hash: "99c5e7a36b82ec20a2585c74ef60c29d8a9685af"
+upstream_version: "1.70.1"
 
 # Go 构建配置
 ldflags: "-s -w"
