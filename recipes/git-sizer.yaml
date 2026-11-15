@@ -9,10 +9,10 @@ homepage: https://github.com/github/git-sizer
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.5.0"
-latest_tag: "v1.5.0"
-commit_hash: "cc6b856f85a99f8ce188275c3554ad27ba7adfde"
-upstream_version: "1.5.0"
+version_tag: "v1.6.0"
+latest_tag: "v1.6.0"
+commit_hash: "420f73b250a640f6eeb10de62b90834c99f9ef66"
+upstream_version: "1.6.0"
 
 # Go 构建配置
 ldflags: "-s -w"
