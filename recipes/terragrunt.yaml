@@ -8,10 +8,10 @@ homepage: https://github.com/gruntwork-io/terragrunt
 section: devel
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.1.6"
-latest_tag: "v1.1.6"
-commit_hash: "be24121b42597ca0ba9b311e76961927b91a5b30"
-upstream_version: "1.1.6"
+version_tag: "v1.2.2"
+latest_tag: "v1.2.2"
+commit_hash: "109a529eca372cc90fe05c47d2b14a33aa196ac0"
+upstream_version: "1.2.2"
 
 # Go 构建配置
 ldflags: "-s -w"

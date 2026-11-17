@@ -13,10 +13,10 @@ homepage: https://github.com/psviderski/uncloud
 section: utils
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.21.0"
-latest_tag: "v0.21.0"
-commit_hash: "c58108aa829cca4fe3b5f837e0f1918be1687599"
-upstream_version: "0.21.0"
+version_tag: "v0.22.0"
+latest_tag: "v0.22.0"
+commit_hash: "d1d496cf3274e186acfb9e11adfe7f87a8b52f9c"
+upstream_version: "0.22.0"
 
 # 打包架构：CI 每个架构一台原生 runner（amd64→x64, arm64→arm64）
 target_arches:

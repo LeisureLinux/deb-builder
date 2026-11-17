@@ -9,10 +9,10 @@ homepage: https://github.com/skeema/skeema
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.14.1"
-latest_tag: "v1.14.1"
-commit_hash: "cb375090399a96c549e45c366a5b5f8d110d3bf5"
-upstream_version: "1.14.1"
+version_tag: "v1.14.2"
+latest_tag: "v1.14.2"
+commit_hash: "eddb56e522c1c22d1c0244467a72791e1cfe035c"
+upstream_version: "1.14.2"
 
 # Go 构建配置
 ldflags: "-s -w"

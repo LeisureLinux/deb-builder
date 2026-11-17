@@ -8,10 +8,10 @@ homepage: https://github.com/aquasecurity/trivy
 section: admin
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v0.76.0"
-latest_tag: "v0.76.0"
-commit_hash: "531360e5d2a88e732373f1614ba99a38738538b8"
-upstream_version: "0.76.0"
+version_tag: "v0.76.2"
+latest_tag: "v0.76.2"
+commit_hash: "3f6334d223b52188324af3b9923b4249cd206652"
+upstream_version: "0.76.2"
 
 # Go 构建配置
 ldflags: "-s -w"
