@@ -9,10 +9,10 @@ homepage: https://github.com/cloudflare/cfssl
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v1.7.1"
-latest_tag: "v1.7.1"
-commit_hash: "ab47f0d984778865b3f5b5adf6ba336a15b96c31"
-upstream_version: "1.7.1"
+version_tag: "v1.7.2"
+latest_tag: "v1.7.2"
+commit_hash: "e67926cc38c87f38a7c11a2d77d6d46b72163b3b"
+upstream_version: "1.7.2"
 
 # Go 构建配置
 ldflags: "-s -w"
