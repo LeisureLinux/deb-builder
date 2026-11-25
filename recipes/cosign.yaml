@@ -9,10 +9,10 @@ homepage: https://github.com/sigstore/cosign
 section: golang
 
 # 版本策略：锁定上游最新稳定 tag，并在 control 里记录 commit hash
-version_tag: "v3.1.4"
-latest_tag: "v3.1.4"
-commit_hash: "0e48502cf5ef34e2e60bbd3617aa19945712f705"
-upstream_version: "3.1.4"
+version_tag: "v3.1.5"
+latest_tag: "v3.1.5"
+commit_hash: "e5a0818ca5729481095773409e9c1b60cc278e8d"
+upstream_version: "3.1.5"
 
 # Go 构建配置
 ldflags: "-s -w"
